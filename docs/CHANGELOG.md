@@ -30,6 +30,9 @@ Registro de cambios por sesión de desarrollo.
 - Creados 7 archivos de test, 126 tests en 20+ clases:
   - test_exceptions (10), test_config (17), test_types (17), test_prompts (12), test_llm (22), test_tools (23), test_loop (16), test_init (1)
 - Verificación: 126 agent tests + 131 core tests = 257 total, ruff limpio, format limpio
+- Creado `scripts/demo_agent.py` — script de prueba end-to-end contra HAPI FHIR + Claude
+- AgentConfig: `extra="ignore"` para coexistir con .env compartido entre paquetes
+- Prueba exitosa: "Pacientes con diabetes tipo 2" → resolve_terminology + search_fhir → respuesta correcta
 
 ---
 

@@ -43,6 +43,11 @@
 - `uv run ruff check .` → All checks passed
 - `uv run ruff format --check .` → All files formatted
 
+### Prueba end-to-end
+- `scripts/demo_agent.py` — script de demo contra HAPI FHIR + Claude Sonnet
+- Query "Pacientes con diabetes tipo 2" → 3 iteraciones, 2 tool calls, respuesta correcta con 15 pacientes
+- Query "Medicaciones activas" → 2 iteraciones, 1 tool call, respuesta correcta (sin datos en seed)
+
 ## Sprint 1 — Completado
 
 Todas las sesiones del Sprint 1 están finalizadas:

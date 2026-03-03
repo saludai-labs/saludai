@@ -24,7 +24,7 @@ class AgentConfig(BaseSettings):
         agent_temperature: Sampling temperature (0.0 for deterministic).
     """
 
-    model_config = SettingsConfigDict(env_prefix="SALUDAI_")
+    model_config = SettingsConfigDict(env_prefix="SALUDAI_", extra="ignore")
 
     llm_provider: Literal["anthropic", "openai", "ollama"] = "anthropic"
     llm_model: str = "claude-sonnet-4-20250514"

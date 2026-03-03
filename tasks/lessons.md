@@ -59,6 +59,19 @@
 **Por qué estuvo mal:** FHIR spec no obliga a incluir `total` en searchset bundles. HAPI lo omite en algunas búsquedas.
 **Regla:** En tests de búsqueda FHIR, verificar `bundle.entry` (no None y len >= 1) en vez de confiar en `bundle.total`.
 
+### 2026-03-04: pydantic-settings con env_file lee TODAS las vars del .env
+**Qué pasó:** Agregué `env_file=".env"` a AgentConfig y pydantic-settings rechazó todas las vars que no estaban en el modelo (FHIR, Langfuse, etc.) con "Extra inputs are not permitted".
+**Por qué estuvo mal:** El `.env` es compartido entre paquetes. Cada config solo define un subconjunto.
+**Regla:** Usar `extra="ignore"` en SettingsConfigDict cuando el .env tiene vars de múltiples paquetes. Preferir `load_dotenv()` en scripts de aplicación en vez de `env_file` en el modelo.
+
+### 2026-03-04: MagicMock(name=...) no funciona como atributo — usa .name = después
+**Qué pasó:** `MagicMock(name="resolve_terminology")` no setea `.name` como string porque `name` es un parámetro especial de Mock (el nombre del mock para debugging).
+**Regla:** Para mocks donde `.name` debe ser un string real, crear el mock primero y luego asignar: `mock = MagicMock(); mock.name = "value"`.
+
+### 2026-03-04: Windows console (cp1251) no soporta caracteres españoles
+**Qué pasó:** `print(result.answer)` falló con UnicodeEncodeError porque la consola de Windows usa cp1251.
+**Regla:** En scripts que imprimen texto en español, usar `sys.stdout.reconfigure(encoding="utf-8")` al inicio.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.
