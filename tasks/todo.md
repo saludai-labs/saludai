@@ -12,11 +12,20 @@
 - [x] Crear PROGRESS.md, CHANGELOG.md
 - [x] Crear estructura de tasks/
 
-## Próxima sesión: Sprint 1, Sesión 1.1
+## Sesión: Sprint 1, Sesión 1.1
 
-- [ ] Crear GitHub Org
-- [ ] Crear repos (saludai, saludai-data-ar, saludai-private)
-- [ ] pyproject.toml raíz con UV workspace config
-- [ ] Estructura de paquetes vacía con __init__.py
-- [ ] .gitignore, .env.example
-- [ ] Push inicial
+- [x] Crear GitHub Org `saludai-labs` (hecho por el usuario)
+- [x] Crear repos en GitHub (hecho por el usuario)
+- [x] Configurar git remote origin
+- [x] pyproject.toml raíz con UV workspace config
+- [x] Estructura de paquetes vacía con __init__.py (core, agent, mcp, api)
+- [x] .env.example con todas las variables
+- [x] README.md mínimo
+- [x] `uv sync --all-packages` funciona correctamente
+- [x] `ruff check .` pasa limpio
+- [ ] Push inicial al repo
+
+## Próxima sesión: Sprint 1, Sesión 1.2
+
+- [ ] GitHub Actions CI (ruff + pytest)
+- [ ] Pre-commit hooks

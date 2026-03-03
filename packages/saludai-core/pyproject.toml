@@ -1,0 +1,21 @@
+[project]
+name = "saludai-core"
+version = "0.1.0"
+description = "FHIR client, terminology resolver, and shared types for SaludAI"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+authors = [{ name = "SaludAI Labs" }]
+dependencies = [
+    "httpx>=0.28",
+    "fhir.resources>=8",
+    "pydantic>=2",
+    "pydantic-settings>=2",
+    "structlog>=24",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/saludai_core"]
