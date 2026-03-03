@@ -6,6 +6,20 @@
 
 ---
 
+## Deuda técnica / pendientes menores
+
+- [ ] Crear ADR-002: No LangChain — custom agent loop (referenciado en CLAUDE.md)
+- [ ] Crear ADR-004: Langfuse para observabilidad (referenciado en CLAUDE.md)
+- [ ] Crear ADR-005: FHIR R4 only (referenciado en CLAUDE.md)
+- [ ] Definir licencia del repo de datos sintéticos (¿Apache 2.0? ¿CC-BY-4.0?)
+
+## Query Builder — fuera de scope (posible Sprint 3+)
+
+- [ ] Registro completo de search params válidos por resource type (validación estricta)
+- [ ] Parámetro `_has` (reverse chaining)
+- [ ] Composite parameters (e.g. `component-code-value-quantity`)
+- [ ] `FHIRClient.execute(query)` — convenience method que acepta `FHIRQuery` directamente (sesión 2.3)
+
 ## Ideas para sprints futuros
 
 - [ ] FHIR Subscriptions support (real-time notifications)

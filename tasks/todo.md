@@ -69,3 +69,25 @@
 - [x] Crear `CONTRIBUTING.md` — prerequisites, dev setup, code style, commits, testing, PR process
 - [x] Verificación: ruff check limpio, 9/9 unit tests pasan
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md
+
+## Sesión: Sprint 2, Sesión 2.1
+
+- [x] Extender jerarquía de excepciones (TerminologyError, TerminologyCodeNotFoundError, TerminologyDataError)
+- [x] Agregar dependencia `rapidfuzz>=3` a saludai-core + `uv sync`
+- [x] Crear `saludai_core/data/snomed_ar.csv` (~96 códigos SNOMED CT AR)
+- [x] Crear `saludai_core/data/cie10_ar.csv` (~45 códigos CIE-10)
+- [x] Crear `saludai_core/data/loinc.csv` (~30 códigos LOINC)
+- [x] Implementar `saludai_core/terminology.py` (TerminologyResolver, enums, modelos)
+- [x] Actualizar `__init__.py` con re-exports de tipos nuevos
+- [x] Crear `tests/test_terminology.py` (35 tests unitarios)
+- [x] Verificación: 44 tests verdes, ruff check limpio, ruff format limpio
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md
+
+## Sesión: Sprint 2, Sesión 2.2
+
+- [x] Agregar `QueryBuilderError`, `QueryBuilderValidationError` a `exceptions.py`
+- [x] Implementar `saludai_core/query_builder.py` (enums, dataclasses, factories, builder)
+- [x] Actualizar `__init__.py` con re-exports de tipos nuevos
+- [x] Crear `tests/test_query_builder.py` (96 tests en 13 clases)
+- [x] Verificación: 131 tests verdes, ruff check limpio, ruff format limpio
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md

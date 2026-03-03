@@ -29,3 +29,23 @@ class FHIRAuthenticationError(FHIRError):
 
 class FHIRValidationError(FHIRError):
     """FHIR server returned an invalid or unexpected response."""
+
+
+class TerminologyError(SaludAIError):
+    """Base exception for terminology-related errors."""
+
+
+class TerminologyCodeNotFoundError(TerminologyError):
+    """Requested terminology code does not exist in any loaded system."""
+
+
+class TerminologyDataError(TerminologyError):
+    """Error loading or parsing terminology data files."""
+
+
+class QueryBuilderError(SaludAIError):
+    """Base exception for query builder errors."""
+
+
+class QueryBuilderValidationError(QueryBuilderError):
+    """Invalid parameter or value in a FHIR query."""

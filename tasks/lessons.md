@@ -8,6 +8,10 @@
 
 ## Reglas activas
 
+### 2026-03-03: rapidfuzz scores son 0-100, no 0-1
+**Qué pasó:** Definí `EXACT_MATCH_SCORE = 1.0` pero rapidfuzz retorna scores en rango 0-100. Los tests de `is_confident` fallaron porque 1.0 < 70.0 (threshold).
+**Regla:** Mantener TODAS las scores en la escala 0-100 para consistencia con rapidfuzz. EXACT_MATCH_SCORE = 100.0.
+
 ### 2026-03-03: No agregar Co-Authored-By en commits
 **Qué pasó:** Agregué `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>` al primer commit.
 **Por qué estuvo mal:** El usuario no quiere que Claude se agregue como coautor.

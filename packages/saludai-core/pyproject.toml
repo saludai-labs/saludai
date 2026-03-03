@@ -11,6 +11,7 @@ dependencies = [
     "pydantic>=2",
     "pydantic-settings>=2",
     "structlog>=24",
+    "rapidfuzz>=3",
 ]
 
 [build-system]

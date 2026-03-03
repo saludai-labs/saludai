@@ -4,6 +4,48 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 2, Sesión 2.2] — 2026-03-03
+
+### FHIR Query Builder
+- Extendida jerarquía de excepciones: `QueryBuilderError`, `QueryBuilderValidationError`
+- Creado `saludai_core/query_builder.py` (~400 líneas) — módulo principal:
+  - Enums: `FHIRResourceType` (15 resource types), `DatePrefix` (8 prefijos), `SortOrder`
+  - Frozen dataclasses: `TokenParam`, `DateParam`, `ReferenceParam`, `QuantityParam`, `StringParam`, `IncludeParam`, `SortParam` — todos con `to_fhir() -> str`
+  - `FHIRQuery` — output inmutable con `to_params() -> dict[str, str | list[str]]` compatible con `FHIRClient.search()`
+  - Factory functions: `token()`, `snomed()`, `loinc()`, `cie10()`, `date_param()`, `reference()`, `quantity()`
+  - `FHIRQueryBuilder` — API fluent con `where()`, `where_token()`, `where_date()`, `where_reference()`, `where_string()`, `include()`, `revinclude()`, `sort()`, `count()`, `total()`, `elements()`, `build()`
+  - Validación: resource types contra enum (con escape hatch `validate=False`), formato ISO 8601, params no vacíos, `_count` positivo, `_total` en {none, estimate, accurate}
+  - Constantes: `SNOMED_CT_SYSTEM`, `LOINC_SYSTEM`, `CIE_10_SYSTEM` (URIs FHIR)
+- Actualizado `__init__.py` — re-exports de todos los tipos nuevos + excepciones
+- Creado `tests/test_query_builder.py` — 96 tests en 13 clases:
+  - FHIRResourceType (7), TokenParam (6), DateParam (10), ReferenceParam (2), QuantityParam (4), StringParam (3), IncludeParam (3), SortParam (3), FHIRQueryBuilder (21), FHIRQueryToParams (6), ChainedParams (3), Golden (7), ExceptionHierarchy (2)
+- Verificación: 131 tests verdes, ruff limpio, format limpio
+- Golden tests: diabetes+edad, laboratorio glucosa, pacientes Buenos Aires, medicaciones activas, CIE-10, revinclude, observaciones con quantity
+
+---
+
+## [Sprint 2, Sesión 2.1] — 2026-03-03
+
+### Terminology Resolver (SNOMED CT AR, CIE-10, LOINC)
+- Extendida jerarquía de excepciones: `TerminologyError`, `TerminologyCodeNotFoundError`, `TerminologyDataError`
+- Creado `saludai_core/terminology.py` (~490 líneas) — módulo principal:
+  - `TerminologySystem` (StrEnum con URIs FHIR), `MatchType`
+  - `TerminologyConcept` (frozen dataclass), `TerminologyMatch` (con `is_confident`, `needs_review`)
+  - `TerminologyConfig` — thresholds, cache size configurables
+  - `TerminologyResolver` — `resolve()`, `search()`, `lookup()`, LRU cache
+  - Estrategia de fallback: exact display (ES/EN) → exact alias → fuzzy (token_sort_ratio + partial_ratio)
+- Creado `saludai_core/data/snomed_ar.csv` — 96 códigos SNOMED CT (metabólicas, cardiovasculares, respiratorias, infecciosas LATAM, pediátricas, salud mental, oncología)
+- Creado `saludai_core/data/cie10_ar.csv` — 45 códigos CIE-10
+- Creado `saludai_core/data/loinc.csv` — 30 códigos LOINC (laboratorio)
+- Agregada dependencia `rapidfuzz>=3` a saludai-core
+- Actualizado `__init__.py` — re-exports de todos los tipos nuevos de terminology
+- Creado `tests/test_terminology.py` — 35 tests unitarios:
+  - Data loading (5), exact match (8), fuzzy match (8), no match (3), search (3), lookup (2), cache (3), config (2), golden (1)
+- Verificación: 44 tests verdes, ruff limpio, format limpio
+- Golden test: `"diabetes tipo 2"` → SNOMED `44054006` con `is_confident=True`
+
+---
+
 ## [Sprint 1, Sesión 1.5] — 2026-03-03
 
 ### README, LICENSE, CONTRIBUTING.md

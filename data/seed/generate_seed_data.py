@@ -28,27 +28,102 @@ random.seed(42)
 # ---------------------------------------------------------------------------
 
 FIRST_NAMES_MALE = [
-    "Juan", "Carlos", "José", "Luis", "Miguel", "Jorge", "Pablo",
-    "Diego", "Martín", "Alejandro", "Ricardo", "Fernando", "Daniel",
-    "Sergio", "Roberto", "Eduardo", "Raúl", "Héctor", "Oscar", "Mario",
-    "Gustavo", "Andrés", "Marcelo", "Nicolás", "Santiago", "Matías",
-    "Facundo", "Leandro", "Tomás", "Agustín",
+    "Juan",
+    "Carlos",
+    "José",
+    "Luis",
+    "Miguel",
+    "Jorge",
+    "Pablo",
+    "Diego",
+    "Martín",
+    "Alejandro",
+    "Ricardo",
+    "Fernando",
+    "Daniel",
+    "Sergio",
+    "Roberto",
+    "Eduardo",
+    "Raúl",
+    "Héctor",
+    "Oscar",
+    "Mario",
+    "Gustavo",
+    "Andrés",
+    "Marcelo",
+    "Nicolás",
+    "Santiago",
+    "Matías",
+    "Facundo",
+    "Leandro",
+    "Tomás",
+    "Agustín",
 ]
 
 FIRST_NAMES_FEMALE = [
-    "María", "Ana", "Laura", "Lucía", "Marta", "Silvia", "Patricia",
-    "Claudia", "Gabriela", "Valentina", "Florencia", "Carolina",
-    "Camila", "Julieta", "Sofía", "Victoria", "Romina", "Daniela",
-    "Andrea", "Verónica", "Graciela", "Liliana", "Soledad", "Celeste",
-    "Milagros", "Rocío", "Natalia", "Mariana", "Paula", "Eugenia",
+    "María",
+    "Ana",
+    "Laura",
+    "Lucía",
+    "Marta",
+    "Silvia",
+    "Patricia",
+    "Claudia",
+    "Gabriela",
+    "Valentina",
+    "Florencia",
+    "Carolina",
+    "Camila",
+    "Julieta",
+    "Sofía",
+    "Victoria",
+    "Romina",
+    "Daniela",
+    "Andrea",
+    "Verónica",
+    "Graciela",
+    "Liliana",
+    "Soledad",
+    "Celeste",
+    "Milagros",
+    "Rocío",
+    "Natalia",
+    "Mariana",
+    "Paula",
+    "Eugenia",
 ]
 
 LAST_NAMES = [
-    "González", "Rodríguez", "Gómez", "Fernández", "López", "Díaz",
-    "Martínez", "Pérez", "García", "Sánchez", "Romero", "Sosa",
-    "Álvarez", "Torres", "Ruiz", "Ramírez", "Flores", "Acosta",
-    "Medina", "Benítez", "Herrera", "Suárez", "Aguirre", "Castro",
-    "Ríos", "Ortiz", "Luna", "Juárez", "Cabrera", "Morales",
+    "González",
+    "Rodríguez",
+    "Gómez",
+    "Fernández",
+    "López",
+    "Díaz",
+    "Martínez",
+    "Pérez",
+    "García",
+    "Sánchez",
+    "Romero",
+    "Sosa",
+    "Álvarez",
+    "Torres",
+    "Ruiz",
+    "Ramírez",
+    "Flores",
+    "Acosta",
+    "Medina",
+    "Benítez",
+    "Herrera",
+    "Suárez",
+    "Aguirre",
+    "Castro",
+    "Ríos",
+    "Ortiz",
+    "Luna",
+    "Juárez",
+    "Cabrera",
+    "Morales",
 ]
 
 # Provinces weighted roughly by population proportion
@@ -177,9 +252,7 @@ def generate_condition(
 ) -> dict:
     """Generate a single FHIR Condition resource."""
     onset = _random_condition_date(patient_birth_date)
-    clinical_status = random.choices(
-        ["active", "resolved"], weights=[0.8, 0.2], k=1
-    )[0]
+    clinical_status = random.choices(["active", "resolved"], weights=[0.8, 0.2], k=1)[0]
 
     return {
         "resourceType": "Condition",
@@ -252,19 +325,18 @@ def generate_bundle(num_patients: int = 55) -> dict:
         age = (reference_date - birth).days // 365
 
         # Find the entry to check province
-        entry = next(
-            e
-            for e in entries
-            if e["fullUrl"] == f"urn:uuid:{patient_uuid}"
-        )
+        entry = next(e for e in entries if e["fullUrl"] == f"urn:uuid:{patient_uuid}")
         patient_resource = entry["resource"]
         province = patient_resource["address"][0]["state"]
 
         if age > 60 and province == "Buenos Aires":
             cond_uuid = str(uuid.uuid4())
             condition = generate_condition(
-                cond_uuid, patient_uuid, birth_date_str,
-                diabetes_code, diabetes_display,
+                cond_uuid,
+                patient_uuid,
+                birth_date_str,
+                diabetes_code,
+                diabetes_display,
             )
             entries.append(
                 {
@@ -288,8 +360,11 @@ def generate_bundle(num_patients: int = 55) -> dict:
             snomed_code, display_es, _, _ = condition_info
             cond_uuid = str(uuid.uuid4())
             condition = generate_condition(
-                cond_uuid, patient_uuid, birth_date_str,
-                snomed_code, display_es,
+                cond_uuid,
+                patient_uuid,
+                birth_date_str,
+                snomed_code,
+                display_es,
             )
             entries.append(
                 {
@@ -311,9 +386,7 @@ def generate_bundle(num_patients: int = 55) -> dict:
     }
 
     # --- Stats ---
-    num_conditions = sum(
-        1 for e in entries if e["resource"]["resourceType"] == "Condition"
-    )
+    num_conditions = sum(1 for e in entries if e["resource"]["resourceType"] == "Condition")
     print(f"Generated {num_patients} patients and {num_conditions} conditions")
     print(f"Guaranteed diabetes >60y Buenos Aires: {guaranteed_count}")
     print(f"Total bundle entries: {len(entries)}")

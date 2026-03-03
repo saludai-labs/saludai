@@ -96,9 +96,7 @@ class FHIRClient:
             cls = _get_resource_class("CapabilityStatement")
             capability = cls.model_validate(data)
         except Exception as exc:
-            raise FHIRValidationError(
-                "Invalid CapabilityStatement from FHIR server"
-            ) from exc
+            raise FHIRValidationError("Invalid CapabilityStatement from FHIR server") from exc
 
         fhir_version = getattr(capability, "fhirVersion", None)
         if fhir_version and not str(fhir_version).startswith("4."):
@@ -203,9 +201,7 @@ class FHIRClient:
             ) from exc
 
         if response.status_code in (401, 403):
-            raise FHIRAuthenticationError(
-                f"Authentication failed (HTTP {response.status_code})"
-            )
+            raise FHIRAuthenticationError(f"Authentication failed (HTTP {response.status_code})")
         if response.status_code == 404:
             raise FHIRResourceNotFoundError(f"Resource not found: {method} {path}")
         if response.status_code >= 400:
@@ -244,6 +240,4 @@ class FHIRClient:
         try:
             return cls.model_validate(data)
         except Exception as exc:
-            raise FHIRValidationError(
-                f"Failed to parse {resource_type}: {exc}"
-            ) from exc
+            raise FHIRValidationError(f"Failed to parse {resource_type}: {exc}") from exc
