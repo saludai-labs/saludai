@@ -1,0 +1,5076 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:a402a229-1c9d-4e0c-a259-9a650022cb8d",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "24979419"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Castro",
+            "given": [
+              "Juan"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2007-06-28",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e90f972b-152e-4d86-926e-9f0aad49d78b",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "15834366"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Castro",
+            "given": [
+              "Andrés"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1967-01-12",
+        "address": [
+          {
+            "use": "home",
+            "state": "Corrientes",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3e92a939-8277-42dd-ada4-76442a09afc0",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "25613608"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "González",
+            "given": [
+              "Ana"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1974-09-02",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d66ae740-5fc8-4a76-8519-ca3fd8813693",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "38153498"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Martínez",
+            "given": [
+              "Héctor"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2000-03-25",
+        "address": [
+          {
+            "use": "home",
+            "state": "Tucumán",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9009c8b4-f44e-4851-8077-3ca69998481b",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10436124"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "García",
+            "given": [
+              "Andrea"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1951-12-07",
+        "address": [
+          {
+            "use": "home",
+            "state": "Chaco",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5cc9eda9-096c-4b68-82aa-9b8ddc1a069a",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "20434052"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Torres",
+            "given": [
+              "Marcelo"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2000-09-09",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1d7ef1ac-3c70-4e5a-b3dd-eb92cc51536a",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "34090698"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Gómez",
+            "given": [
+              "Lucía"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1943-12-23",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a6219bbe-104c-4051-a7ef-811acba4fd9d",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "40831481"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "García",
+            "given": [
+              "Verónica"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1971-11-25",
+        "address": [
+          {
+            "use": "home",
+            "state": "Chaco",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ff0a72a0-dbea-4bba-8465-8c254c9ec275",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "29674861"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Álvarez",
+            "given": [
+              "Agustín"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1945-08-07",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a3a5b07c-3850-441d-b879-7b16a86d7292",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "13075222"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Martínez",
+            "given": [
+              "Andrea"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1960-09-06",
+        "address": [
+          {
+            "use": "home",
+            "state": "Tucumán",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:961ee919-739b-47a8-982b-b31843172969",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "25622331"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Sánchez",
+            "given": [
+              "Santiago"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1942-04-10",
+        "address": [
+          {
+            "use": "home",
+            "state": "Formosa",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ed3f6e6d-f04e-4c8c-9052-cad69cf4707c",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "34483473"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "García",
+            "given": [
+              "Daniel"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2005-06-01",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4daf59d9-6a49-493d-bb14-7f426771fa77",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "14791741"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Martínez",
+            "given": [
+              "Carolina"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1965-05-11",
+        "address": [
+          {
+            "use": "home",
+            "state": "Mendoza",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a7741c45-6943-4d0c-85f8-8d20791a5e35",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "41021757"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Castro",
+            "given": [
+              "Héctor"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-12-19",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3a7200b0-1eac-4126-8d7d-4961404d6046",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "24738124"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Herrera",
+            "given": [
+              "Eugenia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1958-08-03",
+        "address": [
+          {
+            "use": "home",
+            "state": "Mendoza",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0857f4a7-2439-4b0e-8b42-321c5d0c9cf0",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "25371155"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ríos",
+            "given": [
+              "Natalia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1946-04-13",
+        "address": [
+          {
+            "use": "home",
+            "state": "Salta",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:920c0201-a1d2-4324-a5dc-0f8300e4440a",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "14441842"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Romero",
+            "given": [
+              "Matías"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2001-01-29",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:94df3c24-65e1-4bb5-9018-fedef43658ae",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "40793026"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Herrera",
+            "given": [
+              "Patricia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2007-03-11",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b3877642-eb7c-4526-86c1-b1aab76c66e9",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "27632290"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Pérez",
+            "given": [
+              "Marta"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1952-12-27",
+        "address": [
+          {
+            "use": "home",
+            "state": "Entre Ríos",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:72592ac7-2cac-4bbe-85fd-34ff67053176",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "24718366"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Medina",
+            "given": [
+              "Paula"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2007-08-07",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:accfb8d7-36ac-41c9-9b41-3000984d4bf0",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "17358428"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ríos",
+            "given": [
+              "Laura"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2006-04-18",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8fe559e0-e083-4adc-a762-bdab6d78b48b",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "14263272"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Suárez",
+            "given": [
+              "Matías"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1985-06-27",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:af31a389-bc9d-4c02-9651-be0be77401ea",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10770478"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ruiz",
+            "given": [
+              "Verónica"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1958-12-23",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:15c272fe-9427-49b6-9248-9da3eeac2826",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "27906335"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Cabrera",
+            "given": [
+              "Andrés"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1951-01-20",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:55aeac3f-03ac-4c8d-9bf5-988225da280d",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "40448882"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Sánchez",
+            "given": [
+              "Lucía"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2019-09-19",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c04dbd8d-0dbc-4b79-9a39-82aa5ff484c0",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "17141109"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ríos",
+            "given": [
+              "Romina"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1941-11-28",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3127715f-f46f-48e9-bf12-eaf6d513eabd",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "23348698"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Herrera",
+            "given": [
+              "Natalia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2006-04-18",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33c7b2e9-42d6-4f5b-a37f-32963adb3d85",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10038379"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Díaz",
+            "given": [
+              "Milagros"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1966-04-10",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f1a3922b-939d-4ceb-bf44-9e1f6c83807e",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "34359226"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "González",
+            "given": [
+              "Victoria"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1941-03-05",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e68050e1-e819-49d1-81d3-d6e294ae982a",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "15285296"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Rodríguez",
+            "given": [
+              "Claudia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2012-04-28",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fd81f4ab-8ea1-4b78-a857-c5737cc70dd2",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "18439645"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Gómez",
+            "given": [
+              "Natalia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2008-06-27",
+        "address": [
+          {
+            "use": "home",
+            "state": "Neuquén",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:067a94b1-b344-4d8f-b7e1-5b407cd53e72",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "38396306"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Díaz",
+            "given": [
+              "Daniela"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2001-01-02",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6efe51e2-4a02-447f-b233-73dcf9443ccd",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "35059825"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Sánchez",
+            "given": [
+              "Marcelo"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1980-09-14",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:af6c51e0-dfdd-4030-93cf-8c5e4491249c",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "32688538"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Pérez",
+            "given": [
+              "Lucía"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2018-02-13",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5310bf5f-c478-46e0-9115-ec3ea662f6d0",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "13950951"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Pérez",
+            "given": [
+              "Oscar"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1999-06-21",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a8f95ba7-e82f-463d-a0cd-b8abb97262a8",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "14755156"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Rodríguez",
+            "given": [
+              "Tomás"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1973-11-18",
+        "address": [
+          {
+            "use": "home",
+            "state": "Misiones",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0f6c2a1e-d38a-4792-a050-226fe0565ab1",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "18879297"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Suárez",
+            "given": [
+              "Martín"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1955-02-11",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:72a25f2d-e7f7-42e4-ab5a-8b9004d84ff1",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "37317331"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ortiz",
+            "given": [
+              "Claudia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2002-12-04",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1c98e26f-ef30-4f49-a93c-d7cd832c16fa",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "38425880"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Suárez",
+            "given": [
+              "Luis"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1983-02-16",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3dd1569f-7db5-4d7c-8dde-86717b853a53",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "16604711"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Castro",
+            "given": [
+              "Mariana"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "2014-07-27",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b6e15c19-61bc-451a-9673-3a4f67a4565c",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "17332920"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Romero",
+            "given": [
+              "Celeste"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1997-09-13",
+        "address": [
+          {
+            "use": "home",
+            "state": "Chaco",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7c9903d7-0e50-4501-81a7-ca8684c91b15",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "38311997"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Acosta",
+            "given": [
+              "Pablo"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2003-07-19",
+        "address": [
+          {
+            "use": "home",
+            "state": "Ciudad Autónoma de Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d21ff048-ef96-4101-b5cb-17238a699d71",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "15058994"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Pérez",
+            "given": [
+              "Sofía"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1980-04-02",
+        "address": [
+          {
+            "use": "home",
+            "state": "Santiago del Estero",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7f290db8-1619-4c61-ad95-f44b2a585d5e",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10990382"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Herrera",
+            "given": [
+              "Carlos"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2011-08-22",
+        "address": [
+          {
+            "use": "home",
+            "state": "San Luis",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e5fea334-86a0-4091-b06e-5cabad41b4b7",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "24344338"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Torres",
+            "given": [
+              "Jorge"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1942-06-09",
+        "address": [
+          {
+            "use": "home",
+            "state": "Córdoba",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:17354f5f-1180-45f9-9467-5e9e87165edd",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10144644"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Rodríguez",
+            "given": [
+              "Paula"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1984-12-24",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0b69bdad-d6ac-4d0e-bd49-de9362349bec",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "29142751"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ortiz",
+            "given": [
+              "Eugenia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1982-01-21",
+        "address": [
+          {
+            "use": "home",
+            "state": "Salta",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0291abd6-16fb-4512-a84a-ac4186baad3b",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "13924747"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Martínez",
+            "given": [
+              "Marta"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1968-01-18",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8f17f199-245c-4eb3-be15-1ba06629bf11",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "41996735"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Romero",
+            "given": [
+              "Nicolás"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1974-11-23",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:57de3406-cd11-453f-b8ba-ae384591ecff",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "22470502"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Flores",
+            "given": [
+              "Carlos"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2013-11-10",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0090ec02-ef33-4ee8-8bd4-e4d59aba17b5",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "18045454"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Juárez",
+            "given": [
+              "Andrés"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1940-02-20",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bd337a36-2b3b-44c7-86a1-52411c962b72",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "15501813"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Benítez",
+            "given": [
+              "Oscar"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1982-05-25",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:738b4e9e-5684-49fa-b359-479f2299368f",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "31084522"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "García",
+            "given": [
+              "Eugenia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1998-08-05",
+        "address": [
+          {
+            "use": "home",
+            "state": "Buenos Aires",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f12b9f10-eeec-49c3-a86a-cf600c054c8f",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "30132463"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "López",
+            "given": [
+              "Camila"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1978-12-27",
+        "address": [
+          {
+            "use": "home",
+            "state": "Mendoza",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0fa95af7-f80e-41b5-bfdb-aec35e2d9339",
+      "resource": {
+        "resourceType": "Patient",
+        "identifier": [
+          {
+            "system": "http://www.renaper.gob.ar/dni",
+            "value": "10625149"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Ríos",
+            "given": [
+              "Eugenia"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1978-11-22",
+        "address": [
+          {
+            "use": "home",
+            "state": "Jujuy",
+            "country": "AR"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9e211760-32f0-43f9-831a-35b2f452c16e",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:1d7ef1ac-3c70-4e5a-b3dd-eb92cc51536a"
+        },
+        "onsetDateTime": "2015-11-28"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6a83be03-8117-4c2d-9a87-a714795bbe57",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:ff0a72a0-dbea-4bba-8465-8c254c9ec275"
+        },
+        "onsetDateTime": "1970-06-13"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:050b7d2c-1d9a-4e2f-a54c-379fb08e8d6a",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:c04dbd8d-0dbc-4b79-9a39-82aa5ff484c0"
+        },
+        "onsetDateTime": "1977-08-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dc69fa4f-0a42-4079-b5cd-b9228de04aba",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:f1a3922b-939d-4ceb-bf44-9e1f6c83807e"
+        },
+        "onsetDateTime": "1969-10-27"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2815d816-5e08-4377-a301-d5f391d2f0fe",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:0090ec02-ef33-4ee8-8bd4-e4d59aba17b5"
+        },
+        "onsetDateTime": "1963-04-13"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f69a5243-b821-40c4-8a57-a9e5e122ccf7",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:a402a229-1c9d-4e0c-a259-9a650022cb8d"
+        },
+        "onsetDateTime": "2023-03-05"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0d4ba46f-7f7f-435c-97ac-a7c5cc2a154c",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "49436004",
+              "display": "Fibrilación auricular"
+            }
+          ],
+          "text": "Fibrilación auricular"
+        },
+        "subject": {
+          "reference": "urn:uuid:e90f972b-152e-4d86-926e-9f0aad49d78b"
+        },
+        "onsetDateTime": "1979-04-29"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b0399364-40a1-43b7-b337-2c60f80eedf0",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:e90f972b-152e-4d86-926e-9f0aad49d78b"
+        },
+        "onsetDateTime": "1987-12-01"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8fd169e4-a778-4ecb-9ad2-22a7dc9aa03c",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:5cc9eda9-096c-4b68-82aa-9b8ddc1a069a"
+        },
+        "onsetDateTime": "2019-02-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:549d3d07-cb15-41a3-b35a-dee2211ec2ef",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:5cc9eda9-096c-4b68-82aa-9b8ddc1a069a"
+        },
+        "onsetDateTime": "2020-12-20"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:65f81669-639d-4a78-b91e-9b8f783bce6e",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "77506005",
+              "display": "Enfermedad de Chagas"
+            }
+          ],
+          "text": "Enfermedad de Chagas"
+        },
+        "subject": {
+          "reference": "urn:uuid:1d7ef1ac-3c70-4e5a-b3dd-eb92cc51536a"
+        },
+        "onsetDateTime": "1964-09-26"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fa49e94b-e2e6-4b01-b9d5-57059281e531",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:a6219bbe-104c-4051-a7ef-811acba4fd9d"
+        },
+        "onsetDateTime": "1982-09-05"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fe675554-a4d0-4597-adf4-ad654f50c4d0",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:a3a5b07c-3850-441d-b879-7b16a86d7292"
+        },
+        "onsetDateTime": "2013-03-08"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:02d8c921-cc08-467b-85b6-ffe9036f046d",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:a3a5b07c-3850-441d-b879-7b16a86d7292"
+        },
+        "onsetDateTime": "1974-05-30"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:87e4e839-2136-4d8f-aed2-1a5b4bef254f",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "267036007",
+              "display": "Anemia ferropénica"
+            }
+          ],
+          "text": "Anemia ferropénica"
+        },
+        "subject": {
+          "reference": "urn:uuid:a3a5b07c-3850-441d-b879-7b16a86d7292"
+        },
+        "onsetDateTime": "1986-12-01"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:14d11330-030e-4f05-90ef-1912f9cf89e6",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:961ee919-739b-47a8-982b-b31843172969"
+        },
+        "onsetDateTime": "1972-02-07"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:32965155-e30f-465e-a85d-62010326b6b8",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:961ee919-739b-47a8-982b-b31843172969"
+        },
+        "onsetDateTime": "1991-07-13"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:16cbea10-1ca3-49f6-998c-f86c9c76f4e9",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "56717001",
+              "display": "Tuberculosis"
+            }
+          ],
+          "text": "Tuberculosis"
+        },
+        "subject": {
+          "reference": "urn:uuid:ed3f6e6d-f04e-4c8c-9052-cad69cf4707c"
+        },
+        "onsetDateTime": "2017-05-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b1b2b433-1eba-4e0a-97a6-db3ecbb2127b",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:ed3f6e6d-f04e-4c8c-9052-cad69cf4707c"
+        },
+        "onsetDateTime": "2011-08-21"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:deab0b62-7271-45fe-aa69-fd0b225a03ae",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:4daf59d9-6a49-493d-bb14-7f426771fa77"
+        },
+        "onsetDateTime": "1991-02-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:99537931-6bb8-4856-b6df-9de83ef89560",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:4daf59d9-6a49-493d-bb14-7f426771fa77"
+        },
+        "onsetDateTime": "1991-11-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:db355f04-74a2-42ca-9719-91b6afe00157",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:a7741c45-6943-4d0c-85f8-8d20791a5e35"
+        },
+        "onsetDateTime": "1994-11-19"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8f5da26c-8a72-4405-8534-4dcc49b11710",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "267036007",
+              "display": "Anemia ferropénica"
+            }
+          ],
+          "text": "Anemia ferropénica"
+        },
+        "subject": {
+          "reference": "urn:uuid:a7741c45-6943-4d0c-85f8-8d20791a5e35"
+        },
+        "onsetDateTime": "2012-03-28"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a756a9df-fc73-433f-957d-bcee8f79da30",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "56265001",
+              "display": "Enfermedad cardíaca reumática"
+            }
+          ],
+          "text": "Enfermedad cardíaca reumática"
+        },
+        "subject": {
+          "reference": "urn:uuid:3a7200b0-1eac-4126-8d7d-4961404d6046"
+        },
+        "onsetDateTime": "1995-10-21"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c9cf8498-1a1d-4352-8e98-c4f0cd6285dc",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "73211009",
+              "display": "Diabetes mellitus tipo 1"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 1"
+        },
+        "subject": {
+          "reference": "urn:uuid:3a7200b0-1eac-4126-8d7d-4961404d6046"
+        },
+        "onsetDateTime": "2006-03-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dc143822-cf2b-4bee-a7af-f632befe073b",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "56717001",
+              "display": "Tuberculosis"
+            }
+          ],
+          "text": "Tuberculosis"
+        },
+        "subject": {
+          "reference": "urn:uuid:3a7200b0-1eac-4126-8d7d-4961404d6046"
+        },
+        "onsetDateTime": "1991-10-28"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3c7555f8-4988-411b-b245-19d4d50d1c3e",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:0857f4a7-2439-4b0e-8b42-321c5d0c9cf0"
+        },
+        "onsetDateTime": "1982-06-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:acad1b4e-0cfb-4cf3-b73f-25ca35472168",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Enfermedad pulmonar obstructiva crónica"
+            }
+          ],
+          "text": "Enfermedad pulmonar obstructiva crónica"
+        },
+        "subject": {
+          "reference": "urn:uuid:0857f4a7-2439-4b0e-8b42-321c5d0c9cf0"
+        },
+        "onsetDateTime": "1997-10-08"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:39b6e9b2-4532-47ba-9449-c7aed3a1716d",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "56717001",
+              "display": "Tuberculosis"
+            }
+          ],
+          "text": "Tuberculosis"
+        },
+        "subject": {
+          "reference": "urn:uuid:0857f4a7-2439-4b0e-8b42-321c5d0c9cf0"
+        },
+        "onsetDateTime": "1987-01-24"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4e990db8-c8b4-4f44-8892-480f3fa9b488",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Enfermedad pulmonar obstructiva crónica"
+            }
+          ],
+          "text": "Enfermedad pulmonar obstructiva crónica"
+        },
+        "subject": {
+          "reference": "urn:uuid:920c0201-a1d2-4324-a5dc-0f8300e4440a"
+        },
+        "onsetDateTime": "2024-10-13"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3fb8adbb-16ea-45ce-a70d-ffee920b10c8",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:94df3c24-65e1-4bb5-9018-fedef43658ae"
+        },
+        "onsetDateTime": "2016-08-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9ff44962-596e-43b3-a3a1-5ef39cc5206f",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "46635009",
+              "display": "Diabetes mellitus tipo 1 con cetoacidosis"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 1 con cetoacidosis"
+        },
+        "subject": {
+          "reference": "urn:uuid:94df3c24-65e1-4bb5-9018-fedef43658ae"
+        },
+        "onsetDateTime": "2016-09-14"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33283967-87c2-4e4a-94f7-1cedad83bb8b",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:94df3c24-65e1-4bb5-9018-fedef43658ae"
+        },
+        "onsetDateTime": "2018-07-03"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d85e3233-1a02-4fb8-a59c-3f10ffd78a68",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:b3877642-eb7c-4526-86c1-b1aab76c66e9"
+        },
+        "onsetDateTime": "2013-04-09"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a4124972-edc7-4cb4-8e5d-632bd1c21e0c",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:72592ac7-2cac-4bbe-85fd-34ff67053176"
+        },
+        "onsetDateTime": "2012-01-27"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:864ac8f8-a13e-4565-918e-d215a0aefd05",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:72592ac7-2cac-4bbe-85fd-34ff67053176"
+        },
+        "onsetDateTime": "2023-02-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5c8276b6-f77b-4c9b-8177-f1cc2458759a",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "267036007",
+              "display": "Anemia ferropénica"
+            }
+          ],
+          "text": "Anemia ferropénica"
+        },
+        "subject": {
+          "reference": "urn:uuid:72592ac7-2cac-4bbe-85fd-34ff67053176"
+        },
+        "onsetDateTime": "2015-07-01"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:877b17b5-0abb-4bc7-800f-9c49355130db",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:8fe559e0-e083-4adc-a762-bdab6d78b48b"
+        },
+        "onsetDateTime": "2007-06-21"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ddd1a5ce-d583-42aa-9523-457df812ab6b",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:8fe559e0-e083-4adc-a762-bdab6d78b48b"
+        },
+        "onsetDateTime": "2006-11-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7cd05a60-db69-472b-bbc5-a4fea1805676",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:af31a389-bc9d-4c02-9651-be0be77401ea"
+        },
+        "onsetDateTime": "1998-09-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7a080d73-6d38-4b5e-96fe-7a14b09fb490",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:af31a389-bc9d-4c02-9651-be0be77401ea"
+        },
+        "onsetDateTime": "2006-03-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5ae1b9ec-de52-45ba-99e4-eb0222e1d937",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:15c272fe-9427-49b6-9248-9da3eeac2826"
+        },
+        "onsetDateTime": "1992-11-03"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fc331453-4324-4d78-94f7-75d7a6553f72",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "235856003",
+              "display": "Hepatitis viral"
+            }
+          ],
+          "text": "Hepatitis viral"
+        },
+        "subject": {
+          "reference": "urn:uuid:15c272fe-9427-49b6-9248-9da3eeac2826"
+        },
+        "onsetDateTime": "1993-02-07"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:34c1f161-802b-4e73-ad84-f15e68990e3c",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:15c272fe-9427-49b6-9248-9da3eeac2826"
+        },
+        "onsetDateTime": "2017-11-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:64b2881f-259d-4ce7-9f9d-d5a880867dc1",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:55aeac3f-03ac-4c8d-9bf5-988225da280d"
+        },
+        "onsetDateTime": "2024-07-23"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:26766bc2-f355-4268-aa77-0bb86e0d9bcf",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:c04dbd8d-0dbc-4b79-9a39-82aa5ff484c0"
+        },
+        "onsetDateTime": "2024-07-20"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e96a5e74-627b-47fe-be13-d3f1790f54a9",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Enfermedad pulmonar obstructiva crónica"
+            }
+          ],
+          "text": "Enfermedad pulmonar obstructiva crónica"
+        },
+        "subject": {
+          "reference": "urn:uuid:33c7b2e9-42d6-4f5b-a37f-32963adb3d85"
+        },
+        "onsetDateTime": "2008-02-02"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f8cc369f-4936-4706-a4c3-3f730cdbfeb9",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:f1a3922b-939d-4ceb-bf44-9e1f6c83807e"
+        },
+        "onsetDateTime": "1985-10-14"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:996f3a1b-3f54-41d3-93dd-2f5691a0fcb3",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:f1a3922b-939d-4ceb-bf44-9e1f6c83807e"
+        },
+        "onsetDateTime": "1960-02-17"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:46c18b7a-8946-4910-a364-455b64e2f2d9",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "49436004",
+              "display": "Fibrilación auricular"
+            }
+          ],
+          "text": "Fibrilación auricular"
+        },
+        "subject": {
+          "reference": "urn:uuid:f1a3922b-939d-4ceb-bf44-9e1f6c83807e"
+        },
+        "onsetDateTime": "2012-10-11"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ca227da8-cd40-466c-8b12-3778b3d73d60",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Enfermedad pulmonar obstructiva crónica"
+            }
+          ],
+          "text": "Enfermedad pulmonar obstructiva crónica"
+        },
+        "subject": {
+          "reference": "urn:uuid:fd81f4ab-8ea1-4b78-a857-c5737cc70dd2"
+        },
+        "onsetDateTime": "2016-02-24"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd1d0548-a5f3-43ef-8052-d68148f91746",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:067a94b1-b344-4d8f-b7e1-5b407cd53e72"
+        },
+        "onsetDateTime": "2009-02-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:090164cc-9fe8-4819-a2da-cf514e3a1830",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "84114007",
+              "display": "Insuficiencia cardíaca"
+            }
+          ],
+          "text": "Insuficiencia cardíaca"
+        },
+        "subject": {
+          "reference": "urn:uuid:af6c51e0-dfdd-4030-93cf-8c5e4491249c"
+        },
+        "onsetDateTime": "2020-02-03"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0b0b0e9e-3008-43ed-bf1d-c13237a7019b",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:af6c51e0-dfdd-4030-93cf-8c5e4491249c"
+        },
+        "onsetDateTime": "2024-01-01"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:70bc7c70-bc81-4ee7-8a36-3af016ec2841",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:5310bf5f-c478-46e0-9115-ec3ea662f6d0"
+        },
+        "onsetDateTime": "2010-03-01"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3a0ea61f-6e46-426d-b8d8-80047976d9f6",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "38362002",
+              "display": "Dengue"
+            }
+          ],
+          "text": "Dengue"
+        },
+        "subject": {
+          "reference": "urn:uuid:72a25f2d-e7f7-42e4-ab5a-8b9004d84ff1"
+        },
+        "onsetDateTime": "2019-11-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bdd5e91c-82bb-4b52-bda1-1323fa022448",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:1c98e26f-ef30-4f49-a93c-d7cd832c16fa"
+        },
+        "onsetDateTime": "2018-12-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cf7009d6-83ca-48ee-b2d1-f56478b33927",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:1c98e26f-ef30-4f49-a93c-d7cd832c16fa"
+        },
+        "onsetDateTime": "2010-08-23"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d18f3d91-0c59-48a2-8216-83781ed4e493",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:1c98e26f-ef30-4f49-a93c-d7cd832c16fa"
+        },
+        "onsetDateTime": "1998-08-22"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b8ae5871-be7e-4bc2-982b-a58c1fd59e00",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:3dd1569f-7db5-4d7c-8dde-86717b853a53"
+        },
+        "onsetDateTime": "2019-06-05"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:816526f7-a04a-4ad4-aa7c-0ecad473bd86",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "84114007",
+              "display": "Insuficiencia cardíaca"
+            }
+          ],
+          "text": "Insuficiencia cardíaca"
+        },
+        "subject": {
+          "reference": "urn:uuid:b6e15c19-61bc-451a-9673-3a4f67a4565c"
+        },
+        "onsetDateTime": "2014-01-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:23db7d56-ca6b-4cf1-a5ce-ebe24225f198",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:7c9903d7-0e50-4501-81a7-ca8684c91b15"
+        },
+        "onsetDateTime": "2014-03-30"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:61811aac-7076-48fa-a515-c5a491060edd",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:d21ff048-ef96-4101-b5cb-17238a699d71"
+        },
+        "onsetDateTime": "1992-10-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c98d8781-dabb-41d4-8786-640d0373ffff",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "73211009",
+              "display": "Diabetes mellitus tipo 1"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 1"
+        },
+        "subject": {
+          "reference": "urn:uuid:7f290db8-1619-4c61-ad95-f44b2a585d5e"
+        },
+        "onsetDateTime": "2022-03-26"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd633c54-8088-42cd-8af0-c615c6f20d9d",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:e5fea334-86a0-4091-b06e-5cabad41b4b7"
+        },
+        "onsetDateTime": "2000-09-30"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aafddefe-283e-439c-843a-946a56f78bac",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:17354f5f-1180-45f9-9467-5e9e87165edd"
+        },
+        "onsetDateTime": "2019-03-08"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2b6d19ed-79e5-4c0a-b2f8-da3b29c34515",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "195967001",
+              "display": "Asma"
+            }
+          ],
+          "text": "Asma"
+        },
+        "subject": {
+          "reference": "urn:uuid:0291abd6-16fb-4512-a84a-ac4186baad3b"
+        },
+        "onsetDateTime": "2022-03-24"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd224f2f-d99d-4e6b-9d79-6e71b7107471",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:0291abd6-16fb-4512-a84a-ac4186baad3b"
+        },
+        "onsetDateTime": "2014-06-04"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec9b559f-7e87-4bb9-8c21-6f4311515e67",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "267036007",
+              "display": "Anemia ferropénica"
+            }
+          ],
+          "text": "Anemia ferropénica"
+        },
+        "subject": {
+          "reference": "urn:uuid:0291abd6-16fb-4512-a84a-ac4186baad3b"
+        },
+        "onsetDateTime": "2017-01-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5a8426d2-ef84-4bab-ae65-164b78605534",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "84114007",
+              "display": "Insuficiencia cardíaca"
+            }
+          ],
+          "text": "Insuficiencia cardíaca"
+        },
+        "subject": {
+          "reference": "urn:uuid:8f17f199-245c-4eb3-be15-1ba06629bf11"
+        },
+        "onsetDateTime": "1994-10-22"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2430c4fe-89b4-4960-81d3-d1d25c02f56f",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:8f17f199-245c-4eb3-be15-1ba06629bf11"
+        },
+        "onsetDateTime": "2006-09-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a5d551e2-d4cf-4305-a1f7-313775d33516",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Enfermedad pulmonar obstructiva crónica"
+            }
+          ],
+          "text": "Enfermedad pulmonar obstructiva crónica"
+        },
+        "subject": {
+          "reference": "urn:uuid:57de3406-cd11-453f-b8ba-ae384591ecff"
+        },
+        "onsetDateTime": "2020-08-15"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cc291606-5825-49e1-9ba6-58d1a54652f0",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "267036007",
+              "display": "Anemia ferropénica"
+            }
+          ],
+          "text": "Anemia ferropénica"
+        },
+        "subject": {
+          "reference": "urn:uuid:0090ec02-ef33-4ee8-8bd4-e4d59aba17b5"
+        },
+        "onsetDateTime": "2012-12-07"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7c1b5d12-eef9-435c-92b7-26fe2b0e5018",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "414545008",
+              "display": "Cardiopatía isquémica"
+            }
+          ],
+          "text": "Cardiopatía isquémica"
+        },
+        "subject": {
+          "reference": "urn:uuid:0090ec02-ef33-4ee8-8bd4-e4d59aba17b5"
+        },
+        "onsetDateTime": "2010-03-18"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:eaa36be4-b7c4-4657-b21e-7b5438bd55f0",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus tipo 2"
+            }
+          ],
+          "text": "Diabetes mellitus tipo 2"
+        },
+        "subject": {
+          "reference": "urn:uuid:738b4e9e-5684-49fa-b359-479f2299368f"
+        },
+        "onsetDateTime": "2014-03-25"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c650590e-05e9-42a5-beb2-be240df0f2e8",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:738b4e9e-5684-49fa-b359-479f2299368f"
+        },
+        "onsetDateTime": "2011-03-20"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:27db00d2-ff2f-4fc1-b451-1e3971802249",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "84114007",
+              "display": "Insuficiencia cardíaca"
+            }
+          ],
+          "text": "Insuficiencia cardíaca"
+        },
+        "subject": {
+          "reference": "urn:uuid:f12b9f10-eeec-49c3-a86a-cf600c054c8f"
+        },
+        "onsetDateTime": "2005-03-12"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:05cd55a9-abcc-40cd-9094-59e107a6ac07",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:0fa95af7-f80e-41b5-bfdb-aec35e2d9339"
+        },
+        "onsetDateTime": "1991-10-14"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:af5d4965-7680-4d2c-9f17-8f1ccc329e68",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "22298006",
+              "display": "Infarto agudo de miocardio"
+            }
+          ],
+          "text": "Infarto agudo de miocardio"
+        },
+        "subject": {
+          "reference": "urn:uuid:0fa95af7-f80e-41b5-bfdb-aec35e2d9339"
+        },
+        "onsetDateTime": "1990-06-13"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:01459817-a011-4eee-a59d-617b55af9cf9",
+      "resource": {
+        "resourceType": "Condition",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "59621000",
+              "display": "Hipertensión arterial esencial"
+            }
+          ],
+          "text": "Hipertensión arterial esencial"
+        },
+        "subject": {
+          "reference": "urn:uuid:0fa95af7-f80e-41b5-bfdb-aec35e2d9339"
+        },
+        "onsetDateTime": "2017-04-10"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    }
+  ]
+}

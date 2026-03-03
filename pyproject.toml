@@ -50,6 +50,9 @@ known-first-party = ["saludai_core", "saludai_agent", "saludai_mcp", "saludai_ap
 testpaths = ["packages"]
 asyncio_mode = "auto"
 addopts = "--import-mode=importlib"
+markers = [
+    "integration: tests that require external services (HAPI FHIR, etc.)",
+]
 
 [tool.mypy]
 python_version = "3.12"

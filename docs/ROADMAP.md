@@ -45,18 +45,18 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 
 | # | Tarea | Output verificable |
 |---|-------|--------------------|
-| 1.1 | Crear GitHub Org `saludai-labs`, repos, monorepo UV | `uv sync` funciona, repos creados |
-| 1.2 | CLAUDE.md + GitHub Actions CI + pre-commit hooks | CI verde en push, Ruff + Pytest en pipeline |
-| 1.3 | Docker Compose: HAPI FHIR R4 + Synthea Argentina | `docker compose up` → FHIR server con datos AR |
-| 1.4 | `saludai-core`: FHIR client (connect, search, read) | Tests pasan contra HAPI FHIR local |
-| 1.5 | README, LICENSE (Apache 2.0), CONTRIBUTING.md | Repo público presentable |
+| 1.1 | ✅ Crear GitHub Org `saludai-labs`, repos, monorepo UV | `uv sync` funciona, repos creados |
+| 1.2 | ✅ CLAUDE.md + GitHub Actions CI + pre-commit hooks | CI verde en push, Ruff + Pytest en pipeline |
+| 1.3 | ✅ Docker Compose: HAPI FHIR R4 + Synthea Argentina | `docker compose up` → FHIR server con datos AR |
+| 1.4 | ✅ `saludai-core`: FHIR client (connect, search, read) | Tests pasan contra HAPI FHIR local |
+| 1.5 | ✅ README, LICENSE (Apache 2.0), CONTRIBUTING.md | Repo público presentable |
 
 ### Definición de Done
-- [ ] `docker compose up` levanta HAPI FHIR con 50+ pacientes argentinos
-- [ ] `curl http://localhost:8080/fhir/Patient` retorna pacientes con nombres argentinos
-- [ ] `uv run pytest packages/saludai-core/` — todos los tests verdes
-- [ ] CI en GitHub Actions: lint + test en cada push
-- [ ] README con visión, quick start, y badge de CI
+- [x] `docker compose up` levanta HAPI FHIR con 50+ pacientes argentinos
+- [x] `curl http://localhost:8080/fhir/Patient` retorna pacientes con nombres argentinos
+- [x] `uv run pytest packages/saludai-core/` — todos los tests verdes (18 tests)
+- [x] CI en GitHub Actions: lint + test en cada push
+- [x] README con visión, quick start, y badge de CI
 
 ---
 

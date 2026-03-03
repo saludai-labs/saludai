@@ -127,7 +127,7 @@ Container:      Docker + Docker Compose
 │                         ▼                                    │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │        INFRASTRUCTURE                                 │   │
-│  │  HAPI FHIR R4  │  Langfuse  │  PostgreSQL  │ Synthea │   │
+│  │  HAPI FHIR R4  │  Langfuse Cloud  │  Seed Data AR   │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -313,7 +313,7 @@ class SaludAIConfig(BaseSettings):
     
     # Langfuse
     langfuse_enabled: bool = True
-    langfuse_host: str = "http://localhost:3000"
+    langfuse_host: str = "https://cloud.langfuse.com"
     
     # Agent
     agent_max_iterations: int = 5
@@ -328,13 +328,19 @@ class SaludAIConfig(BaseSettings):
 
 ```yaml
 services:
-  hapi-fhir:     # FHIR R4 server con datos sintéticos argentinos
-  langfuse:      # Observability dashboard
-  langfuse-db:   # PostgreSQL para Langfuse
+  hapi-fhir:     # FHIR R4 server con datos sintéticos argentinos (H2 en memoria)
+  fhir-seed:     # Sidecar: carga bundle transaccional al iniciar HAPI
+  # Langfuse: se usa Cloud (free tier) — ver ADR-006
   # Future (Etapa 2+):
   # snowstorm:   # SNOMED CT terminology server
   # saludai-api: # FastAPI containerized
 ```
+
+**Notas:**
+- HAPI FHIR usa H2 en memoria — datos efímeros, se re-seedean al levantar
+- `fhir-seed` espera healthcheck de HAPI, POSTea bundle transaccional, verifica, y sale
+- Langfuse es Cloud (ADR-006) — sin containers locales, solo env vars
+- Seed data: ~55 pacientes argentinos + ~80 condiciones SNOMED CT
 
 ### 5.2 CI/CD (GitHub Actions)
 
@@ -415,5 +421,6 @@ Los módulos premium (M3-M5) viven en el repo privado `saludai-private` pero imp
 | 2026-03 | 003 | Python-first con polyglot estratégico |
 | 2026-03 | 004 | Langfuse para observability |
 | 2026-03 | 005 | FHIR R4 only |
+| 2026-03 | 006 | Langfuse Cloud (free tier) para desarrollo |
 
 Ver `docs/decisions/` para el detalle de cada ADR.

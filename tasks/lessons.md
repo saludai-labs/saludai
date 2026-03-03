@@ -36,6 +36,25 @@
 **Por qué estuvo mal:** El import mode clásico de pytest usa `sys.path` y `__init__.py`, lo que causa colisiones cuando múltiples paquetes tienen test files con el mismo nombre.
 **Regla:** En monorepos UV con múltiples paquetes, siempre configurar `addopts = "--import-mode=importlib"` en `[tool.pytest.ini_options]`.
 
+### 2026-03-03: HAPI FHIR Docker image es distroless — no tiene shell ni curl
+**Qué pasó:** Configuré Docker healthcheck con `CMD curl` y luego `CMD-SHELL wget`, ambos fallaron porque la imagen `hapiproject/hapi:latest` es distroless (sin shell, sin utilidades).
+**Por qué estuvo mal:** Asumí que la imagen HAPI incluía curl o al menos wget/sh. Es una imagen JVM pura.
+**Regla:** Para HAPI FHIR, hacer polling desde un sidecar container (Alpine + curl) en vez de Docker healthcheck nativo. No usar `depends_on: condition: service_healthy` con imágenes distroless.
+
+### 2026-03-03: HAPI FHIR JSON format — "total" tiene espacio antes del valor
+**Qué pasó:** El grep `'"total":[0-9]*'` no matcheaba porque HAPI formatea como `"total": 55` (con espacio).
+**Regla:** En scripts que parsean JSON de HAPI, usar grep patterns con espacios opcionales: `'"total" *: *[0-9]*'`.
+
+### 2026-03-03: fhir.resources v8+ usa get_resource_type() no resource_type
+**Qué pasó:** En tests usé `patient.resource_type` y falló con `AttributeError`.
+**Por qué estuvo mal:** `fhir.resources` v8+ (Pydantic v2) expone el resource type como método `get_resource_type()`, no como atributo `resource_type` ni `resourceType`.
+**Regla:** Siempre usar `.get_resource_type()` para obtener el tipo de recurso FHIR. Usar `.model_validate()` para parsear, `.model_dump()` para serializar.
+
+### 2026-03-03: HAPI FHIR no siempre retorna total en búsquedas
+**Qué pasó:** El test `address-state` falló porque `bundle.total` era `None`.
+**Por qué estuvo mal:** FHIR spec no obliga a incluir `total` en searchset bundles. HAPI lo omite en algunas búsquedas.
+**Regla:** En tests de búsqueda FHIR, verificar `bundle.entry` (no None y len >= 1) en vez de confiar en `bundle.total`.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.
