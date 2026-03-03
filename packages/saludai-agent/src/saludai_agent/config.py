@@ -22,6 +22,7 @@ class AgentConfig(BaseSettings):
         agent_max_iterations: Maximum tool-calling loop iterations.
         agent_max_tokens: Max tokens for LLM responses.
         agent_temperature: Sampling temperature (0.0 for deterministic).
+        langfuse_enabled: Enable Langfuse tracing (requires env vars).
     """
 
     model_config = SettingsConfigDict(env_prefix="SALUDAI_", extra="ignore")
@@ -33,3 +34,4 @@ class AgentConfig(BaseSettings):
     agent_max_iterations: int = 5
     agent_max_tokens: int = 4096
     agent_temperature: float = 0.0
+    langfuse_enabled: bool = False

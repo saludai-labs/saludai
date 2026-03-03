@@ -72,6 +72,15 @@
 **Qué pasó:** `print(result.answer)` falló con UnicodeEncodeError porque la consola de Windows usa cp1251.
 **Regla:** En scripts que imprimen texto en español, usar `sys.stdout.reconfigure(encoding="utf-8")` al inicio.
 
+### 2026-03-04: Langfuse SDK v3 cambió toda la API — no tiene .trace()
+**Qué pasó:** Implementé LangfuseTracer usando `langfuse.Langfuse().trace()` (API v2) pero langfuse v3.14+ eliminó ese método.
+**Por qué estuvo mal:** No verifiqué la API actual del SDK instalado. La v3 usa `start_span()`, `start_generation()`, y context-based tracing.
+**Regla:** Antes de integrar una librería, verificar la API real con `dir(obj)` o `help(method)`. No confiar en docs/ejemplos que pueden ser de versiones anteriores. Langfuse v3: `start_span()` (root), `.start_generation()` / `.start_span()` (children), `.end()` para cerrar.
+
+### 2026-03-04: Usar Python 3.12, no 3.14 — langfuse incompatible
+**Qué pasó:** El venv se creó con Python 3.14 (default del sistema) pero langfuse SDK usa pydantic v1 internamente, que no es compatible con 3.14.
+**Regla:** Siempre crear el venv con `uv venv --python 3.12`. El proyecto especifica `>=3.12` pero 3.14 rompe dependencias. Verificar con `uv run python --version`.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.

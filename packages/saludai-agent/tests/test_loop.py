@@ -10,6 +10,7 @@ import pytest
 from saludai_agent.config import AgentConfig
 from saludai_agent.exceptions import AgentLoopError
 from saludai_agent.loop import AgentLoop
+from saludai_agent.tracing import NoOpTracer
 from saludai_agent.types import LLMResponse, ToolCall
 
 # ---------------------------------------------------------------------------
@@ -409,3 +410,97 @@ class TestAgentLoopDefaultConfig:
         assert result.success is True
         # Default temperature=0.0
         assert llm.calls[0]["temperature"] == 0.0
+
+
+class TestAgentLoopTracing:
+    """Tracer is called at the correct points during the loop."""
+
+    def _make_mock_tracer(self) -> MagicMock:
+        """Create a mock Tracer."""
+        tracer = MagicMock(spec=NoOpTracer)
+        tracer.end_trace.return_value = ("trace-123", "https://example.com/trace/123")
+        return tracer
+
+    @pytest.mark.asyncio
+    async def test_tracer_called_on_direct_answer(self) -> None:
+        """Tracer start/generation/end called for a direct answer."""
+        llm = FakeLLMClient([LLMResponse(content="answer", stop_reason="end_turn")])
+        fhir_client = _make_fhir_client()
+        tracer = self._make_mock_tracer()
+
+        loop = AgentLoop(llm=llm, fhir_client=fhir_client, tracer=tracer)
+        result = await loop.run("test")
+
+        tracer.start_trace.assert_called_once()
+        assert tracer.start_trace.call_args.kwargs["name"] == "agent_run"
+        assert tracer.log_generation.call_count == 1
+        tracer.end_trace.assert_called_once()
+        assert result.trace_id == "trace-123"
+        assert result.trace_url == "https://example.com/trace/123"
+
+    @pytest.mark.asyncio
+    async def test_tracer_logs_tool_calls(self) -> None:
+        """Tracer logs both generations and tool calls."""
+        tc = ToolCall(id="tc_1", name="resolve_terminology", arguments={"term": "diabetes"})
+        llm = FakeLLMClient(
+            [
+                LLMResponse(tool_calls=(tc,), stop_reason="tool_use"),
+                LLMResponse(content="done", stop_reason="end_turn"),
+            ]
+        )
+        fhir_client = _make_fhir_client()
+        resolver = _make_terminology_resolver()
+        tracer = self._make_mock_tracer()
+
+        loop = AgentLoop(
+            llm=llm,
+            fhir_client=fhir_client,
+            terminology_resolver=resolver,
+            tracer=tracer,
+        )
+        await loop.run("diabetes")
+
+        # 2 LLM calls = 2 generations
+        assert tracer.log_generation.call_count == 2
+        # 1 tool call
+        assert tracer.log_tool_call.call_count == 1
+        tool_call_args = tracer.log_tool_call.call_args
+        assert tool_call_args.kwargs["name"] == "tool:resolve_terminology"
+
+    @pytest.mark.asyncio
+    async def test_tracer_end_called_on_max_iterations(self) -> None:
+        """Tracer end_trace is called even when max iterations exceeded."""
+        tc = ToolCall(id="tc_1", name="resolve_terminology", arguments={"term": "test"})
+        responses = [LLMResponse(tool_calls=(tc,), stop_reason="tool_use") for _ in range(5)]
+        llm = FakeLLMClient(responses)
+        fhir_client = _make_fhir_client()
+        resolver = _make_terminology_resolver()
+        tracer = self._make_mock_tracer()
+        config = AgentConfig(agent_max_iterations=2)
+
+        loop = AgentLoop(
+            llm=llm,
+            fhir_client=fhir_client,
+            terminology_resolver=resolver,
+            config=config,
+            tracer=tracer,
+        )
+
+        with pytest.raises(AgentLoopError):
+            await loop.run("infinite loop")
+
+        tracer.end_trace.assert_called_once()
+        end_output = tracer.end_trace.call_args.kwargs["output"]
+        assert end_output["error"] == "max_iterations_exceeded"
+
+    @pytest.mark.asyncio
+    async def test_no_tracer_uses_noop(self) -> None:
+        """When no tracer is passed, NoOpTracer is used (no crash)."""
+        llm = FakeLLMClient([LLMResponse(content="answer", stop_reason="end_turn")])
+        fhir_client = _make_fhir_client()
+        loop = AgentLoop(llm=llm, fhir_client=fhir_client)
+
+        result = await loop.run("test")
+        assert result.success is True
+        assert result.trace_id is None
+        assert result.trace_url is None

@@ -4,6 +4,30 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 2, Sesión 2.4] — 2026-03-04
+
+### Langfuse Integration (saludai-agent)
+- Agregado `langfuse_enabled: bool = False` a `AgentConfig`
+- Agregados `trace_id: str | None` y `trace_url: str | None` a `AgentResult`
+- Creado `saludai_agent/tracing.py` (~240 líneas):
+  - `Tracer` Protocol (runtime-checkable)
+  - `NoOpTracer` — no-op cuando tracing deshabilitado
+  - `LangfuseTracer` — wraps langfuse.Langfuse, genera trace → generations/spans
+  - `create_tracer(config)` — factory con fallback a NoOpTracer
+  - Helpers: `_summarise_messages()`, `_response_to_dict()`
+- Instrumentado `AgentLoop.run()`:
+  - `start_trace()` al inicio, `log_generation()` por cada LLM call
+  - `log_tool_call()` por cada tool execution, `end_trace()` al finalizar
+  - `trace_id`/`trace_url` propagados a `AgentResult`
+  - `end_trace()` también en error paths (max iterations, exceptions)
+- Actualizado `__init__.py` — exports de Tracer, LangfuseTracer, NoOpTracer, create_tracer
+- Actualizado `scripts/demo_agent.py` — integrado tracer, muestra trace_id/trace_url
+- Creado `tests/test_tracing.py` — 22 tests (NoOpTracer, LangfuseTracer, create_tracer, helpers)
+- Agregados 4 tests de tracing a `test_loop.py`
+- Verificación: 155 agent tests + 150 core tests = 305 total, ruff limpio, format limpio
+
+---
+
 ## [Sprint 2, Sesión 2.3] — 2026-03-04
 
 ### Agent Loop v1 (saludai-agent)

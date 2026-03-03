@@ -19,6 +19,7 @@ from saludai_agent.llm import (
     create_llm_client,
 )
 from saludai_agent.loop import AgentLoop
+from saludai_agent.tracing import LangfuseTracer, NoOpTracer, Tracer, create_tracer
 from saludai_agent.types import AgentResult, LLMResponse, Message, TokenUsage, ToolCall, ToolResult
 
 __all__ = [
@@ -32,11 +33,15 @@ __all__ = [
     "LLMError",
     "LLMResponse",
     "LLMResponseError",
+    "LangfuseTracer",
     "Message",
+    "NoOpTracer",
     "OpenAILLMClient",
     "TokenUsage",
     "ToolCall",
     "ToolExecutionError",
     "ToolResult",
+    "Tracer",
     "create_llm_client",
+    "create_tracer",
 ]

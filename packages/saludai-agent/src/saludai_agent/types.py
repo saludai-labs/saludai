@@ -96,6 +96,8 @@ class AgentResult:
         tool_calls_made: All tool calls made during execution.
         iterations: Number of loop iterations.
         success: Whether the agent produced a valid answer.
+        trace_id: Langfuse trace ID (``None`` if tracing disabled).
+        trace_url: Direct link to the Langfuse trace (``None`` if tracing disabled).
     """
 
     answer: str
@@ -103,3 +105,5 @@ class AgentResult:
     tool_calls_made: tuple[ToolCall, ...] = ()
     iterations: int = 0
     success: bool = True
+    trace_id: str | None = None
+    trace_url: str | None = None

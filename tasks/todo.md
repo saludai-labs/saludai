@@ -105,3 +105,15 @@
 - [x] Crear tests: test_exceptions, test_config, test_types, test_prompts, test_llm, test_tools, test_loop
 - [x] Verificación: 126 agent tests + 131 core tests, ruff check limpio, ruff format limpio
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md
+
+## Sesión: Sprint 2, Sesión 2.4
+
+- [x] Agregar `langfuse_enabled: bool = False` a `AgentConfig`
+- [x] Agregar `trace_id`, `trace_url` a `AgentResult`
+- [x] Crear `saludai_agent/tracing.py` — Tracer protocol, LangfuseTracer, NoOpTracer, create_tracer
+- [x] Instrumentar `AgentLoop.run()` — start_trace, log_generation, log_tool_call, end_trace
+- [x] Actualizar `__init__.py` con exports de tracing
+- [x] Actualizar `scripts/demo_agent.py` con tracer
+- [x] Crear `tests/test_tracing.py` (22 tests) + 4 tests tracing en test_loop.py
+- [x] Verificación: 155 agent tests + 150 core tests = 305 total, ruff limpio, format limpio
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md
