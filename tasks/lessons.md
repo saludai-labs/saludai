@@ -31,6 +31,11 @@
 **Qué pasó:** Declaré `readme = "README.md"` en pyproject.toml pero el archivo no existía, y hatchling falló.
 **Regla:** No declarar `readme` en pyproject.toml hasta que el archivo exista, o crear el archivo primero.
 
+### 2026-03-03: Pytest en monorepo necesita --import-mode=importlib
+**Qué pasó:** Pytest falló con "import file mismatch" al tener `tests/test_init.py` en múltiples paquetes.
+**Por qué estuvo mal:** El import mode clásico de pytest usa `sys.path` y `__init__.py`, lo que causa colisiones cuando múltiples paquetes tienen test files con el mismo nombre.
+**Regla:** En monorepos UV con múltiples paquetes, siempre configurar `addopts = "--import-mode=importlib"` en `[tool.pytest.ini_options]`.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.

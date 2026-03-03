@@ -4,6 +4,18 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 1, Sesión 1.2] — 2026-03-03
+
+### GitHub Actions CI + Pre-commit hooks
+- Creado smoke tests en los 4 paquetes (`test_init.py` — importa y verifica `__version__`)
+- Creado `.github/workflows/ci.yml` — CI completo con ruff check, ruff format, pytest
+- Creado `.pre-commit-config.yaml` — ruff check --fix + ruff format via `ruff-pre-commit`
+- Agregado `pre-commit>=4` a dev dependencies
+- Fix: `addopts = "--import-mode=importlib"` en pytest config para monorepo
+- Verificado: 4 tests pasan, ruff limpio, pre-commit limpio
+
+---
+
 ## [Sprint 1, Sesión 1.1] — 2026-03-03
 
 ### Monorepo UV + Estructura de paquetes

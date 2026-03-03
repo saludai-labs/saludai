@@ -25,7 +25,11 @@
 - [x] `ruff check .` pasa limpio
 - [ ] Push inicial al repo
 
-## Próxima sesión: Sprint 1, Sesión 1.2
+## Sesión: Sprint 1, Sesión 1.2
 
-- [ ] GitHub Actions CI (ruff + pytest)
-- [ ] Pre-commit hooks
+- [x] Smoke tests en cada paquete (test_init.py que importa y verifica __version__)
+- [x] GitHub Actions CI (.github/workflows/ci.yml — ruff check, ruff format, pytest)
+- [x] Pre-commit hooks (.pre-commit-config.yaml — ruff check --fix, ruff format)
+- [x] Agregar `pre-commit` a dev dependencies
+- [x] Verificación: ruff check, ruff format --check, pytest, pre-commit run --all-files
+- [x] Actualizar PROGRESS.md, CHANGELOG.md
