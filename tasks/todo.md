@@ -91,3 +91,17 @@
 - [x] Crear `tests/test_query_builder.py` (96 tests en 13 clases)
 - [x] Verificación: 131 tests verdes, ruff check limpio, ruff format limpio
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md
+
+## Sesión: Sprint 2, Sesión 2.3
+
+- [x] Crear `saludai_agent/exceptions.py` — AgentError, AgentLoopError, ToolExecutionError, LLMError, LLMResponseError
+- [x] Crear `saludai_agent/config.py` — AgentConfig con pydantic-settings
+- [x] Crear `saludai_agent/types.py` — Message, ToolCall, ToolResult, TokenUsage, LLMResponse, AgentResult
+- [x] Crear `saludai_agent/prompts.py` — SYSTEM_PROMPT + PROMPT_VERSION
+- [x] Crear `saludai_agent/llm.py` — LLMClient Protocol + Anthropic + OpenAI clients + factory
+- [x] Crear `saludai_agent/tools.py` — ToolRegistry + resolve_terminology + search_fhir + format_bundle_summary
+- [x] Crear `saludai_agent/loop.py` — AgentLoop class
+- [x] Actualizar `__init__.py` + `pyproject.toml`
+- [x] Crear tests: test_exceptions, test_config, test_types, test_prompts, test_llm, test_tools, test_loop
+- [x] Verificación: 126 agent tests + 131 core tests, ruff check limpio, ruff format limpio
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md

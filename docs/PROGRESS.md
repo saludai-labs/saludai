@@ -1,8 +1,8 @@
 # SaludAI — Estado Actual
 
-**Última actualización:** 2026-03-03
+**Última actualización:** 2026-03-04
 **Sprint actual:** Sprint 2 — El Cerebro del Agente
-**Sesión actual:** 2.2 — FHIR Query Builder (completada)
+**Sesión actual:** 2.3 — Agent Loop v1 (completada)
 
 ---
 
@@ -11,30 +11,37 @@
 🟢 **Sprint 1 completo** — Monorepo configurado, CI activo, Docker Compose con HAPI FHIR R4, FHIR client funcional, repo presentable para público.
 🟢 **Sesión 2.1 completa** — TerminologyResolver implementado con SNOMED CT AR (~96 códigos), CIE-10 (~45 códigos), LOINC (~30 códigos). Fuzzy matching con rapidfuzz. 35 tests nuevos, todos verdes.
 🟢 **Sesión 2.2 completa** — FHIR Query Builder implementado. Frozen dataclasses para params, fluent builder API, factory shortcuts (snomed, loinc, cie10), soporte para chained params, _include/_revinclude, _sort, _count, _total, _elements. 96 tests nuevos, todos verdes.
+🟢 **Sesión 2.3 completa** — Agent Loop v1 implementado en saludai-agent. LLM native tool calling, provider-agnostic (Anthropic/OpenAI/Ollama), 2 tools (resolve_terminology + search_fhir), max iterations cap, bundle summary formatter. 126 tests nuevos (125 nuevos + 1 existente), todos verdes.
 
 ## Última Sesión Completada
 
-**Sprint 2, Sesión 2.2** — FHIR Query Builder
+**Sprint 2, Sesión 2.3** — Agent Loop v1
 
 ### Lo que se hizo
-- `saludai_core/exceptions.py` — Agregados `QueryBuilderError`, `QueryBuilderValidationError`
-- `saludai_core/query_builder.py` — Módulo principal (~400 líneas):
-  - Enums: `FHIRResourceType` (15 resource types), `DatePrefix` (8 prefijos), `SortOrder`
-  - Frozen dataclasses: `TokenParam`, `DateParam`, `ReferenceParam`, `QuantityParam`, `StringParam`, `IncludeParam`, `SortParam`
-  - Todos con método `to_fhir() -> str` para serialización FHIR
-  - `FHIRQuery` — output inmutable con `to_params() -> dict[str, str | list[str]]`
-  - Factory functions: `token()`, `snomed()`, `loinc()`, `cie10()`, `date_param()`, `reference()`, `quantity()`
-  - `FHIRQueryBuilder` — API fluent: `where()`, `where_token()`, `where_date()`, `where_reference()`, `where_string()`, `include()`, `revinclude()`, `sort()`, `count()`, `total()`, `elements()`, `build()`
-  - Validación: resource types, formato ISO 8601, params no vacíos, _count positivo, _total válido
-- `saludai_core/__init__.py` — Re-exports de todos los tipos nuevos + excepciones
-- `tests/test_query_builder.py` — 96 tests en 13 clases:
-  - FHIRResourceType (7), TokenParam (6), DateParam (10), ReferenceParam (2), QuantityParam (4), StringParam (3), IncludeParam (3), SortParam (3), FHIRQueryBuilder (21), FHIRQueryToParams (6), ChainedParams (3), Golden (7), ExceptionHierarchy (2)
+- `saludai_agent/exceptions.py` — Jerarquía: AgentError, AgentLoopError, ToolExecutionError, LLMError, LLMResponseError
+- `saludai_agent/config.py` — AgentConfig con pydantic-settings (llm_provider, llm_model, llm_api_key, llm_base_url, agent_max_iterations, agent_max_tokens, agent_temperature)
+- `saludai_agent/types.py` — Frozen dataclasses: Message, ToolCall, ToolResult, TokenUsage, LLMResponse, AgentResult
+- `saludai_agent/prompts.py` — System prompt en español para agente FHIR argentino + PROMPT_VERSION
+- `saludai_agent/llm.py` — LLMClient Protocol + AnthropicLLMClient + OpenAILLMClient + create_llm_client factory
+  - Conversión bidireccional Message ↔ Anthropic API / OpenAI API
+  - Soporte Ollama via OpenAI client con base_url
+- `saludai_agent/tools.py` — ToolRegistry + 2 tools:
+  - `resolve_terminology` — wraps TerminologyResolver.resolve()
+  - `search_fhir` — wraps FHIRClient.search() + format_bundle_summary()
+  - `format_bundle_summary()` — extrae campos clave por resource type para summaries token-efficient
+- `saludai_agent/loop.py` — AgentLoop class:
+  - Dependency injection (LLMClient, FHIRClient, TerminologyResolver, AgentConfig)
+  - Tool-calling loop: send → execute tools → repeat → return narrative
+  - Max iterations cap (default 5), tool errors returned to LLM gracefully
+- `saludai_agent/__init__.py` — Exports completos
+- `pyproject.toml` — Agregadas dependencias structlog, pydantic-settings
+- Tests: 7 archivos, 126 tests en 20+ clases (exceptions, config, types, prompts, llm, tools, loop)
 
 ### Verificación
-- `uv run pytest packages/saludai-core/` → 131 passed (96 nuevos + 35 terminology)
+- `uv run pytest packages/saludai-agent/` → 126 passed
+- `uv run pytest packages/saludai-core/` → 131 passed (sin regresión)
 - `uv run ruff check .` → All checks passed
 - `uv run ruff format --check .` → All files formatted
-- Golden tests: diabetes+edad, laboratorio glucosa, Buenos Aires, medicaciones activas, CIE-10, revinclude, quantity
 
 ## Sprint 1 — Completado
 
@@ -49,16 +56,16 @@ Todas las sesiones del Sprint 1 están finalizadas:
 
 - ✅ 2.1 — Terminology Resolver (SNOMED CT AR, CIE-10, LOINC)
 - ✅ 2.2 — FHIR Query Builder
-- ⬜ 2.3 — Agent Loop v1
+- ✅ 2.3 — Agent Loop v1
 - ⬜ 2.4 — Langfuse integration
 - ⬜ 2.5 — FHIR-AgentBench baseline
 
 ## Próxima Sesión
 
 **Sprint:** 2 — El Cerebro del Agente
-**Sesión:** 2.3 — Agent Loop v1 (single-turn: plan → execute → evaluate)
-**Objetivo:** Prompt en lenguaje natural → consulta FHIR → respuesta narrativa
-**Referencia:** `docs/ROADMAP.md` → Sprint 2 → Sesión 2.3
+**Sesión:** 2.4 — Langfuse integration + Docker Compose actualizado
+**Objetivo:** Traces visibles en Langfuse para cada paso del agent loop
+**Referencia:** `docs/ROADMAP.md` → Sprint 2 → Sesión 2.4
 
 ## Blockers
 

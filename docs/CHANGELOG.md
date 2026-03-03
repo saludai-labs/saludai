@@ -4,6 +4,35 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 2, Sesión 2.3] — 2026-03-04
+
+### Agent Loop v1 (saludai-agent)
+- Creada jerarquía de excepciones: `AgentError`, `AgentLoopError`, `ToolExecutionError`, `LLMError`, `LLMResponseError`
+- Creado `saludai_agent/config.py` — `AgentConfig` con pydantic-settings (7 campos, env prefix SALUDAI_)
+- Creado `saludai_agent/types.py` — frozen dataclasses: `Message`, `ToolCall`, `ToolResult`, `TokenUsage`, `LLMResponse`, `AgentResult`
+- Creado `saludai_agent/prompts.py` — system prompt en español para agente FHIR argentino + `PROMPT_VERSION = "v1.0"`
+- Creado `saludai_agent/llm.py` (~400 líneas):
+  - `LLMClient` Protocol (runtime-checkable)
+  - `AnthropicLLMClient` — usa `anthropic.AsyncAnthropic`, convierte Message ↔ Anthropic API
+  - `OpenAILLMClient` — usa `openai.AsyncOpenAI`, compatible con OpenAI y Ollama (via base_url)
+  - `create_llm_client(config)` — factory function
+- Creado `saludai_agent/tools.py` (~300 líneas):
+  - Tool definitions en formato Anthropic (JSON schema) — `resolve_terminology`, `search_fhir`
+  - `execute_resolve_terminology()` — wraps TerminologyResolver.resolve()
+  - `execute_search_fhir()` — wraps FHIRClient.search()
+  - `format_bundle_summary()` — extrae campos clave por resource type, genera texto conciso
+  - `ToolRegistry` — holds definitions + executors, `definitions()`, `execute(tool_call)`
+- Creado `saludai_agent/loop.py` (~120 líneas):
+  - `AgentLoop` — dependency injection, tool-calling loop, max iterations cap
+  - Tool errors gracefully returned to LLM (no crash)
+- Actualizado `__init__.py` — exports de AgentLoop, AgentResult, AgentConfig, LLMClient, etc.
+- Actualizado `pyproject.toml` — agregadas dependencias `structlog>=24`, `pydantic-settings>=2`
+- Creados 7 archivos de test, 126 tests en 20+ clases:
+  - test_exceptions (10), test_config (17), test_types (17), test_prompts (12), test_llm (22), test_tools (23), test_loop (16), test_init (1)
+- Verificación: 126 agent tests + 131 core tests = 257 total, ruff limpio, format limpio
+
+---
+
 ## [Sprint 2, Sesión 2.2] — 2026-03-03
 
 ### FHIR Query Builder

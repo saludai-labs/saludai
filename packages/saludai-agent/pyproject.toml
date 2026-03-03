@@ -10,6 +10,8 @@ dependencies = [
     "anthropic>=0.49",
     "openai>=1.68",
     "langfuse>=2",
+    "structlog>=24",
+    "pydantic-settings>=2",
 ]
 
 [tool.uv.sources]

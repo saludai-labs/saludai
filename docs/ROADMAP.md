@@ -70,7 +70,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 |---|-------|--------------------|
 | 2.1 | ✅ Terminology Resolver (SNOMED CT AR, CIE-10, LOINC) | "diabetes tipo 2" → SNOMED 44054006 con tests |
 | 2.2 | ✅ FHIR Query Builder (search params, _include, chained) | Params estructurados → URL FHIR válida |
-| 2.3 | Agent Loop v1: single-turn (plan → execute → evaluate) | Prompt → query → respuesta narrativa funcional |
+| 2.3 | ✅ Agent Loop v1: single-turn (plan → execute → evaluate) | Prompt → query → respuesta narrativa funcional |
 | 2.4 | Langfuse integration + Docker Compose actualizado | Traces visibles en dashboard local |
 | 2.5 | FHIR-AgentBench: clonar, setup, primer eval baseline | Score baseline documentado en README |
 
