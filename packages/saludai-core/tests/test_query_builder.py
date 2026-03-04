@@ -414,10 +414,7 @@ class TestFHIRQueryBuilder:
 
     def test_summary_combined_with_other_params(self) -> None:
         query = (
-            FHIRQueryBuilder("Condition")
-            .where("code", snomed("44054006"))
-            .summary("count")
-            .build()
+            FHIRQueryBuilder("Condition").where("code", snomed("44054006")).summary("count").build()
         )
         params = query.to_params()
         assert params["_summary"] == "count"

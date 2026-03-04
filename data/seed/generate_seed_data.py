@@ -537,9 +537,7 @@ def generate_bundle(num_patients: int = 55) -> dict:
         patient_conds = patient_conditions.get(patient_uuid, set())
         # Each patient gets 2-4 observation types
         num_obs = random.randint(2, 4)
-        selected_obs = random.sample(
-            OBSERVATION_TYPES, k=min(num_obs, len(OBSERVATION_TYPES))
-        )
+        selected_obs = random.sample(OBSERVATION_TYPES, k=min(num_obs, len(OBSERVATION_TYPES)))
 
         for obs_type in selected_obs:
             loinc_code, display, unit, n_lo, n_hi, a_lo, a_hi, related_snomed = obs_type
@@ -552,7 +550,13 @@ def generate_bundle(num_patients: int = 55) -> dict:
             effective_date = _random_recent_date(years_back=2)
             obs_uuid = str(uuid.uuid4())
             observation = generate_observation(
-                obs_uuid, patient_uuid, loinc_code, display, value, unit, effective_date,
+                obs_uuid,
+                patient_uuid,
+                loinc_code,
+                display,
+                value,
+                unit,
+                effective_date,
             )
             entries.append(
                 {
@@ -584,11 +588,18 @@ def generate_bundle(num_patients: int = 55) -> dict:
             if should_prescribe:
                 med_uuid = str(uuid.uuid4())
                 status = random.choices(
-                    ["active", "completed"], weights=[0.85, 0.15], k=1,
+                    ["active", "completed"],
+                    weights=[0.85, 0.15],
+                    k=1,
                 )[0]
                 authored = _random_recent_date(years_back=2)
                 med_request = generate_medication_request(
-                    med_uuid, patient_uuid, atc_code, display, status, authored,
+                    med_uuid,
+                    patient_uuid,
+                    atc_code,
+                    display,
+                    status,
+                    authored,
                 )
                 entries.append(
                     {
@@ -606,7 +617,9 @@ def generate_bundle(num_patients: int = 55) -> dict:
     enc_count = 0
     for patient_uuid, _birth_date_str in all_patients:
         num_encounters = random.choices(
-            [1, 2, 3, 4], weights=[0.30, 0.35, 0.25, 0.10], k=1,
+            [1, 2, 3, 4],
+            weights=[0.30, 0.35, 0.25, 0.10],
+            k=1,
         )[0]
         for _ in range(num_encounters):
             enc_type = _weighted_choice(ENCOUNTER_TYPES)
@@ -627,8 +640,12 @@ def generate_bundle(num_patients: int = 55) -> dict:
 
             enc_uuid = str(uuid.uuid4())
             encounter = generate_encounter(
-                enc_uuid, patient_uuid, class_code, class_display,
-                period_start, period_end,
+                enc_uuid,
+                patient_uuid,
+                class_code,
+                class_display,
+                period_start,
+                period_end,
             )
             entries.append(
                 {
@@ -650,12 +667,12 @@ def generate_bundle(num_patients: int = 55) -> dict:
     }
 
     # --- Stats ---
-    num_conditions = sum(
-        1 for e in entries if e["resource"]["resourceType"] == "Condition"
+    num_conditions = sum(1 for e in entries if e["resource"]["resourceType"] == "Condition")
+    print(
+        f"Generated {num_patients} patients, {num_conditions} conditions, "
+        f"{obs_count} observations, {med_count} medication requests, "
+        f"{enc_count} encounters"
     )
-    print(f"Generated {num_patients} patients, {num_conditions} conditions, "
-          f"{obs_count} observations, {med_count} medication requests, "
-          f"{enc_count} encounters")
     print(f"Guaranteed diabetes >60y Buenos Aires: {guaranteed_count}")
     print(f"Total bundle entries: {len(entries)}")
 

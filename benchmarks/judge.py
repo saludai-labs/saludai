@@ -188,7 +188,7 @@ class AnswerJudge:
             first_newline = stripped.index("\n") if "\n" in stripped else len(stripped)
             stripped = stripped[first_newline + 1 :]
         if stripped.endswith("```"):
-            stripped = stripped[: -3]
+            stripped = stripped[:-3]
         return stripped.strip()
 
     @staticmethod

@@ -198,16 +198,18 @@ def _make_bundle_with_patients(count: int = 2) -> dict[str, Any]:
     """Create a FHIR Bundle dict with Patient resources."""
     entries = []
     for i in range(count):
-        entries.append({
-            "resource": {
-                "resourceType": "Patient",
-                "id": f"patient-{i}",
-                "name": [{"family": "García", "given": ["Juan"]}],
-                "gender": "male",
-                "birthDate": "1960-01-15",
-                "address": [],
+        entries.append(
+            {
+                "resource": {
+                    "resourceType": "Patient",
+                    "id": f"patient-{i}",
+                    "name": [{"family": "García", "given": ["Juan"]}],
+                    "gender": "male",
+                    "birthDate": "1960-01-15",
+                    "address": [],
+                }
             }
-        })
+        )
     return {
         "resourceType": "Bundle",
         "type": "searchset",
@@ -271,18 +273,23 @@ class TestExecuteGetResource:
     @pytest.mark.asyncio
     async def test_returns_summary(self) -> None:
         client = MagicMock()
-        client.read_raw = AsyncMock(return_value={
-            "resourceType": "Patient",
-            "id": "1005",
-            "name": [{"family": "García", "given": ["Ana"]}],
-            "gender": "female",
-            "birthDate": "1980-03-15",
-            "address": [{"city": "Buenos Aires", "state": "CABA"}],
-        })
-        result = await execute_get_resource(client, {
-            "resource_type": "Patient",
-            "resource_id": "1005",
-        })
+        client.read_raw = AsyncMock(
+            return_value={
+                "resourceType": "Patient",
+                "id": "1005",
+                "name": [{"family": "García", "given": ["Ana"]}],
+                "gender": "female",
+                "birthDate": "1980-03-15",
+                "address": [{"city": "Buenos Aires", "state": "CABA"}],
+            }
+        )
+        result = await execute_get_resource(
+            client,
+            {
+                "resource_type": "Patient",
+                "resource_id": "1005",
+            },
+        )
         assert "Patient/1005" in result
         assert "García" in result
         assert "1980-03-15" in result
@@ -296,10 +303,13 @@ class TestExecuteGetResource:
             side_effect=FHIRResourceNotFoundError("Resource not found: GET /Patient/9999")
         )
         with pytest.raises(FHIRResourceNotFoundError):
-            await execute_get_resource(client, {
-                "resource_type": "Patient",
-                "resource_id": "9999",
-            })
+            await execute_get_resource(
+                client,
+                {
+                    "resource_type": "Patient",
+                    "resource_id": "9999",
+                },
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -473,14 +483,16 @@ class TestToolRegistry:
     @pytest.mark.asyncio
     async def test_execute_get_resource(self) -> None:
         client = MagicMock()
-        client.read_raw = AsyncMock(return_value={
-            "resourceType": "Patient",
-            "id": "p-1",
-            "name": [{"family": "Test", "given": ["User"]}],
-            "gender": "male",
-            "birthDate": "1990-01-01",
-            "address": [],
-        })
+        client.read_raw = AsyncMock(
+            return_value={
+                "resourceType": "Patient",
+                "id": "p-1",
+                "name": [{"family": "Test", "given": ["User"]}],
+                "gender": "male",
+                "birthDate": "1990-01-01",
+                "address": [],
+            }
+        )
         registry = ToolRegistry(fhir_client=client)
         tc = ToolCall(
             id="tc_1",
