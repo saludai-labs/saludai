@@ -79,6 +79,26 @@ benchmarks/         # FHIR-AgentBench evaluation scripts
 docs/               # Architecture, roadmap, ADRs
 ```
 
+## Locale Packs — Multi-Country Support
+
+SaludAI supports country/region-specific configuration through **locale packs**. A locale pack bundles terminology data, system prompts, and tool descriptions for a specific health system.
+
+Argentina (`ar`) comes built-in as the default:
+
+```python
+from saludai_core.locales import load_locale_pack
+
+pack = load_locale_pack("ar")  # SNOMED CT AR, CIE-10 AR, LOINC
+```
+
+To switch locale via environment variable:
+
+```bash
+export SALUDAI_LOCALE=ar  # default
+```
+
+Creating a new locale pack for your country is straightforward — see [docs/LOCALE_GUIDE.md](docs/LOCALE_GUIDE.md) for the full guide.
+
 ## Contributing
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, code style, and PR guidelines.

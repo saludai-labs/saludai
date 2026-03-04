@@ -43,6 +43,10 @@ class TerminologyDataError(TerminologyError):
     """Error loading or parsing terminology data files."""
 
 
+class LocaleNotFoundError(SaludAIError):
+    """Requested locale pack does not exist."""
+
+
 class QueryBuilderError(SaludAIError):
     """Base exception for query builder errors."""
 

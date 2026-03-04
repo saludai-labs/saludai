@@ -95,14 +95,14 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | 3.1 ✅ | Pagination + `_summary=count` | Benchmark 60% → 82% |
 | 3.2 ✅ | Reference Navigator + Fixes | Benchmark 82% → 86%, 0 errors |
 | 3.3 ✅ | Code Interpreter tool (sandboxed Python execution) | Benchmark 86% → 94%, agente calcula/agrupa con código |
-| 3.4 | AR Profile Validator + mejoras terminology | Validación contra perfiles openRSD |
+| 3.4 ✅ | Locale packs + deuda técnica (ADRs, coverage, extensibilidad) | `load_locale_pack("ar")`, ADR-007, 375 tests |
 | 3.5 | Re-eval benchmark + prompt optimization | Score mejorado, before/after en README |
 
 ### Definición de Done
 - [ ] "Medicaciones activas de pacientes con insuficiencia cardíaca" → navega refs correctamente
 - [ ] Self-correction visible en Langfuse (agente replanifica tras resultado parcial)
 - [x] Benchmark: +22 puntos sobre Sprint 2 baseline (60% → 82%)
-- [ ] Coverage ≥ 70%
+- [x] Coverage ≥ 70% (84.57% — sesión 3.4a)
 
 ---
 

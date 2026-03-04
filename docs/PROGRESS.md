@@ -1,8 +1,8 @@
 # SaludAI — Estado Actual
 
-**Última actualización:** 2026-03-04
+**Última actualización:** 2026-03-05
 **Sprint actual:** Sprint 3 — Multi-turn y Precisión
-**Sesión actual:** 3.2 — Reference Navigator + Fixes (completada)
+**Sesión actual:** 3.4b — Sistema de Locale Packs (completada)
 
 ---
 
@@ -18,41 +18,31 @@
 🟢 **Sesión 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
 🟢 **Sesión 3.2 completa** — Reference Navigator + Fixes. Terminology disambiguation fix, nuevo tool `get_resource`, max_iterations 5→8, system prompt v1.2 con guidance de `_include`/`_revinclude`. **Accuracy: 86.0%** (43/50, 0 errors). 365 tests, todos verdes.
 🟢 **Sesión 3.3 completa** — Code Interpreter tool. Sandbox Python execution para conteo/agrupación. **Accuracy: 94.0%** (47/50, 1 error). 391 tests, todos verdes.
+🟢 **Sesión 3.4a completa** — Limpieza de deuda técnica. ADRs 002, 004, 005. Coverage config (84.57%). CI con coverage.
+🟢 **Sesión 3.4b completa** — Sistema de locale packs. Extensibilidad por país/región. 375 tests, todos verdes.
 
 ## Última Sesión Completada
 
-**Sprint 3, Sesión 3.3** — Code Interpreter
+**Sprint 3, Sesión 3.4b** — Sistema de Locale Packs
 
 ### Lo que se hizo
-- `packages/saludai-agent/src/saludai_agent/tools.py`:
-  - `EXECUTE_CODE_DEFINITION` — tool definition para ejecución de Python sandboxeado
-  - `execute_code()` — executor con sandbox (builtins restringidos, `_restricted_import`, timeout, output truncation)
-  - Módulos pre-importados: json, collections, datetime, math, statistics, re
-  - `ToolRegistry.__init__()` — registra `execute_code` (siempre disponible)
-- `packages/saludai-agent/src/saludai_agent/prompts.py` — `PROMPT_VERSION = "v1.3"`, tool #4 `execute_code`, sección "Procesamiento de datos"
-- Tests: 26 tests nuevos (execute_code definition×3, executor×17, registry×1, prompts×2, registry assertions×2 actualizados)
-
-### Resultados del Benchmark (Exp 4)
-- **Accuracy total: 94.0%** (47/50 correctas) — +8pp vs Exp 3
-- Simple: 8/8 (100%)
-- Medium: 19/20 (95%)
-- Complex: 20/22 (91%) — +18pp vs Exp 3
-- Errors: 1 (C05 timeout)
-- Incorrect: 2 (M07, C14 — non-determinism)
-- Avg duration: 33.7s por pregunta
-- Avg iterations: 3.5
-- Agent: Claude Sonnet 4.5
-- Judge: Claude Haiku 4.5 (híbrido)
-
-### Fallas restantes (3)
-- **M07** (medium): non-determinism (pasa/falla entre corridas)
-- **C05** (complex): timeout (120s) — query compleja con muchos datos
-- **C14** (complex): non-determinism (pasa/falla entre corridas)
+- **Locale types:** `saludai_core/locales/_types.py` — `LocalePack` + `TerminologySystemDef` (frozen dataclasses)
+- **Locale factory:** `saludai_core/locales/__init__.py` — `load_locale_pack(code)` con registry built-in
+- **AR locale pack:** `saludai_core/locales/ar/` — pack completo con CSVs, prompt, tool descriptions
+- **TerminologyResolver refactor:** acepta `locale_pack` param, carga CSVs del pack via `importlib.resources`
+- **Agent wiring:** `AgentConfig.locale`, `ToolRegistry` con locale pack, `AgentLoop` usa pack prompt
+- **Backward compat:** `prompts.py` re-exporta `SYSTEM_PROMPT` desde AR pack
+- **Exception:** `LocaleNotFoundError` en `saludai_core.exceptions`
+- **ADR-007:** `docs/decisions/007-locale-packs.md`
+- **LOCALE_GUIDE.md:** guía para crear locale packs
+- **ARCHITECTURE.md:** sección 5b locale packs + ADR en registro
+- **README.md:** sección "Locale Packs — Multi-Country Support"
 
 ### Verificación
-- `uv run pytest` → 391 passed
+- `uv run pytest` → 375 passed (366 passed, 9 skipped)
 - `uv run ruff check .` → All checks passed
-- `uv run python -m benchmarks.run_eval` → 94% accuracy (1 error)
+- `uv run ruff format --check .` → All formatted
+- 31 tests nuevos (locale types, factory, AR pack, terminology resolver con pack, agent integration)
 
 ## Sprint 1 — Completado
 
@@ -77,13 +67,15 @@ Todas las sesiones del Sprint 1 están finalizadas:
 - ✅ 3.1 — Pagination + `_summary=count` (60% → 82%)
 - ✅ 3.2 — Reference Navigator + Fixes (82% → 86%, 0 errors)
 - ✅ 3.3 — Code Interpreter (86% → 94%, +8pp)
+- ✅ 3.4a — Limpieza de deuda técnica (ADRs, coverage config)
+- ✅ 3.4b — Sistema de locale packs (extensibilidad por país/región)
 
 ## Próxima Sesión
 
 **Sprint:** 3 — Multi-turn y Precisión
-**Sesión:** 3.4 — AR Profile Validator + mejoras terminology
-**Objetivo:** Validación contra perfiles openRSD, mejoras de terminología
-**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.4
+**Sesión:** 3.5 — Re-eval benchmark + prompt optimization
+**Objetivo:** Re-evaluar benchmark, optimizar prompt, mejorar score
+**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.5
 **Fallas restantes (Exp 4):** 2 non-determinism (M07, C14), 1 timeout (C05)
 
 ## Blockers

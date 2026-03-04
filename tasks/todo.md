@@ -196,3 +196,35 @@
 - [x] Benchmark: 94.0% accuracy (47/50, 1 error) — +8pp vs Exp 3
 - [x] Documentar Exp 4 en EXPERIMENTS.md
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md
+
+## Sesión: Sprint 3, Sesión 3.4a — Limpieza de Deuda Técnica
+
+- [x] Crear ADR-002: No LangChain — Custom Agent Loop
+- [x] Crear ADR-004: Langfuse para Observabilidad
+- [x] Crear ADR-005: FHIR R4 Only
+- [x] Configurar pytest-cov en pyproject.toml (source, fail_under=70, addopts)
+- [x] Agregar coverage al CI (.github/workflows/ci.yml)
+- [x] Correr coverage y evaluar → 84.57% (supera 70%)
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, backlog.md
+
+## Sesión: Sprint 3, Sesión 3.4b — Sistema de Locale Packs
+
+- [x] Crear `saludai_core/locales/_types.py` — LocalePack + TerminologySystemDef
+- [x] Crear `saludai_core/locales/__init__.py` — load_locale_pack() factory
+- [x] Agregar `LocaleNotFoundError` a exceptions.py
+- [x] Crear AR locale pack (ar/__init__.py, _pack.py, _prompt.py)
+- [x] Copiar CSVs de data/ a locales/ar/
+- [x] Refactorizar TerminologyResolver — aceptar locale_pack param
+- [x] Actualizar saludai_core/__init__.py — re-exports de locale types
+- [x] Agregar `locale: str = "ar"` a AgentConfig
+- [x] ToolRegistry — aceptar locale_pack, usar para descriptions y enum
+- [x] AgentLoop — aceptar locale_pack, usar system_prompt del pack
+- [x] prompts.py — backward-compat alias desde AR pack
+- [x] Tests nuevos: test_locale_pack.py (core), test_locale_integration.py (agent)
+- [x] ADR-007: docs/decisions/007-locale-packs.md
+- [x] docs/LOCALE_GUIDE.md — guía para crear locale packs
+- [x] ARCHITECTURE.md — sección 5b locale packs
+- [x] README.md — sección locale packs
+- [x] `uv run pytest` → 375 passed
+- [x] `uv run ruff check .` → All checks passed
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md

@@ -4,6 +4,78 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 3, Sesión 3.4b] — 2026-03-05
+
+### Sistema de Locale Packs
+
+**Core — Locale types:**
+- `saludai_core/locales/_types.py` — `LocalePack` y `TerminologySystemDef` frozen dataclasses
+- `saludai_core/locales/__init__.py` — `load_locale_pack(code)` factory con `available_locales()`
+- `saludai_core/exceptions.py` — agregado `LocaleNotFoundError`
+
+**Core — AR locale pack:**
+- `saludai_core/locales/ar/_pack.py` — `AR_LOCALE_PACK` con 3 terminology systems, tool descriptions, system prompt
+- `saludai_core/locales/ar/_prompt.py` — `SYSTEM_PROMPT_AR` (movido desde agent prompts.py)
+- CSVs copiados de `data/` a `locales/ar/` (snomed_ar.csv, cie10_ar.csv, loinc.csv)
+
+**Core — TerminologyResolver refactor:**
+- Nuevo parámetro `locale_pack: LocalePack | None` en `__init__`
+- Con pack: carga CSVs via `data_package` del pack; sin pack: backward compat (carga desde `data/`)
+- `_load_csv()` acepta `data_package` parámetro (default: `"saludai_core.data"`)
+
+**Core — `__init__.py` actualizado:**
+- Re-exports: `LocalePack`, `TerminologySystemDef`, `LocaleNotFoundError`, `load_locale_pack`, `available_locales`
+
+**Agent — Config:**
+- `AgentConfig.locale: str = "ar"` — selección de locale via `SALUDAI_LOCALE` env var
+
+**Agent — ToolRegistry:**
+- Nuevo parámetro `locale_pack` — aplica descripciones y enum del pack a tool definitions
+- `_apply_locale()` — overrides de descripción por tool
+- `_build_resolve_terminology_def()` — override de system enum desde locale pack
+
+**Agent — AgentLoop:**
+- Nuevo parámetro `locale_pack` — usa `pack.system_prompt` cuando disponible
+- `self._system_prompt` en vez de constante importada
+
+**Agent — prompts.py:**
+- Refactored a backward-compat alias: `SYSTEM_PROMPT = SYSTEM_PROMPT_AR` (importa desde AR pack)
+
+**Tests:**
+- 31 tests nuevos:
+  - `test_locale_pack.py` (core): 17 tests — types, factory, AR pack structure, TerminologyResolver con pack
+  - `test_locale_integration.py` (agent): 14 tests — config locale, ToolRegistry, AgentLoop, backward compat
+- Total: 375 tests, todos verdes
+
+**Documentación:**
+- `docs/decisions/007-locale-packs.md` — ADR completo
+- `docs/LOCALE_GUIDE.md` — guía para crear locale packs
+- `docs/ARCHITECTURE.md` — sección 5b locale packs + ADR en registro
+- `README.md` — sección "Locale Packs — Multi-Country Support"
+
+---
+
+## [Sprint 3, Sesión 3.4a] — 2026-03-04
+
+### Limpieza de Deuda Técnica
+
+**ADRs creados (3):**
+- `docs/decisions/002-no-langchain.md` — Decisión de usar agent loop custom en vez de LangChain/LangGraph/CrewAI. Razones: auditabilidad, trazabilidad, mínimas dependencias, testing simple
+- `docs/decisions/004-langfuse-observability.md` — Elección de Langfuse como plataforma de observabilidad LLM. Alternativas: LangSmith, Phoenix, custom logging, OpenTelemetry
+- `docs/decisions/005-fhir-r4-only.md` — Restricción a FHIR R4 (no R5, no DSTU2). Alineado con openRSD, HAPI FHIR, ecosistema argentino
+
+**Coverage configurado:**
+- `pyproject.toml`: `[tool.coverage.run]` (source paths), `[tool.coverage.report]` (fail_under=70, show_missing, exclude_lines)
+- pytest addopts: `--cov --cov-report=term-missing`
+- `.github/workflows/ci.yml`: pytest ahora corre con coverage reporting
+
+**Coverage report:**
+- Total: **84.57%** (1704 stmts, 263 missed) — supera el 70% requerido
+- Gap principal: `fhir_client.py` (26%) — tests de integración skipped sin HAPI FHIR
+- Resto ≥70%, mayoría ≥90%
+
+---
+
 ## [Sprint 3, Sesión 3.3] — 2026-03-04
 
 ### Code Interpreter Tool

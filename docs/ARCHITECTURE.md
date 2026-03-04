@@ -370,6 +370,50 @@ Esto vive en un repo separado (`saludai-data-ar`) porque es valioso por sí solo
 
 ---
 
+## 5b. Locale Packs — Extensibilidad por País/Región
+
+SaludAI soporta configuración por país/región via **locale packs**. Un locale pack es un frozen dataclass inmutable que agrupa:
+
+- Sistemas de terminología (SNOMED CT, CIE-10, LOINC con CSVs locales)
+- System prompt localizado para el agente
+- Descripciones de tools en el idioma local
+- Enum de sistemas de terminología disponibles
+
+### Uso
+
+```python
+from saludai_core.locales import load_locale_pack
+
+pack = load_locale_pack("ar")  # Argentina (default)
+```
+
+### Selección de locale
+
+```bash
+export SALUDAI_LOCALE=ar  # default
+```
+
+### Estructura
+
+```
+saludai_core/locales/
+  __init__.py          # load_locale_pack() factory
+  _types.py            # LocalePack, TerminologySystemDef
+  ar/                  # Argentina (built-in)
+    __init__.py
+    _pack.py           # AR_LOCALE_PACK
+    _prompt.py         # SYSTEM_PROMPT_AR
+    snomed_ar.csv      # SNOMED CT edición argentina
+    cie10_ar.csv       # CIE-10 adaptación argentina
+    loinc.csv          # LOINC
+```
+
+### Crear un nuevo pack
+
+Ver `docs/LOCALE_GUIDE.md` para la guía completa. ADR-007 documenta la decisión.
+
+---
+
 ## 6. Seguridad y Compliance
 
 - **No se almacenan datos de pacientes reales** en el repo ni en el agente.
@@ -422,5 +466,6 @@ Los módulos premium (M3-M5) viven en el repo privado `saludai-private` pero imp
 | 2026-03 | 004 | Langfuse para observability |
 | 2026-03 | 005 | FHIR R4 only |
 | 2026-03 | 006 | Langfuse Cloud (free tier) para desarrollo |
+| 2026-03 | 007 | Sistema de locale packs para extensibilidad por país |
 
 Ver `docs/decisions/` para el detalle de cada ADR.

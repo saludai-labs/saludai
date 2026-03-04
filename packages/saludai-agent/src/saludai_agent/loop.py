@@ -30,6 +30,7 @@ if TYPE_CHECKING:
     from saludai_agent.llm import LLMClient
     from saludai_agent.tracing import Tracer
     from saludai_core.fhir_client import FHIRClient
+    from saludai_core.locales._types import LocalePack
     from saludai_core.terminology import TerminologyResolver
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
@@ -57,13 +58,17 @@ class AgentLoop:
         terminology_resolver: TerminologyResolver | None = None,
         config: AgentConfig | None = None,
         tracer: Tracer | None = None,
+        locale_pack: LocalePack | None = None,
     ) -> None:
         self._llm = llm
         self._config = config or AgentConfig()
         self._tracer: Tracer = tracer or NoOpTracer()
+        self._locale_pack = locale_pack
+        self._system_prompt = locale_pack.system_prompt if locale_pack else SYSTEM_PROMPT
         self._tool_registry = ToolRegistry(
             fhir_client=fhir_client,
             terminology_resolver=terminology_resolver,
+            locale_pack=locale_pack,
         )
 
     async def run(self, query: str) -> AgentResult:
@@ -100,7 +105,7 @@ class AgentLoop:
                 logger.info("agent_loop_iteration", iteration=iteration)
 
                 response = await self._llm.generate(
-                    system=SYSTEM_PROMPT,
+                    system=self._system_prompt,
                     messages=messages,
                     tools=tool_definitions if tool_definitions else None,
                     temperature=self._config.agent_temperature,

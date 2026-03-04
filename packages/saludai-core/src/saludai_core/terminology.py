@@ -31,6 +31,8 @@ from saludai_core.exceptions import (
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+    from saludai_core.locales._types import LocalePack
+
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -177,6 +179,7 @@ class TerminologyResolver:
         self,
         config: TerminologyConfig | None = None,
         extra_concepts: Sequence[TerminologyConcept] | None = None,
+        locale_pack: LocalePack | None = None,
     ) -> None:
         self._config = config or TerminologyConfig()
         self._concepts: list[TerminologyConcept] = []
@@ -186,7 +189,10 @@ class TerminologyResolver:
         }
         self._cache = _LRUCache(self._config.cache_size)
 
-        self._load_all_csv()
+        if locale_pack is not None:
+            self._load_from_locale_pack(locale_pack)
+        else:
+            self._load_all_csv()
 
         if extra_concepts:
             for concept in extra_concepts:
@@ -444,15 +450,30 @@ class TerminologyResolver:
 
     # -- CSV loading --------------------------------------------------------
 
+    def _load_from_locale_pack(self, locale_pack: LocalePack) -> None:
+        """Load terminology data from a locale pack's bundled CSVs."""
+        for sys_def in locale_pack.terminology_systems:
+            system = TerminologySystem(sys_def.system_uri)
+            self._load_csv(
+                system,
+                sys_def.csv_filename,
+                data_package=sys_def.data_package,
+            )
+
     def _load_all_csv(self) -> None:
         """Load all bundled CSV files into memory."""
         for system, filename in _SYSTEM_CSV_MAP.items():
             self._load_csv(system, filename)
 
-    def _load_csv(self, system: TerminologySystem, filename: str) -> None:
+    def _load_csv(
+        self,
+        system: TerminologySystem,
+        filename: str,
+        data_package: str = "saludai_core.data",
+    ) -> None:
         """Load a single CSV file for a terminology system."""
         try:
-            data_files = resources.files("saludai_core") / "data" / filename
+            data_files = resources.files(data_package) / filename
             text = data_files.read_text(encoding="utf-8")
         except Exception as exc:
             raise TerminologyDataError(f"Failed to read {filename}: {exc}") from exc

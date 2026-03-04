@@ -8,10 +8,12 @@
 
 ## Deuda técnica / pendientes menores
 
-- [ ] Crear ADR-002: No LangChain — custom agent loop (referenciado en CLAUDE.md)
-- [ ] Crear ADR-004: Langfuse para observabilidad (referenciado en CLAUDE.md)
-- [ ] Crear ADR-005: FHIR R4 only (referenciado en CLAUDE.md)
+- [x] ~~Crear ADR-002: No LangChain — custom agent loop~~ (completado sesión 3.4a)
+- [x] ~~Crear ADR-004: Langfuse para observabilidad~~ (completado sesión 3.4a)
+- [x] ~~Crear ADR-005: FHIR R4 only~~ (completado sesión 3.4a)
 - [ ] Definir licencia del repo de datos sintéticos (¿Apache 2.0? ¿CC-BY-4.0?)
+- [ ] Limpiar `saludai_core/data/` — los CSVs ahora están en `locales/ar/`, data/ es redundante
+- [ ] Locale pack discovery via `importlib.metadata.entry_points(group="saludai.locales")`
 
 ## Query Builder — fuera de scope (posible Sprint 3+)
 
@@ -29,7 +31,7 @@
 - [ ] Plugin system para agregar nuevos terminologies sin tocar core
 - [ ] Benchmark propio con Q&A pairs argentinos (extensión de FHIR-AgentBench)
 - [ ] Integration tests con servidor FHIR real del MSAL (requiere credenciales)
-- [ ] Multi-language support (portugués para Brasil)
+- [ ] Multi-language support (portugués para Brasil) — ahora posible con locale packs
 - [ ] Rate limiting inteligente basado en costo de tokens
 
 ## Ideas para otros módulos (NO tocar en Etapa 1)

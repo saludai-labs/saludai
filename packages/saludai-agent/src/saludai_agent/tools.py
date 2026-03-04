@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
 
     from saludai_core.fhir_client import FHIRClient
+    from saludai_core.locales._types import LocalePack
     from saludai_core.terminology import TerminologyResolver, TerminologySystem
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
@@ -602,34 +603,76 @@ class ToolRegistry:
     Args:
         fhir_client: FHIR client for search_fhir tool.
         terminology_resolver: Terminology resolver for resolve_terminology tool.
+        locale_pack: Locale pack for localised tool descriptions and enum values.
     """
 
     def __init__(
         self,
         fhir_client: FHIRClient,
         terminology_resolver: TerminologyResolver | None = None,
+        locale_pack: LocalePack | None = None,
     ) -> None:
         self._fhir_client = fhir_client
         self._terminology_resolver = terminology_resolver
+        self._locale_pack = locale_pack
         self._tools: dict[str, dict[str, Any]] = {}
         self._executors: dict[str, Callable[..., Awaitable[str] | str]] = {}
 
+        # Build tool definitions — use locale pack overrides when available
+        search_def = self._apply_locale("search_fhir", SEARCH_FHIR_DEFINITION)
+        get_def = self._apply_locale("get_resource", GET_RESOURCE_DEFINITION)
+        code_def = self._apply_locale("execute_code", EXECUTE_CODE_DEFINITION)
+
         # Register search_fhir (always available)
-        self._tools["search_fhir"] = SEARCH_FHIR_DEFINITION
+        self._tools["search_fhir"] = search_def
         self._executors["search_fhir"] = self._execute_search_fhir
 
         # Register get_resource (always available)
-        self._tools["get_resource"] = GET_RESOURCE_DEFINITION
+        self._tools["get_resource"] = get_def
         self._executors["get_resource"] = self._execute_get_resource
 
         # Register execute_code (always available, no external deps)
-        self._tools["execute_code"] = EXECUTE_CODE_DEFINITION
+        self._tools["execute_code"] = code_def
         self._executors["execute_code"] = self._execute_code
 
         # Register resolve_terminology (only if resolver is provided)
         if terminology_resolver is not None:
-            self._tools["resolve_terminology"] = RESOLVE_TERMINOLOGY_DEFINITION
+            term_def = self._build_resolve_terminology_def()
+            self._tools["resolve_terminology"] = term_def
             self._executors["resolve_terminology"] = self._execute_resolve_terminology
+
+    def _apply_locale(self, tool_name: str, definition: dict[str, Any]) -> dict[str, Any]:
+        """Apply locale pack description override to a tool definition."""
+        if self._locale_pack is None:
+            return definition
+        desc = self._locale_pack.tool_descriptions.get(tool_name)
+        if desc is None:
+            return definition
+        return {**definition, "description": desc}
+
+    def _build_resolve_terminology_def(self) -> dict[str, Any]:
+        """Build resolve_terminology definition, using locale pack enum if available."""
+        base = dict(RESOLVE_TERMINOLOGY_DEFINITION)
+        if self._locale_pack is not None:
+            desc = self._locale_pack.tool_descriptions.get("resolve_terminology")
+            if desc is not None:
+                base = {**base, "description": desc}
+            # Override system enum from locale pack
+            if self._locale_pack.tool_system_enum:
+                base = {
+                    **base,
+                    "input_schema": {
+                        **base["input_schema"],
+                        "properties": {
+                            **base["input_schema"]["properties"],
+                            "system": {
+                                **base["input_schema"]["properties"]["system"],
+                                "enum": list(self._locale_pack.tool_system_enum),
+                            },
+                        },
+                    },
+                }
+        return base
 
     def definitions(self) -> list[dict[str, Any]]:
         """Return tool definitions for the LLM."""

@@ -11,6 +11,7 @@ from saludai_core.exceptions import (
     FHIRError,
     FHIRResourceNotFoundError,
     FHIRValidationError,
+    LocaleNotFoundError,
     QueryBuilderError,
     QueryBuilderValidationError,
     SaludAIError,
@@ -19,6 +20,12 @@ from saludai_core.exceptions import (
     TerminologyError,
 )
 from saludai_core.fhir_client import FHIRClient
+from saludai_core.locales import (
+    LocalePack,
+    TerminologySystemDef,
+    available_locales,
+    load_locale_pack,
+)
 from saludai_core.query_builder import (
     CIE_10_SYSTEM,
     LOINC_SYSTEM,
@@ -70,6 +77,8 @@ __all__ = [
     "FHIRResourceType",
     "FHIRValidationError",
     "IncludeParam",
+    "LocaleNotFoundError",
+    "LocalePack",
     "MatchType",
     "QuantityParam",
     "QueryBuilderError",
@@ -88,9 +97,12 @@ __all__ = [
     "TerminologyMatch",
     "TerminologyResolver",
     "TerminologySystem",
+    "TerminologySystemDef",
     "TokenParam",
+    "available_locales",
     "cie10",
     "date_param",
+    "load_locale_pack",
     "loinc",
     "quantity",
     "reference",

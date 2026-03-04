@@ -22,6 +22,7 @@ class AgentConfig(BaseSettings):
         agent_max_iterations: Maximum tool-calling loop iterations.
         agent_max_tokens: Max tokens for LLM responses.
         agent_temperature: Sampling temperature (0.0 for deterministic).
+        locale: Locale pack code (e.g. ``"ar"`` for Argentina).
         langfuse_enabled: Enable Langfuse tracing (requires env vars).
     """
 
@@ -34,4 +35,5 @@ class AgentConfig(BaseSettings):
     agent_max_iterations: int = 8
     agent_max_tokens: int = 4096
     agent_temperature: float = 0.0
+    locale: str = "ar"
     langfuse_enabled: bool = False
