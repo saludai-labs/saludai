@@ -126,6 +126,26 @@ class FHIRClient:
         data = await self._request("GET", f"/{resource_type}/{resource_id}")
         return self._parse_resource(resource_type, data)
 
+    async def read_raw(self, resource_type: str, resource_id: str) -> dict[str, Any]:
+        """Read a single FHIR resource and return the raw JSON dict.
+
+        Unlike ``read()``, this skips ``fhir.resources`` Pydantic parsing,
+        avoiding issues with strict ``extra="forbid"`` on choice-type fields.
+
+        Args:
+            resource_type: FHIR resource type, e.g. ``"Patient"``.
+            resource_id: Logical id of the resource.
+
+        Returns:
+            The raw JSON dict from the FHIR server.
+
+        Raises:
+            FHIRResourceNotFoundError: If the resource does not exist (404).
+            FHIRConnectionError: If the server is unreachable.
+        """
+        self._log.info("fhir.read_raw", resource_type=resource_type, resource_id=resource_id)
+        return await self._request("GET", f"/{resource_type}/{resource_id}")
+
     async def search(
         self,
         resource_type: str,

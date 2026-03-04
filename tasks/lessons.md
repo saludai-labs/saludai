@@ -90,6 +90,11 @@
 **Qué pasó:** El judge prompt decía "si notes dice 'entre 13 y 17', aceptar cualquier número en ese rango". Haiku reconocía el rango en su razonamiento pero igual devolvía INCORRECT.
 **Regla:** Para evaluación de rangos numéricos, usar pre-check programático (regex + comparación) en vez de confiar en que un LLM pequeño siga instrucciones de comparación numérica. Solo caer al LLM para evaluación semántica.
 
+### 2026-03-04: .env overrides sobreescriben defaults de pydantic-settings
+**Qué pasó:** Cambié `agent_max_iterations` de 5 a 8 en `AgentConfig` pero el benchmark seguía usando 5 porque `.env` tenía `SALUDAI_AGENT_MAX_ITERATIONS=5`.
+**Por qué estuvo mal:** pydantic-settings con `env_prefix` lee variables de entorno que tienen prioridad sobre los defaults del modelo. Si `.env` tiene el valor viejo, el default nuevo no tiene efecto.
+**Regla:** Al cambiar un default en pydantic-settings, SIEMPRE verificar y actualizar `.env` y `.env.example` con el nuevo valor.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.

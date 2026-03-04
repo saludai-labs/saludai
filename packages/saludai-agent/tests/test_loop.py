@@ -376,6 +376,7 @@ class TestAgentLoopMessages:
         tool_names = {t["name"] for t in tools}
         assert "resolve_terminology" in tool_names
         assert "search_fhir" in tool_names
+        assert "get_resource" in tool_names
 
     @pytest.mark.asyncio
     async def test_temperature_and_max_tokens_from_config(self) -> None:
@@ -395,6 +396,10 @@ class TestAgentLoopMessages:
 
 class TestAgentLoopDefaultConfig:
     """AgentLoop uses default config when none provided."""
+
+    def test_default_max_iterations_is_8(self) -> None:
+        config = AgentConfig()
+        assert config.agent_max_iterations == 8
 
     @pytest.mark.asyncio
     async def test_default_config(self) -> None:

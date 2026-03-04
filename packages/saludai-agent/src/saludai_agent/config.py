@@ -31,7 +31,7 @@ class AgentConfig(BaseSettings):
     llm_model: str = "claude-sonnet-4-20250514"
     llm_api_key: str | None = None
     llm_base_url: str | None = None
-    agent_max_iterations: int = 5
+    agent_max_iterations: int = 8
     agent_max_tokens: int = 4096
     agent_temperature: float = 0.0
     langfuse_enabled: bool = False

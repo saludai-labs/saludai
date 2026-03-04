@@ -10,9 +10,11 @@ import pytest
 
 from saludai_agent.exceptions import ToolExecutionError
 from saludai_agent.tools import (
+    GET_RESOURCE_DEFINITION,
     RESOLVE_TERMINOLOGY_DEFINITION,
     SEARCH_FHIR_DEFINITION,
     ToolRegistry,
+    execute_get_resource,
     execute_resolve_terminology,
     execute_search_fhir,
     format_bundle_summary,
@@ -58,6 +60,18 @@ class TestToolDefinitions:
         schema = SEARCH_FHIR_DEFINITION["input_schema"]
         assert "params" in schema["properties"]
         assert schema["properties"]["params"]["type"] == "object"
+
+    def test_get_resource_name(self) -> None:
+        assert GET_RESOURCE_DEFINITION["name"] == "get_resource"
+
+    def test_get_resource_has_description(self) -> None:
+        assert len(GET_RESOURCE_DEFINITION["description"]) > 10
+
+    def test_get_resource_required_fields(self) -> None:
+        schema = GET_RESOURCE_DEFINITION["input_schema"]
+        assert "resource_type" in schema["properties"]
+        assert "resource_id" in schema["properties"]
+        assert set(schema["required"]) == {"resource_type", "resource_id"}
 
 
 # ---------------------------------------------------------------------------
@@ -247,6 +261,48 @@ class TestExecuteSearchFhir:
 
 
 # ---------------------------------------------------------------------------
+# execute_get_resource
+# ---------------------------------------------------------------------------
+
+
+class TestExecuteGetResource:
+    """execute_get_resource reads a single resource via FHIRClient.read_raw."""
+
+    @pytest.mark.asyncio
+    async def test_returns_summary(self) -> None:
+        client = MagicMock()
+        client.read_raw = AsyncMock(return_value={
+            "resourceType": "Patient",
+            "id": "1005",
+            "name": [{"family": "García", "given": ["Ana"]}],
+            "gender": "female",
+            "birthDate": "1980-03-15",
+            "address": [{"city": "Buenos Aires", "state": "CABA"}],
+        })
+        result = await execute_get_resource(client, {
+            "resource_type": "Patient",
+            "resource_id": "1005",
+        })
+        assert "Patient/1005" in result
+        assert "García" in result
+        assert "1980-03-15" in result
+
+    @pytest.mark.asyncio
+    async def test_propagates_not_found(self) -> None:
+        from saludai_core.exceptions import FHIRResourceNotFoundError
+
+        client = MagicMock()
+        client.read_raw = AsyncMock(
+            side_effect=FHIRResourceNotFoundError("Resource not found: GET /Patient/9999")
+        )
+        with pytest.raises(FHIRResourceNotFoundError):
+            await execute_get_resource(client, {
+                "resource_type": "Patient",
+                "resource_id": "9999",
+            })
+
+
+# ---------------------------------------------------------------------------
 # format_bundle_summary
 # ---------------------------------------------------------------------------
 
@@ -366,14 +422,14 @@ class TestToolRegistry:
         registry = ToolRegistry(fhir_client=client, terminology_resolver=resolver)
         defs = registry.definitions()
         names = {d["name"] for d in defs}
-        assert names == {"resolve_terminology", "search_fhir"}
+        assert names == {"resolve_terminology", "search_fhir", "get_resource"}
 
     def test_definitions_without_resolver(self) -> None:
         client = MagicMock()
         registry = ToolRegistry(fhir_client=client, terminology_resolver=None)
         defs = registry.definitions()
         names = {d["name"] for d in defs}
-        assert names == {"search_fhir"}
+        assert names == {"search_fhir", "get_resource"}
 
     @pytest.mark.asyncio
     async def test_execute_unknown_tool(self) -> None:
@@ -413,6 +469,27 @@ class TestToolRegistry:
         result = await registry.execute(tc)
         assert result.is_error is False
         assert "No results found" in result.content
+
+    @pytest.mark.asyncio
+    async def test_execute_get_resource(self) -> None:
+        client = MagicMock()
+        client.read_raw = AsyncMock(return_value={
+            "resourceType": "Patient",
+            "id": "p-1",
+            "name": [{"family": "Test", "given": ["User"]}],
+            "gender": "male",
+            "birthDate": "1990-01-01",
+            "address": [],
+        })
+        registry = ToolRegistry(fhir_client=client)
+        tc = ToolCall(
+            id="tc_1",
+            name="get_resource",
+            arguments={"resource_type": "Patient", "resource_id": "p-1"},
+        )
+        result = await registry.execute(tc)
+        assert result.is_error is False
+        assert "Patient/p-1" in result.content
 
     @pytest.mark.asyncio
     async def test_execute_tool_error_raises(self) -> None:

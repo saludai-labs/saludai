@@ -4,6 +4,47 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 3, Sesión 3.2] — 2026-03-04
+
+### Reference Navigator + Fixes
+
+**Core — Terminology fix:**
+- `snomed_ar.csv`: Display de `38341003` cambiado de "Hipertensión arterial" a "Hipertensión arterial sistémica" para evitar exact-match espurio con `59621000` ("Hipertensión arterial esencial")
+- Test: "hipertensión arterial" ahora resuelve a `59621000` correctamente
+
+**Core — FHIRClient:**
+- Agregado `read_raw(resource_type, resource_id)` — retorna raw dict sin parsear con fhir.resources, consistente con `search()`
+
+**Agent — Nueva tool `get_resource`:**
+- `GET_RESOURCE_DEFINITION` — JSON schema para lectura de recurso individual por tipo e ID
+- `execute_get_resource()` — usa `fhir_client.read_raw()` + `_summarize_resource()`
+- Registrado en `ToolRegistry.__init__()` (siempre disponible)
+
+**Agent — Config:**
+- `agent_max_iterations` default cambiado de 5 a 8 (queries multi-medicamento necesitan más rondas)
+- `.env` y `.env.example` actualizados
+
+**Agent — Prompt v1.2:**
+- Documentación de `get_resource` como herramienta #3
+- Nueva sección "Navegación de referencias" con guidance de `_include`/`_revinclude`
+- Nueva sección "Medicamentos" con tips de búsqueda por código ATC/SNOMED
+- Instrucciones para usar `get_resource` para verificar datos de recursos individuales
+
+**Tests:**
+- 12 tests nuevos/actualizados: terminology disambiguation, get_resource (definition, execution, not-found, registry), prompt v1.2, max_iterations=8
+- Total: 365 tests, todos verdes
+
+**Benchmark (Exp 3):**
+- **Accuracy: 86.0%** (43/50) — +4pp vs 82% (Exp 2)
+- Simple: 8/8 (100%)
+- Medium: 19/20 (95%) — +15pp vs Exp 2
+- Complex: 16/22 (73%)
+- **0 errors** (antes 4) — max_iterations=8 eliminó todos los timeouts
+- Fixes confirmados: M02, M19, C04, C08, C09 ahora pasan
+- Fallas restantes: 3 aggregation (M09, C20, C21), 2 LLM counting (C03, C05), 2 non-determinism (C07, C18)
+
+---
+
 ## [Sprint 3, Sesión 3.1] — 2026-03-04
 
 ### Pagination + `_summary=count`

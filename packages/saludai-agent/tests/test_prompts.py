@@ -35,6 +35,12 @@ class TestSystemPrompt:
     def test_mentions_auditability(self) -> None:
         assert "auditabilidad" in SYSTEM_PROMPT.lower()
 
+    def test_mentions_get_resource(self) -> None:
+        assert "get_resource" in SYSTEM_PROMPT
+
+    def test_mentions_include(self) -> None:
+        assert "_include" in SYSTEM_PROMPT
+
     def test_instructs_same_language(self) -> None:
         assert "mismo idioma" in SYSTEM_PROMPT
 
@@ -47,4 +53,4 @@ class TestPromptVersion:
         assert "." in PROMPT_VERSION
 
     def test_current_version(self) -> None:
-        assert PROMPT_VERSION == "v1.1"
+        assert PROMPT_VERSION == "v1.2"

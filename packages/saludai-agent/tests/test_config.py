@@ -28,7 +28,7 @@ class TestAgentConfigDefaults:
 
     def test_default_max_iterations(self) -> None:
         config = AgentConfig()
-        assert config.agent_max_iterations == 5
+        assert config.agent_max_iterations == 8
 
     def test_default_max_tokens(self) -> None:
         config = AgentConfig()

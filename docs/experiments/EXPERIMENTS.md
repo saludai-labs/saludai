@@ -122,7 +122,7 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 | Sesión | Accuracy | Simple | Medium | Complex | Delta vs Exp 1 |
 |--------|----------|--------|--------|---------|----------------|
 | 3.1 (Pagination) | **82.0%** | 8/8 (100%) | 16/20 (80%) | 17/22 (77%) | **+22pp** |
-| 3.2 (Reference nav) | | | | | |
+| 3.2 (Reference nav) | **86.0%** | 8/8 (100%) | 19/20 (95%) | 16/22 (73%) | **+26pp** |
 | 3.3 (Code interpreter) | | | | | |
 | 3.4 (Prompt opt) | | | | | |
 
@@ -144,6 +144,24 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 - **Terminology mismatch (M02):** "hipertensión arterial" resuelve a 38341003 (no en seed) en vez de 59621000
 - **Aggregation sin code interpreter (~3 fallas):** Conteo/ranking manual en resultados grandes (M09, C20, C21)
 - **API instability (4 errors):** Rate limiting de Anthropic causa timeouts
+
+### Análisis — Sesión 3.2
+
+**Cambios implementados:**
+1. Fix terminology disambiguation: display de `38341003` "Hipertensión arterial" → "Hipertensión arterial sistémica" (evita exact-match con 59621000)
+2. Nuevo tool `get_resource` para lectura de recurso individual por tipo e ID
+3. `agent_max_iterations` de 5 a 8 (queries multi-medicamento necesitan más rondas)
+4. System prompt v1.2 con guidance de `_include`/`_revinclude` y medicamentos
+
+**Impacto por categoría:**
+- **Medium 95%:** M02 (hipertensión) y M19 (antihipertensivos) ahora pasan. Solo M09 (aggregation) sigue fallando.
+- **Complex 73%:** C04, C08, C09 (cascada del terminology bug + max iterations) ahora pasan. Pero C07 y C18 flippearon a INCORRECT por non-determinism del LLM.
+- **0 errors:** El bump de max_iterations eliminó los 4 errores de Exp 2 (M14, M19, C04, C09).
+
+**Patrones de fallas restantes (7):**
+- **Aggregation sin code interpreter (M09, C20, C21):** El LLM no puede contar/agrupar correctamente 100+ registros en contexto → necesita Code Interpreter
+- **Cross-resource join con conteo (C03, C05):** El LLM falla cruzando Patient addresses con Condition results cuando hay muchos registros
+- **Non-determinism (C07, C18):** Estas preguntas pasan/fallan entre corridas — el LLM a veces cuenta mal los datos complejos
 
 ### Target Final
 - **Accuracy ≥ 80%** con Sonnet al final del Sprint 3 (baseline: 60%)
@@ -212,6 +230,7 @@ Historial completo de todas las ejecuciones del benchmark.
 | 2026-03-04 | 0 | Sonnet 4.5 | 25q (v1) | 88.0% | 88% | 100% | 71% | Baseline inflado |
 | 2026-03-04 | 1 | Sonnet 4.5 | 50q (v2) | 60.0% | 50% | 60% | 64% | Baseline honesto |
 | 2026-03-04 | 2 | Sonnet 4.5 | 50q (v2) | 82.0% | 100% | 80% | 77% | Pagination fix (`_count=200`, `_summary=count`) |
+| 2026-03-04 | 3 | Sonnet 4.5 | 50q (v2) | 86.0% | 100% | 95% | 73% | Terminology fix, `get_resource` tool, max_iterations=8, prompt v1.2 |
 
 ---
 

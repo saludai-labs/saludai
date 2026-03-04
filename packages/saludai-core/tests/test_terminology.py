@@ -111,6 +111,12 @@ class TestExactMatch:
         assert match.concept is not None
         assert match.concept.system == TerminologySystem.CIE_10
 
+    def test_hipertension_arterial_resolves_essential(self, resolver: TerminologyResolver) -> None:
+        """'hipertensión arterial' MUST resolve to 59621000 (esencial), not 38341003."""
+        match = resolver.resolve("hipertensión arterial")
+        assert match.concept is not None
+        assert match.concept.code == "59621000"
+
     def test_exact_cie10(self, resolver: TerminologyResolver) -> None:
         match = resolver.resolve("Hipertensión esencial", system=TerminologySystem.CIE_10)
         assert match.concept is not None
@@ -151,7 +157,7 @@ class TestFuzzyMatch:
     def test_fuzzy_accented_variant(self, resolver: TerminologyResolver) -> None:
         match = resolver.resolve("hipertensión")
         assert match.concept is not None
-        assert match.concept.code in ("59621000", "38341003")
+        assert match.concept.code == "59621000"
 
     def test_fuzzy_abbreviation(self, resolver: TerminologyResolver) -> None:
         match = resolver.resolve("EPOC")

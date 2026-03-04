@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-03-04
 **Sprint actual:** Sprint 3 — Multi-turn y Precisión
-**Sesión actual:** 3.1 — Pagination + `_summary=count` (completada)
+**Sesión actual:** 3.2 — Reference Navigator + Fixes (completada)
 
 ---
 
@@ -16,37 +16,46 @@
 🟢 **Sesión 2.5 completa** — FHIR-AgentBench baseline. Framework de evaluación con 25 preguntas curadas, LLM-as-judge, métricas por categoría. Baseline: **88% accuracy** (22/25). 30 tests nuevos (337 total), todos verdes.
 🟢 **Sesión 2.6 completa** — Benchmark honesto + Documento de Experimentos. Seed enriquecido (536 entries, 5 resource types), 50 preguntas (8 simple, 20 medium, 22 complex), judge híbrido (programmatic + Haiku), fix MedicationRequest parsing. **Baseline honesto: 60% accuracy** (30/50). 8 tests nuevos (374 total), todos verdes.
 🟢 **Sesión 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
+🟢 **Sesión 3.2 completa** — Reference Navigator + Fixes. Terminology disambiguation fix, nuevo tool `get_resource`, max_iterations 5→8, system prompt v1.2 con guidance de `_include`/`_revinclude`. **Accuracy: 86.0%** (43/50, 0 errors). 365 tests, todos verdes.
 
 ## Última Sesión Completada
 
-**Sprint 3, Sesión 3.1** — Pagination + `_summary=count`
+**Sprint 3, Sesión 3.2** — Reference Navigator + Fixes
 
 ### Lo que se hizo
-- `packages/saludai-core/src/saludai_core/query_builder.py` — `SummaryMode` enum + `.summary()` method en `FHIRQueryBuilder`
-- `packages/saludai-core/src/saludai_core/__init__.py` — Re-export `SummaryMode`
+- `packages/saludai-core/src/saludai_core/data/snomed_ar.csv` — Fix display de `38341003`: "Hipertensión arterial" → "Hipertensión arterial sistémica" (evita exact-match espurio con 59621000)
+- `packages/saludai-core/src/saludai_core/fhir_client.py` — Nuevo método `read_raw()` que retorna raw dict sin parsear con fhir.resources
 - `packages/saludai-agent/src/saludai_agent/tools.py`:
-  - `execute_search_fhir()` — inyecta `_count=200` por defecto (no sobreescribe si hay `_count` o `_summary` explícito)
-  - `format_bundle_summary()` — maneja bundles `_summary=count` (total > 0 sin entries → "Total count: N")
-  - `SEARCH_FHIR_DEFINITION` — descripción de params actualizada con `_summary` y `_count`
-- `packages/saludai-agent/src/saludai_agent/prompts.py` — Sección "Estrategia de consulta" en SYSTEM_PROMPT, `PROMPT_VERSION = "v1.1"`
-- Tests: 5 tests nuevos en test_tools.py (summary-count format, _count injection, no-override), 5 tests nuevos en test_query_builder.py (.summary() con string/enum/invalid/combined), 1 fix test_prompts.py (version bump)
+  - `GET_RESOURCE_DEFINITION` — nueva tool definition para lectura de recurso individual
+  - `execute_get_resource()` — executor que usa `fhir_client.read_raw()` + `_summarize_resource()`
+  - `ToolRegistry.__init__()` — registra `get_resource` (siempre disponible)
+- `packages/saludai-agent/src/saludai_agent/config.py` — `agent_max_iterations` default 5 → 8
+- `packages/saludai-agent/src/saludai_agent/prompts.py` — `PROMPT_VERSION = "v1.2"`, secciones "Navegación de referencias" y "Medicamentos", documentación de `get_resource`
+- `.env` y `.env.example` — `SALUDAI_AGENT_MAX_ITERATIONS=8`
+- Tests: 12 tests nuevos/actualizados (terminology disambiguation, get_resource definition/execution/registry, prompt version bump, max_iterations default)
 
-### Resultados del Benchmark (Exp 2)
-- **Accuracy total: 82.0%** (41/50 correctas)
-- Simple: 8/8 (100%) — +50pp vs Exp 1
-- Medium: 16/20 (80%) — +20pp vs Exp 1
-- Complex: 17/22 (77%) — +13pp vs Exp 1
-- Errors: 4 (API retries/timeouts)
-- Incorrect: 5
-- Avg duration: 16.1s por pregunta
-- Avg iterations: 2.8
+### Resultados del Benchmark (Exp 3)
+- **Accuracy total: 86.0%** (43/50 correctas)
+- Simple: 8/8 (100%)
+- Medium: 19/20 (95%) — +15pp vs Exp 2
+- Complex: 16/22 (73%)
+- Errors: 0 (antes 4) — max_iterations=8 eliminó todos los timeouts
+- Incorrect: 7
+- Avg duration: 19.0s por pregunta
+- Avg iterations: 3.1
 - Agent: Claude Sonnet 4.5
 - Judge: Claude Haiku 4.5 (híbrido)
 
+### Fallas restantes (7)
+- **M09** (medium): aggregation — condiciones frecuentes → Code Interpreter
+- **C03, C05** (complex): cross-resource join — LLM counting errors
+- **C07, C18** (complex): non-determinism — pasan/fallan entre corridas
+- **C20, C21** (complex): aggregation — distribución/ranking → Code Interpreter
+
 ### Verificación
-- `uv run pytest` → 355 passed
+- `uv run pytest` → 365 passed
 - `uv run ruff check .` → All checks passed
-- `uv run python -m benchmarks.run_eval` → 82% accuracy
+- `uv run python -m benchmarks.run_eval` → 86% accuracy (0 errors)
 
 ## Sprint 1 — Completado
 
@@ -69,14 +78,15 @@ Todas las sesiones del Sprint 1 están finalizadas:
 ## Sprint 3 — En Progreso
 
 - ✅ 3.1 — Pagination + `_summary=count` (60% → 82%)
+- ✅ 3.2 — Reference Navigator + Fixes (82% → 86%, 0 errors)
 
 ## Próxima Sesión
 
 **Sprint:** 3 — Multi-turn y Precisión
-**Sesión:** 3.2 — Reference Navigator (resolve refs, multi-hop)
-**Objetivo:** Mejorar navegación de referencias entre recursos (MedicationRequest → Patient → Conditions)
-**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.2
-**Fallas restantes (Exp 2):** 5 INCORRECT + 4 ERRORS — analizar patrones para priorizar siguiente mejora
+**Sesión:** 3.3 — Code Interpreter (sandboxed Python execution)
+**Objetivo:** Agregar tool de ejecución de código Python para que el agente pueda contar, agrupar y calcular sobre los resultados FHIR. Esto debería fijar M09, C20, C21 (aggregation) y mejorar C03, C05.
+**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.3
+**Fallas restantes (Exp 3):** 7 INCORRECT (3 aggregation, 2 LLM counting, 2 non-determinism)
 
 ## Blockers
 

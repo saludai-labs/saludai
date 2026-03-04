@@ -168,3 +168,17 @@
 - [x] Benchmark: 82.0% accuracy (41/50) — +22pp vs Exp 1
 - [x] Documentar Exp 2 en EXPERIMENTS.md
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md
+
+## Sesión: Sprint 3, Sesión 3.2
+
+- [x] Fix `snomed_ar.csv` — display de `38341003` → "Hipertensión arterial sistémica"
+- [x] Agregar `read_raw()` a `FHIRClient`
+- [x] Agregar `get_resource` tool (definition + executor + registry)
+- [x] Subir `agent_max_iterations` de 5 a 8 (config + .env)
+- [x] Actualizar system prompt a v1.2 (get_resource, _include, medicamentos)
+- [x] Tests nuevos/actualizados (12 tests)
+- [x] `uv run pytest` → 365 passed
+- [x] `uv run ruff check .` → All checks passed
+- [x] Benchmark: 86.0% accuracy (43/50, 0 errors) — +4pp vs Exp 2
+- [x] Documentar Exp 3 en EXPERIMENTS.md
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md

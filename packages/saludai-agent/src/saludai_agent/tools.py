@@ -56,6 +56,29 @@ RESOLVE_TERMINOLOGY_DEFINITION: dict[str, Any] = {
     },
 }
 
+GET_RESOURCE_DEFINITION: dict[str, Any] = {
+    "name": "get_resource",
+    "description": (
+        "Lee un recurso FHIR individual por tipo e ID. "
+        "Usá esta herramienta para obtener detalles completos de un recurso "
+        "específico cuando ya tenés su referencia (ej: Patient/1005)."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "resource_type": {
+                "type": "string",
+                "description": "Tipo de recurso (ej: 'Patient').",
+            },
+            "resource_id": {
+                "type": "string",
+                "description": "ID del recurso (ej: '1005').",
+            },
+        },
+        "required": ["resource_type", "resource_id"],
+    },
+}
+
 SEARCH_FHIR_DEFINITION: dict[str, Any] = {
     "name": "search_fhir",
     "description": (
@@ -180,6 +203,25 @@ async def execute_search_fhir(
 
     bundle = await fhir_client.search(resource_type, params)
     return format_bundle_summary(bundle)
+
+
+async def execute_get_resource(
+    fhir_client: FHIRClient,
+    arguments: dict[str, Any],
+) -> str:
+    """Execute the get_resource tool.
+
+    Args:
+        fhir_client: The FHIR client instance.
+        arguments: Tool call arguments (``resource_type``, ``resource_id``).
+
+    Returns:
+        A token-efficient text summary of the resource.
+    """
+    resource_type = arguments.get("resource_type", "")
+    resource_id = arguments.get("resource_id", "")
+    resource = await fhir_client.read_raw(resource_type, resource_id)
+    return _summarize_resource(resource_type, resource)
 
 
 # ---------------------------------------------------------------------------
@@ -404,6 +446,10 @@ class ToolRegistry:
         self._tools["search_fhir"] = SEARCH_FHIR_DEFINITION
         self._executors["search_fhir"] = self._execute_search_fhir
 
+        # Register get_resource (always available)
+        self._tools["get_resource"] = GET_RESOURCE_DEFINITION
+        self._executors["get_resource"] = self._execute_get_resource
+
         # Register resolve_terminology (only if resolver is provided)
         if terminology_resolver is not None:
             self._tools["resolve_terminology"] = RESOLVE_TERMINOLOGY_DEFINITION
@@ -458,3 +504,7 @@ class ToolRegistry:
     async def _execute_search_fhir(self, arguments: dict[str, Any]) -> str:
         """Async wrapper for search_fhir."""
         return await execute_search_fhir(self._fhir_client, arguments)
+
+    async def _execute_get_resource(self, arguments: dict[str, Any]) -> str:
+        """Async wrapper for get_resource."""
+        return await execute_get_resource(self._fhir_client, arguments)
