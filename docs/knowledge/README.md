@@ -16,3 +16,4 @@ Documentación de hallazgos de investigación técnica. A diferencia de los ADRs
 | `hapi-fhir-docker.md` | HAPI FHIR R4: imagen Docker, configuración, healthcheck, seeding |
 | `langfuse-setup.md` | Langfuse: Cloud vs self-hosted, env vars, integración |
 | `fhir-resources-python.md` | fhir.resources v8+: API, parsing, gotchas, imports dinámicos |
+| [`../experiments/EXPERIMENTS.md`](../experiments/EXPERIMENTS.md) | Estrategia experimental: benchmarks, ablation studies, matriz de modelos |

@@ -58,6 +58,24 @@ fi
 CONDITION_COUNT=$(curl -s "${FHIR_SERVER_URL}/Condition?_summary=count" \
   | grep -o '"total" *: *[0-9]*' \
   | grep -o '[0-9]*')
-
 echo "==> Condition count: ${CONDITION_COUNT}"
+
+# Verify observation count
+OBSERVATION_COUNT=$(curl -s "${FHIR_SERVER_URL}/Observation?_summary=count" \
+  | grep -o '"total" *: *[0-9]*' \
+  | grep -o '[0-9]*')
+echo "==> Observation count: ${OBSERVATION_COUNT}"
+
+# Verify medication request count
+MEDREQUEST_COUNT=$(curl -s "${FHIR_SERVER_URL}/MedicationRequest?_summary=count" \
+  | grep -o '"total" *: *[0-9]*' \
+  | grep -o '[0-9]*')
+echo "==> MedicationRequest count: ${MEDREQUEST_COUNT}"
+
+# Verify encounter count
+ENCOUNTER_COUNT=$(curl -s "${FHIR_SERVER_URL}/Encounter?_summary=count" \
+  | grep -o '"total" *: *[0-9]*' \
+  | grep -o '[0-9]*')
+echo "==> Encounter count: ${ENCOUNTER_COUNT}"
+
 echo "==> Seeding complete!"

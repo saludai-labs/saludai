@@ -50,3 +50,6 @@ docker-compose.override.yml
 
 # Langfuse local data
 langfuse-data/
+
+# Benchmark results (generated, may contain API keys in config)
+benchmarks/results/

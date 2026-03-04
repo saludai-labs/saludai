@@ -130,7 +130,7 @@ class FHIRClient:
         self,
         resource_type: str,
         params: dict[str, str | list[str]] | None = None,
-    ) -> Any:
+    ) -> dict[str, Any]:
         """Search for FHIR resources.
 
         Args:
@@ -139,16 +139,17 @@ class FHIRClient:
                 lists of strings for repeated parameters.
 
         Returns:
-            A ``fhir.resources.bundle.Bundle`` with search results.
+            The raw FHIR Bundle as a dict.  We intentionally skip
+            ``fhir.resources`` validation here because its strict
+            Pydantic v2 models reject valid FHIR choice-type fields
+            (e.g. ``medicationCodeableConcept`` in MedicationRequest).
 
         Raises:
             FHIRConnectionError: If the server is unreachable.
-            FHIRValidationError: If the response cannot be parsed.
         """
         self._log.info("fhir.search", resource_type=resource_type, params=params)
         query_params = self._build_query_params(params)
-        data = await self._request("GET", f"/{resource_type}", params=query_params)
-        return self._parse_resource("Bundle", data)
+        return await self._request("GET", f"/{resource_type}", params=query_params)
 
     async def close(self) -> None:
         """Close the underlying HTTP client."""

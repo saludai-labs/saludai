@@ -44,10 +44,10 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["saludai_core", "saludai_agent", "saludai_mcp", "saludai_api"]
+known-first-party = ["saludai_core", "saludai_agent", "saludai_mcp", "saludai_api", "benchmarks"]
 
 [tool.pytest.ini_options]
-testpaths = ["packages"]
+testpaths = ["packages", "benchmarks"]
 asyncio_mode = "auto"
 addopts = "--import-mode=importlib"
 markers = [

@@ -52,41 +52,41 @@ async def test_check_connection(client: FHIRClient) -> None:
 
 
 async def test_search_patients(client: FHIRClient) -> None:
-    """Searching patients returns a Bundle with at least 50 entries."""
+    """Searching patients returns a Bundle dict with at least 50 entries."""
     bundle = await client.search("Patient", {"_count": "100"})
-    assert bundle.get_resource_type() == "Bundle"
-    assert bundle.total >= 50
+    assert bundle["resourceType"] == "Bundle"
+    assert bundle["total"] >= 50
 
 
 async def test_search_patients_by_address_state(client: FHIRClient) -> None:
     """Searching patients by address-state filters correctly."""
     bundle = await client.search("Patient", {"address-state": "Buenos Aires"})
-    assert bundle.get_resource_type() == "Bundle"
-    assert bundle.entry is not None and len(bundle.entry) >= 1
+    assert bundle["resourceType"] == "Bundle"
+    assert bundle.get("entry") is not None and len(bundle["entry"]) >= 1
 
 
 async def test_search_conditions_by_code(client: FHIRClient) -> None:
     """Searching conditions by SNOMED code 44054006 (diabetes tipo 2)."""
     bundle = await client.search("Condition", {"code": "44054006"})
-    assert bundle.get_resource_type() == "Bundle"
-    assert bundle.total >= 1
+    assert bundle["resourceType"] == "Bundle"
+    assert bundle["total"] >= 1
     # Verify entries contain conditions with the right code
-    entry = bundle.entry[0]
-    assert entry.resource.get_resource_type() == "Condition"
+    entry = bundle["entry"][0]
+    assert entry["resource"]["resourceType"] == "Condition"
 
 
 async def test_search_with_count(client: FHIRClient) -> None:
     """_count parameter limits the number of returned entries."""
     bundle = await client.search("Patient", {"_count": "3"})
-    assert bundle.get_resource_type() == "Bundle"
-    assert len(bundle.entry) <= 3
+    assert bundle["resourceType"] == "Bundle"
+    assert len(bundle["entry"]) <= 3
 
 
 async def test_read_patient(client: FHIRClient) -> None:
     """Reading a specific patient by ID works."""
     # First search to get a real patient ID
     bundle = await client.search("Patient", {"_count": "1"})
-    patient_id = bundle.entry[0].resource.id
+    patient_id = bundle["entry"][0]["resource"]["id"]
 
     patient = await client.read("Patient", patient_id)
     assert patient.get_resource_type() == "Patient"
@@ -102,9 +102,9 @@ async def test_read_nonexistent(client: FHIRClient) -> None:
 async def test_search_empty_results(client: FHIRClient) -> None:
     """Searching with no matches returns a Bundle with total=0."""
     bundle = await client.search("Patient", {"name": "ZZZZNONEXISTENT"})
-    assert bundle.get_resource_type() == "Bundle"
-    assert bundle.total == 0
-    assert bundle.entry is None or len(bundle.entry) == 0
+    assert bundle["resourceType"] == "Bundle"
+    assert bundle["total"] == 0
+    assert bundle.get("entry") is None or len(bundle["entry"]) == 0
 
 
 async def test_connection_error() -> None:

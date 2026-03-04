@@ -1,7 +1,8 @@
 """Generate synthetic FHIR R4 seed data with Argentine demographics.
 
-Produces a Transaction Bundle with ~55 patients and ~100 conditions
-using realistic Argentine names, DNI, provinces, and SNOMED CT codes.
+Produces a Transaction Bundle with ~55 patients, ~76 conditions, ~180
+observations, ~100 medication requests, and ~130 encounters using realistic
+Argentine names, DNI, provinces, and SNOMED CT / LOINC / ATC codes.
 
 Usage:
     python generate_seed_data.py [output_path]
@@ -169,6 +170,50 @@ CONDITIONS = [
     ("49436004", "Fibrilación auricular", "Atrial fibrillation", 0.03),
 ]
 
+# ---------------------------------------------------------------------------
+# LOINC observation types with normal/abnormal ranges
+# (loinc_code, display_es, unit, normal_low, normal_high,
+#  abnormal_low, abnormal_high, related_condition_snomed)
+# When related_condition_snomed is present and patient has that condition,
+# abnormal range is used; otherwise normal range.
+# ---------------------------------------------------------------------------
+OBSERVATION_TYPES = [
+    ("2345-7", "Glucosa en sangre", "mg/dL", 70, 110, 140, 300, "44054006"),
+    ("718-7", "Hemoglobina", "g/dL", 12.0, 17.0, 6.0, 10.0, "267036007"),
+    ("8480-6", "Presión arterial sistólica", "mmHg", 110, 130, 140, 180, "59621000"),
+    ("8462-4", "Presión arterial diastólica", "mmHg", 60, 80, 90, 110, "59621000"),
+    ("2093-3", "Colesterol total", "mg/dL", 150, 200, 220, 300, None),
+    ("4548-4", "Hemoglobina glicosilada", "%", 4.0, 5.6, 7.0, 12.0, "44054006"),
+]
+
+# ---------------------------------------------------------------------------
+# Medications (ATC codes) with associated conditions
+# (atc_code, display_es, [associated_snomed_codes])
+# ---------------------------------------------------------------------------
+MEDICATIONS = [
+    ("A10BA02", "Metformina 850mg", ["44054006"]),
+    ("C09AA02", "Enalapril 10mg", ["59621000"]),
+    ("C09CA01", "Losartán 50mg", ["59621000"]),
+    ("C07AB03", "Atenolol 50mg", ["59621000"]),
+    ("B01AC06", "Aspirina 100mg", []),
+    ("A02BC01", "Omeprazol 20mg", []),
+    ("A10AC01", "Insulina NPH", ["44054006", "73211009"]),
+    ("R03AC02", "Salbutamol inhalatorio", ["195967001"]),
+    ("H03AA01", "Levotiroxina 50mcg", []),
+    ("C08CA01", "Amlodipina 5mg", ["59621000"]),
+]
+
+# ---------------------------------------------------------------------------
+# Encounter class codes (HL7 v3 ActCode)
+# (code, display_es, weight)
+# ---------------------------------------------------------------------------
+ENCOUNTER_TYPES = [
+    ("AMB", "Consulta ambulatoria", 0.55),
+    ("EMER", "Guardia / Urgencias", 0.20),
+    ("IMP", "Internación", 0.15),
+    ("HH", "Visita domiciliaria", 0.10),
+]
+
 
 def _weighted_choice(items: list[tuple], weight_index: int = -1) -> tuple:
     """Select from items using the weight at weight_index."""
@@ -201,6 +246,14 @@ def _random_condition_date(birth_date_str: str) -> str:
     onset_days = random.randint(min_onset, days_alive)
     onset = birth + timedelta(days=onset_days)
     return onset.isoformat()
+
+
+def _random_recent_date(years_back: int = 2) -> str:
+    """Generate a random date within the last N years from reference date."""
+    reference = date(2025, 1, 1)
+    days_back = random.randint(1, years_back * 365)
+    d = reference - timedelta(days=days_back)
+    return d.isoformat()
 
 
 def generate_patient(patient_uuid: str) -> dict:
@@ -289,16 +342,112 @@ def generate_condition(
     }
 
 
+def generate_observation(
+    obs_uuid: str,
+    patient_uuid: str,
+    loinc_code: str,
+    display: str,
+    value: float,
+    unit: str,
+    effective_date: str,
+) -> dict:
+    """Generate a single FHIR Observation resource."""
+    return {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": loinc_code,
+                    "display": display,
+                }
+            ],
+            "text": display,
+        },
+        "subject": {
+            "reference": f"urn:uuid:{patient_uuid}",
+        },
+        "effectiveDateTime": effective_date,
+        "valueQuantity": {
+            "value": round(value, 1),
+            "unit": unit,
+            "system": "http://unitsofmeasure.org",
+            "code": unit,
+        },
+    }
+
+
+def generate_medication_request(
+    med_uuid: str,
+    patient_uuid: str,
+    atc_code: str,
+    display: str,
+    status: str,
+    authored_date: str,
+) -> dict:
+    """Generate a single FHIR MedicationRequest resource."""
+    return {
+        "resourceType": "MedicationRequest",
+        "status": status,
+        "intent": "order",
+        "medicationCodeableConcept": {
+            "coding": [
+                {
+                    "system": "http://www.whocc.no/atc",
+                    "code": atc_code,
+                    "display": display,
+                }
+            ],
+            "text": display,
+        },
+        "subject": {
+            "reference": f"urn:uuid:{patient_uuid}",
+        },
+        "authoredOn": authored_date,
+    }
+
+
+def generate_encounter(
+    enc_uuid: str,
+    patient_uuid: str,
+    class_code: str,
+    class_display: str,
+    period_start: str,
+    period_end: str,
+) -> dict:
+    """Generate a single FHIR Encounter resource."""
+    return {
+        "resourceType": "Encounter",
+        "status": "finished",
+        "class": {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+            "code": class_code,
+            "display": class_display,
+        },
+        "subject": {
+            "reference": f"urn:uuid:{patient_uuid}",
+        },
+        "period": {
+            "start": period_start,
+            "end": period_end,
+        },
+    }
+
+
 def generate_bundle(num_patients: int = 55) -> dict:
-    """Generate a FHIR Transaction Bundle with patients and conditions."""
+    """Generate a FHIR Transaction Bundle with patients, conditions,
+    observations, medication requests, and encounters."""
     entries: list[dict] = []
     all_patients: list[tuple[str, str]] = []  # (uuid, birth_date)
+    patient_conditions: dict[str, set[str]] = {}  # uuid -> set of SNOMED codes
 
     # --- Generate patients ---
     for _ in range(num_patients):
         patient_uuid = str(uuid.uuid4())
         patient = generate_patient(patient_uuid)
         all_patients.append((patient_uuid, patient["birthDate"]))
+        patient_conditions[patient_uuid] = set()
 
         entries.append(
             {
@@ -348,10 +497,10 @@ def generate_bundle(num_patients: int = 55) -> dict:
                     },
                 }
             )
+            patient_conditions[patient_uuid].add(diabetes_code)
             guaranteed_count += 1
 
     # --- Generate random conditions for remaining patients ---
-    conditions_generated = guaranteed_count
     for patient_uuid, birth_date_str in all_patients:
         # Each patient gets 0-3 conditions
         num_conditions = random.choices([0, 1, 2, 3], weights=[0.15, 0.40, 0.30, 0.15], k=1)[0]
@@ -376,7 +525,122 @@ def generate_bundle(num_patients: int = 55) -> dict:
                     },
                 }
             )
-            conditions_generated += 1
+            patient_conditions[patient_uuid].add(snomed_code)
+
+    # ===================================================================
+    # NEW RESOURCES (added after Patient+Condition to preserve RNG state)
+    # ===================================================================
+
+    # --- Generate observations ---
+    obs_count = 0
+    for patient_uuid, _birth_date_str in all_patients:
+        patient_conds = patient_conditions.get(patient_uuid, set())
+        # Each patient gets 2-4 observation types
+        num_obs = random.randint(2, 4)
+        selected_obs = random.sample(
+            OBSERVATION_TYPES, k=min(num_obs, len(OBSERVATION_TYPES))
+        )
+
+        for obs_type in selected_obs:
+            loinc_code, display, unit, n_lo, n_hi, a_lo, a_hi, related_snomed = obs_type
+            # Use abnormal range if patient has the related condition
+            if related_snomed and related_snomed in patient_conds:
+                value = random.uniform(a_lo, a_hi)
+            else:
+                value = random.uniform(n_lo, n_hi)
+
+            effective_date = _random_recent_date(years_back=2)
+            obs_uuid = str(uuid.uuid4())
+            observation = generate_observation(
+                obs_uuid, patient_uuid, loinc_code, display, value, unit, effective_date,
+            )
+            entries.append(
+                {
+                    "fullUrl": f"urn:uuid:{obs_uuid}",
+                    "resource": observation,
+                    "request": {
+                        "method": "POST",
+                        "url": "Observation",
+                    },
+                }
+            )
+            obs_count += 1
+
+    # --- Generate medication requests ---
+    med_count = 0
+    for patient_uuid, _birth_date_str in all_patients:
+        patient_conds = patient_conditions.get(patient_uuid, set())
+
+        for atc_code, display, associated_snomeds in MEDICATIONS:
+            should_prescribe = False
+            if associated_snomeds:
+                # Condition-specific: 70% chance if patient has the condition
+                if any(s in patient_conds for s in associated_snomeds):
+                    should_prescribe = random.random() < 0.70
+            else:
+                # General medication: 15% chance for anyone
+                should_prescribe = random.random() < 0.15
+
+            if should_prescribe:
+                med_uuid = str(uuid.uuid4())
+                status = random.choices(
+                    ["active", "completed"], weights=[0.85, 0.15], k=1,
+                )[0]
+                authored = _random_recent_date(years_back=2)
+                med_request = generate_medication_request(
+                    med_uuid, patient_uuid, atc_code, display, status, authored,
+                )
+                entries.append(
+                    {
+                        "fullUrl": f"urn:uuid:{med_uuid}",
+                        "resource": med_request,
+                        "request": {
+                            "method": "POST",
+                            "url": "MedicationRequest",
+                        },
+                    }
+                )
+                med_count += 1
+
+    # --- Generate encounters ---
+    enc_count = 0
+    for patient_uuid, _birth_date_str in all_patients:
+        num_encounters = random.choices(
+            [1, 2, 3, 4], weights=[0.30, 0.35, 0.25, 0.10], k=1,
+        )[0]
+        for _ in range(num_encounters):
+            enc_type = _weighted_choice(ENCOUNTER_TYPES)
+            class_code, class_display, _ = enc_type
+            period_start = _random_recent_date(years_back=2)
+            start_date = date.fromisoformat(period_start)
+
+            # Duration depends on encounter type
+            if class_code == "IMP":  # Internación: 2-14 days
+                duration = random.randint(2, 14)
+            elif class_code == "EMER":  # Guardia: 0-1 days
+                duration = random.randint(0, 1)
+            else:  # AMB, HH: same day
+                duration = 0
+
+            end_date = start_date + timedelta(days=duration)
+            period_end = end_date.isoformat()
+
+            enc_uuid = str(uuid.uuid4())
+            encounter = generate_encounter(
+                enc_uuid, patient_uuid, class_code, class_display,
+                period_start, period_end,
+            )
+            entries.append(
+                {
+                    "fullUrl": f"urn:uuid:{enc_uuid}",
+                    "resource": encounter,
+                    "request": {
+                        "method": "POST",
+                        "url": "Encounter",
+                    },
+                }
+            )
+            enc_count += 1
 
     # --- Build bundle ---
     bundle = {
@@ -386,8 +650,12 @@ def generate_bundle(num_patients: int = 55) -> dict:
     }
 
     # --- Stats ---
-    num_conditions = sum(1 for e in entries if e["resource"]["resourceType"] == "Condition")
-    print(f"Generated {num_patients} patients and {num_conditions} conditions")
+    num_conditions = sum(
+        1 for e in entries if e["resource"]["resourceType"] == "Condition"
+    )
+    print(f"Generated {num_patients} patients, {num_conditions} conditions, "
+          f"{obs_count} observations, {med_count} medication requests, "
+          f"{enc_count} encounters")
     print(f"Guaranteed diabetes >60y Buenos Aires: {guaranteed_count}")
     print(f"Total bundle entries: {len(entries)}")
 

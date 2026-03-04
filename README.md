@@ -12,15 +12,39 @@ SaludAI is an AI agent that understands clinical queries in natural language, tr
 Ask: *"Pacientes con diabetes tipo 2 mayores de 60 en Buenos Aires"*
 Get: A structured, sourced answer with full Langfuse tracing of every step.
 
+## Benchmark
+
+SaludAI is evaluated against a custom FHIR-AgentBench inspired by [Verily/KAIST/MIT FHIR-AgentBench](https://arxiv.org/abs/2408.01693), adapted for Argentine clinical data.
+
+| Model | Accuracy | Simple (8) | Medium (20) | Complex (22) | Avg Duration |
+|-------|----------|------------|-------------|--------------|-------------|
+| Claude Sonnet 4.5 | **82.0%** | 8/8 (100%) | 16/20 (80%) | 17/22 (77%) | 16.1s |
+
+*Evaluated on 50 questions against 536 synthetic Argentine clinical resources (5 FHIR types: Patient, Condition, Observation, MedicationRequest, Encounter). LLM-as-judge scoring with hybrid programmatic + Claude Haiku. See [docs/experiments/EXPERIMENTS.md](docs/experiments/EXPERIMENTS.md) for full methodology.*
+
+```bash
+# Run the benchmark
+docker compose up -d
+uv run python -m benchmarks.run_eval
+
+# Run a specific category
+uv run python -m benchmarks.run_eval --category simple
+```
+
 ## Current Status
 
-**Sprint 1 (Foundation) — Complete.** The project currently provides:
+**Sprint 2 (Agent Brain) — Complete.** The project currently provides:
 
 - UV monorepo with 4 packages (core, agent, mcp, api)
-- Docker Compose setup with HAPI FHIR R4 + 55 synthetic Argentine patients
+- Docker Compose setup with HAPI FHIR R4 + 536 synthetic Argentine clinical resources
 - Async FHIR client (`saludai-core`) with connection, search, and read operations
+- Terminology resolver (SNOMED CT AR, CIE-10, LOINC) with fuzzy matching
+- FHIR query builder with fluent API
+- Agent loop v1 with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
+- Full Langfuse tracing integration
+- FHIR-AgentBench evaluation framework (50 questions, hybrid LLM-as-judge)
 - GitHub Actions CI with Ruff linting and Pytest
-- 18 passing tests (unit + integration)
+- 374 passing tests (unit + integration)
 
 ## Quick Start
 
@@ -37,7 +61,7 @@ docker compose up -d
 curl http://localhost:8080/fhir/Patient?_count=5
 
 # Run tests
-uv run pytest packages/saludai-core/
+uv run pytest
 ```
 
 **Prerequisites:** Python 3.12+, [UV](https://docs.astral.sh/uv/), Docker
