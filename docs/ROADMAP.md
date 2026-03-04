@@ -72,13 +72,15 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | 2.2 | ✅ FHIR Query Builder (search params, _include, chained) | Params estructurados → URL FHIR válida |
 | 2.3 | ✅ Agent Loop v1: single-turn (plan → execute → evaluate) | Prompt → query → respuesta narrativa funcional |
 | 2.4 | ✅ Langfuse integration (Tracer protocol + instrumentation) | Traces visibles en Langfuse Cloud |
-| 2.5 | FHIR-AgentBench: clonar, setup, primer eval baseline | Score baseline documentado en README |
+| 2.5 | ✅ FHIR-AgentBench: framework + 25 preguntas + baseline 88% | Score baseline documentado en README |
+| 2.6 | ✅ Benchmark Honesto: seed enriquecido (536 entries), 50 preguntas, judge híbrido | Baseline honesto: **60% accuracy** (30/50) |
 
 ### Definición de Done
-- [ ] Consulta: "Pacientes con diabetes tipo 2 mayores de 60" → respuesta correcta
-- [ ] Langfuse en `http://localhost:3000` mostrando traces con cada paso
-- [ ] Benchmark baseline score documentado (aun si es ~40-50%)
-- [ ] Todos los tests verdes, coverage ≥ 60%
+- [x] Consulta: "Pacientes con diabetes tipo 2 mayores de 60" → respuesta correcta
+- [x] Langfuse Cloud mostrando traces con cada paso
+- [x] Benchmark baseline score documentado: **60% accuracy** (30/50) — baseline honesto
+- [x] Todos los tests verdes (344 tests), ruff limpio
+- [x] `docs/experiments/EXPERIMENTS.md` con resultados y análisis
 
 ---
 
@@ -90,7 +92,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 
 | # | Tarea | Output verificable |
 |---|-------|--------------------|
-| 3.1 | Multi-turn loop (max_iterations=5, exit conditions) | Agente replanifica si resultado incompleto |
+| 3.1 ✅ | Pagination + `_summary=count` | Benchmark 60% → 82% |
 | 3.2 | Reference Navigator (resolve refs, multi-hop) | MedicationRequest → Medication → detalles |
 | 3.3 | Code Interpreter tool (sandboxed Python execution) | Agente calcula promedios, filtra, agrupa |
 | 3.4 | AR Profile Validator + mejoras terminology | Validación contra perfiles openRSD |
@@ -99,7 +101,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 ### Definición de Done
 - [ ] "Medicaciones activas de pacientes con insuficiencia cardíaca" → navega refs correctamente
 - [ ] Self-correction visible en Langfuse (agente replanifica tras resultado parcial)
-- [ ] Benchmark: +15-20 puntos sobre Sprint 2 baseline
+- [x] Benchmark: +22 puntos sobre Sprint 2 baseline (60% → 82%)
 - [ ] Coverage ≥ 70%
 
 ---

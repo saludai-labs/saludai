@@ -169,56 +169,37 @@ class TestExecuteResolveTerminology:
 
 
 def _make_mock_fhir_client(bundle: Any = None) -> MagicMock:
-    """Create a mock FHIRClient."""
+    """Create a mock FHIRClient that returns dicts (like the real client)."""
     client = MagicMock()
     client.search = AsyncMock(return_value=bundle or _make_empty_bundle())
     return client
 
 
-def _make_empty_bundle() -> MagicMock:
-    """Create an empty FHIR Bundle mock."""
-    bundle = MagicMock()
-    bundle.entry = None
-    bundle.total = 0
-    return bundle
+def _make_empty_bundle() -> dict[str, Any]:
+    """Create an empty FHIR Bundle dict."""
+    return {"resourceType": "Bundle", "type": "searchset", "total": 0}
 
 
-def _make_bundle_with_patients(count: int = 2) -> MagicMock:
-    """Create a FHIR Bundle mock with Patient resources."""
+def _make_bundle_with_patients(count: int = 2) -> dict[str, Any]:
+    """Create a FHIR Bundle dict with Patient resources."""
     entries = []
     for i in range(count):
-        resource = MagicMock()
-        resource.get_resource_type.return_value = "Patient"
-        resource.id = f"patient-{i}"
-        name_mock = MagicMock()
-        name_mock.family = "García"
-        name_mock.given = ["Juan"]
-        resource.name = [name_mock]
-        resource.gender = "male"
-        resource.birthDate = "1960-01-15"
-        resource.address = []
-        resource.code = None
-        resource.medicationCodeableConcept = None
-        resource.vaccineCode = None
-        resource.status = None
-        resource.onsetDateTime = None
-        resource.effectiveDateTime = None
-        resource.authoredOn = None
-        resource.performedDateTime = None
-        resource.occurrenceDateTime = None
-        resource.subject = None
-        resource.patient = None
-        resource.valueQuantity = None
-        resource.clinicalStatus = None
-
-        entry = MagicMock()
-        entry.resource = resource
-        entries.append(entry)
-
-    bundle = MagicMock()
-    bundle.entry = entries
-    bundle.total = count
-    return bundle
+        entries.append({
+            "resource": {
+                "resourceType": "Patient",
+                "id": f"patient-{i}",
+                "name": [{"family": "García", "given": ["Juan"]}],
+                "gender": "male",
+                "birthDate": "1960-01-15",
+                "address": [],
+            }
+        })
+    return {
+        "resourceType": "Bundle",
+        "type": "searchset",
+        "total": count,
+        "entry": entries,
+    }
 
 
 class TestExecuteSearchFhir:
@@ -229,14 +210,18 @@ class TestExecuteSearchFhir:
         client = _make_mock_fhir_client()
         result = await execute_search_fhir(client, {"resource_type": "Patient"})
         assert "No results found" in result
-        client.search.assert_called_once_with("Patient", None)
+        # Default _count=200 is injected
+        client.search.assert_called_once_with("Patient", {"_count": "200"})
 
     @pytest.mark.asyncio
     async def test_search_with_params(self) -> None:
         client = _make_mock_fhir_client()
         params = {"code": "http://snomed.info/sct|44054006"}
         await execute_search_fhir(client, {"resource_type": "Condition", "params": params})
-        client.search.assert_called_once_with("Condition", params)
+        # _count=200 injected alongside existing params
+        client.search.assert_called_once_with(
+            "Condition", {"code": "http://snomed.info/sct|44054006", "_count": "200"}
+        )
 
     @pytest.mark.asyncio
     async def test_search_returns_summary(self) -> None:
@@ -245,6 +230,20 @@ class TestExecuteSearchFhir:
         result = await execute_search_fhir(client, {"resource_type": "Patient"})
         assert "Found 3 resources" in result
         assert "Patient" in result
+
+    @pytest.mark.asyncio
+    async def test_default_count_not_injected_when_count_present(self) -> None:
+        client = _make_mock_fhir_client()
+        params = {"_count": "50"}
+        await execute_search_fhir(client, {"resource_type": "Patient", "params": params})
+        client.search.assert_called_once_with("Patient", {"_count": "50"})
+
+    @pytest.mark.asyncio
+    async def test_default_count_not_injected_when_summary_present(self) -> None:
+        client = _make_mock_fhir_client()
+        params = {"_summary": "count"}
+        await execute_search_fhir(client, {"resource_type": "Patient", "params": params})
+        client.search.assert_called_once_with("Patient", {"_summary": "count"})
 
 
 # ---------------------------------------------------------------------------
@@ -270,76 +269,41 @@ class TestFormatBundleSummary:
 
     def test_mixed_bundle(self) -> None:
         """Bundle with Condition and Patient resources."""
-        patient = MagicMock()
-        patient.get_resource_type.return_value = "Patient"
-        patient.id = "p-1"
-        name_mock = MagicMock()
-        name_mock.family = "López"
-        name_mock.given = ["Ana"]
-        patient.name = [name_mock]
-        patient.gender = "female"
-        patient.birthDate = "1970-05-20"
-        patient.address = []
-        patient.code = None
-        patient.medicationCodeableConcept = None
-        patient.vaccineCode = None
-        patient.status = None
-        patient.onsetDateTime = None
-        patient.effectiveDateTime = None
-        patient.authoredOn = None
-        patient.performedDateTime = None
-        patient.occurrenceDateTime = None
-        patient.subject = None
-        patient.patient = None
-        patient.valueQuantity = None
-        patient.clinicalStatus = None
-
-        condition = MagicMock()
-        condition.get_resource_type.return_value = "Condition"
-        condition.id = "c-1"
-        condition.name = None
-        condition.gender = None
-        condition.birthDate = None
-        condition.address = None
-        condition.medicationCodeableConcept = None
-        condition.vaccineCode = None
-        condition.status = None
-        condition.effectiveDateTime = None
-        condition.authoredOn = None
-        condition.performedDateTime = None
-        condition.occurrenceDateTime = None
-        condition.patient = None
-        condition.valueQuantity = None
-
-        # Code with coding
-        coding = MagicMock()
-        coding.display = "Diabetes mellitus tipo 2"
-        coding.code = "44054006"
-        coding.system = "http://snomed.info/sct"
-        codeable = MagicMock()
-        codeable.text = None
-        codeable.coding = [coding]
-        condition.code = codeable
-
-        # Subject reference
-        subject_ref = MagicMock()
-        subject_ref.reference = "Patient/p-1"
-        condition.subject = subject_ref
-
-        condition.onsetDateTime = "2020-01-15"
-        clinical_status = MagicMock()
-        clinical_status.text = "active"
-        clinical_status.coding = None
-        condition.clinicalStatus = clinical_status
-
-        entry_p = MagicMock()
-        entry_p.resource = patient
-        entry_c = MagicMock()
-        entry_c.resource = condition
-
-        bundle = MagicMock()
-        bundle.entry = [entry_c, entry_p]
-        bundle.total = 2
+        bundle: dict[str, Any] = {
+            "resourceType": "Bundle",
+            "type": "searchset",
+            "total": 2,
+            "entry": [
+                {
+                    "resource": {
+                        "resourceType": "Condition",
+                        "id": "c-1",
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://snomed.info/sct",
+                                    "code": "44054006",
+                                    "display": "Diabetes mellitus tipo 2",
+                                }
+                            ],
+                        },
+                        "subject": {"reference": "Patient/p-1"},
+                        "onsetDateTime": "2020-01-15",
+                        "clinicalStatus": {"text": "active"},
+                    }
+                },
+                {
+                    "resource": {
+                        "resourceType": "Patient",
+                        "id": "p-1",
+                        "name": [{"family": "López", "given": ["Ana"]}],
+                        "gender": "female",
+                        "birthDate": "1970-05-20",
+                        "address": [],
+                    }
+                },
+            ],
+        }
 
         result = format_bundle_summary(bundle)
         assert "Found 2 resources" in result
@@ -348,12 +312,41 @@ class TestFormatBundleSummary:
         assert "Diabetes mellitus tipo 2" in result
         assert "Patient/p-1" in result
 
+    def test_summary_count_bundle(self) -> None:
+        """_summary=count returns total but no entries."""
+        bundle: dict[str, Any] = {
+            "resourceType": "Bundle",
+            "type": "searchset",
+            "total": 55,
+        }
+        result = format_bundle_summary(bundle)
+        assert "Total count: 55" in result
+        assert "summary-only" in result
+        assert "No results found" not in result
+
+    def test_summary_count_zero(self) -> None:
+        """_summary=count with total=0 should say no results."""
+        bundle: dict[str, Any] = {
+            "resourceType": "Bundle",
+            "type": "searchset",
+            "total": 0,
+        }
+        result = format_bundle_summary(bundle)
+        assert "No results found" in result
+
+    def test_empty_bundle_no_total(self) -> None:
+        """Bundle with no entries and no total."""
+        bundle: dict[str, Any] = {"resourceType": "Bundle", "type": "searchset"}
+        result = format_bundle_summary(bundle)
+        assert "No results found" in result
+
     def test_null_resource_entry_skipped(self) -> None:
-        entry = MagicMock()
-        entry.resource = None
-        bundle = MagicMock()
-        bundle.entry = [entry]
-        bundle.total = 0
+        bundle: dict[str, Any] = {
+            "resourceType": "Bundle",
+            "type": "searchset",
+            "total": 0,
+            "entry": [{"resource": None}],
+        }
 
         result = format_bundle_summary(bundle)
         assert "Found 0 resources" in result

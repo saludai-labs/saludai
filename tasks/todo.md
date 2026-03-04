@@ -117,3 +117,54 @@
 - [x] Crear `tests/test_tracing.py` (22 tests) + 4 tests tracing en test_loop.py
 - [x] Verificación: 155 agent tests + 150 core tests = 305 total, ruff limpio, format limpio
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, todo.md, ROADMAP.md
+
+## Sesión: Sprint 2, Sesión 2.5
+
+- [x] Crear benchmarks/ scaffold (config.py, __init__.py)
+- [x] Crear benchmarks/dataset.py + dataset.json (25 preguntas curadas)
+- [x] Crear benchmarks/judge.py (LLM-as-judge, evaluación binaria)
+- [x] Crear benchmarks/metrics.py (BenchmarkMetrics, compute_metrics)
+- [x] Crear benchmarks/results.py (QuestionResult, write_results_json, print_summary)
+- [x] Crear benchmarks/harness.py (EvalHarness: agent + judge)
+- [x] Crear benchmarks/run_eval.py (CLI entry point)
+- [x] Crear benchmarks/__main__.py (python -m benchmarks support)
+- [x] Crear tests: test_dataset (9), test_judge (8), test_metrics (9), test_results (4) = 30 tests
+- [x] Actualizar pyproject.toml (testpaths, known-first-party)
+- [x] Actualizar .gitignore (benchmarks/results/)
+- [x] Verificación: 30 benchmark tests + 307 package tests = 337 total, ruff limpio
+- [x] Ejecutar benchmark real: 88% accuracy (22/25)
+- [x] Actualizar README.md con tabla de scores
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md
+
+## Sesión: Sprint 2, Sesión 2.6
+
+- [x] Crear `docs/experiments/EXPERIMENTS.md` — documento formal de experimentos (Exp 0-4)
+- [x] Agregar 2 LOINC codes a `loinc.csv` (PA sistólica, PA diastólica)
+- [x] Enriquecer `generate_seed_data.py` con Observations, MedicationRequests, Encounters
+- [x] Regenerar `seed_bundle.json` (536 entries) + actualizar `seed.sh`
+- [x] Verificar Docker seed con nuevos resource types
+- [x] Expandir `dataset.json` de 25 a 50 preguntas + endurecer criterios
+- [x] Actualizar `test_dataset.py` (50 preguntas)
+- [x] Fix `fhir_client.py` — search() retorna raw dict (fix MedicationRequest parsing)
+- [x] Fix `tools.py` — format_bundle_summary() para dicts
+- [x] Judge híbrido: pre-check programático para rangos numéricos + markdown fence fix
+- [x] 8 tests nuevos para judge range check
+- [x] Ejecutar benchmark completo: **60.0% accuracy** (30/50)
+- [x] Actualizar README.md, EXPERIMENTS.md con resultados
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md
+
+## Sesión: Sprint 3, Sesión 3.1
+
+- [x] Agregar `SummaryMode` enum y `.summary()` method a `FHIRQueryBuilder`
+- [x] Actualizar `__init__.py` con re-export de `SummaryMode`
+- [x] `execute_search_fhir()` — inyectar `_count=200` por defecto
+- [x] `format_bundle_summary()` — manejar bundles `_summary=count`
+- [x] Actualizar `SEARCH_FHIR_DEFINITION` params description
+- [x] Actualizar `SYSTEM_PROMPT` con estrategia de consulta, bump version a v1.1
+- [x] Tests nuevos en test_tools.py y test_query_builder.py
+- [x] Fix test_prompts.py (version assertion v1.1)
+- [x] `uv run pytest` → 355 passed
+- [x] `uv run ruff check .` → All checks passed
+- [x] Benchmark: 82.0% accuracy (41/50) — +22pp vs Exp 1
+- [x] Documentar Exp 2 en EXPERIMENTS.md
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md

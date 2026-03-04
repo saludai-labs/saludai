@@ -47,4 +47,4 @@ class TestPromptVersion:
         assert "." in PROMPT_VERSION
 
     def test_current_version(self) -> None:
-        assert PROMPT_VERSION == "v1.0"
+        assert PROMPT_VERSION == "v1.1"

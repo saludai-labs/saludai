@@ -17,6 +17,7 @@ from saludai_core.query_builder import (
     SortOrder,
     SortParam,
     StringParam,
+    SummaryMode,
     TokenParam,
     cie10,
     date_param,
@@ -391,6 +392,36 @@ class TestFHIRQueryBuilder:
     def test_empty_param_name_raises(self) -> None:
         with pytest.raises(QueryBuilderValidationError, match="Parameter name cannot be empty"):
             FHIRQueryBuilder("Patient").where("", StringParam(value="test"))
+
+    def test_summary_with_string(self) -> None:
+        query = FHIRQueryBuilder("Patient").summary("count").build()
+        params = query.to_params()
+        assert params["_summary"] == "count"
+
+    def test_summary_with_enum(self) -> None:
+        query = FHIRQueryBuilder("Patient").summary(SummaryMode.COUNT).build()
+        params = query.to_params()
+        assert params["_summary"] == "count"
+
+    def test_summary_true(self) -> None:
+        query = FHIRQueryBuilder("Patient").summary(SummaryMode.TRUE).build()
+        params = query.to_params()
+        assert params["_summary"] == "true"
+
+    def test_summary_invalid_raises(self) -> None:
+        with pytest.raises(QueryBuilderValidationError, match="_summary must be one of"):
+            FHIRQueryBuilder("Patient").summary("invalid")
+
+    def test_summary_combined_with_other_params(self) -> None:
+        query = (
+            FHIRQueryBuilder("Condition")
+            .where("code", snomed("44054006"))
+            .summary("count")
+            .build()
+        )
+        params = query.to_params()
+        assert params["_summary"] == "count"
+        assert params["code"] == f"{SNOMED_CT_SYSTEM}|44054006"
 
     def test_chaining(self) -> None:
         builder = FHIRQueryBuilder("Condition")

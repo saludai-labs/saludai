@@ -78,7 +78,10 @@ SEARCH_FHIR_DEFINITION: dict[str, Any] = {
                 "description": (
                     "Parámetros de búsqueda FHIR como pares clave-valor. "
                     'Ejemplo: {"code": "http://snomed.info/sct|44054006", '
-                    '"_include": "Condition:subject"}'
+                    '"_include": "Condition:subject"}. '
+                    "Parámetros especiales: "
+                    '"_summary": "count" devuelve solo el total sin recursos individuales; '
+                    '"_count": "200" controla el tamaño de página (default: 200).'
                 ),
             },
         },
@@ -148,11 +151,18 @@ def execute_resolve_terminology(
     return json.dumps(result, ensure_ascii=False)
 
 
+_DEFAULT_COUNT = "200"
+
+
 async def execute_search_fhir(
     fhir_client: FHIRClient,
     arguments: dict[str, Any],
 ) -> str:
     """Execute the search_fhir tool.
+
+    Injects ``_count=200`` by default to avoid FHIR server pagination limits
+    (default page size is 20).  Does not override if the caller already
+    specified ``_count`` or ``_summary``.
 
     Args:
         fhir_client: The FHIR client instance.
@@ -162,7 +172,11 @@ async def execute_search_fhir(
         A token-efficient text summary of the search results.
     """
     resource_type = arguments.get("resource_type", "")
-    params = arguments.get("params")
+    params = arguments.get("params") or {}
+
+    # Inject _count default when neither _count nor _summary is set
+    if "_count" not in params and "_summary" not in params:
+        params = {**params, "_count": _DEFAULT_COUNT}
 
     bundle = await fhir_client.search(resource_type, params)
     return format_bundle_summary(bundle)
@@ -187,36 +201,48 @@ _RESOURCE_EXTRACTORS: dict[str, list[str]] = {
 }
 
 
-def format_bundle_summary(bundle: Any) -> str:
+def format_bundle_summary(bundle: dict[str, Any] | Any) -> str:
     """Format a FHIR Bundle into a token-efficient text summary.
 
     Extracts key fields per resource type so the LLM can reason about the
     results without processing raw JSON.
 
     Args:
-        bundle: A ``fhir.resources.bundle.Bundle`` instance.
+        bundle: A FHIR Bundle as a raw dict (from ``FHIRClient.search``)
+            or a ``fhir.resources`` Bundle instance.
 
     Returns:
         A human-readable summary string.
     """
-    entries = bundle.entry or []
+    entries = _get(bundle, "entry") or []
+    total = _get(bundle, "total")
+
     if not entries:
-        total = bundle.total if bundle.total is not None else 0
-        return f"No results found (total: {total})."
+        # _summary=count returns {total: N} with no entry array
+        if total is not None and total > 0:
+            return f"Total count: {total} (summary-only, no individual entries returned)."
+        return "No results found."
 
     # Group resources by type
     by_type: dict[str, list[Any]] = {}
     for entry in entries:
-        resource = entry.resource
+        resource = _get(entry, "resource")
         if resource is None:
             continue
-        rtype = resource.get_resource_type()
+        rtype = _get(resource, "resourceType") or "Unknown"
         by_type.setdefault(rtype, []).append(resource)
 
     # Build counts line
-    total_count = sum(len(v) for v in by_type.values())
+    total_server = _get(bundle, "total")
+    total_page = sum(len(v) for v in by_type.values())
     type_counts = ", ".join(f"{len(v)} {k}" for k, v in by_type.items())
-    lines: list[str] = [f"Found {total_count} resources ({type_counts})."]
+    if total_server is not None:
+        lines: list[str] = [
+            f"Found {total_page} resources on this page "
+            f"(server total: {total_server}). Types: {type_counts}."
+        ]
+    else:
+        lines = [f"Found {total_page} resources ({type_counts})."]
     lines.append("")
 
     # Summarize each type
@@ -230,18 +256,25 @@ def format_bundle_summary(bundle: Any) -> str:
     return "\n".join(lines)
 
 
+def _get(obj: Any, key: str) -> Any:
+    """Get a field from a dict or an object attribute."""
+    if isinstance(obj, dict):
+        return obj.get(key)
+    return getattr(obj, key, None)
+
+
 def _summarize_resource(resource_type: str, resource: Any) -> str:
     """Summarize a single FHIR resource into a compact string."""
     parts: list[str] = []
 
     # ID
-    rid = getattr(resource, "id", None)
+    rid = _get(resource, "id")
     if rid:
         parts.append(f"{resource_type}/{rid}")
 
     # Codeable concept fields
     for field_name in ("code", "medicationCodeableConcept", "vaccineCode"):
-        codeable = getattr(resource, field_name, None)
+        codeable = _get(resource, field_name)
         if codeable:
             text = _extract_codeable_concept(codeable)
             if text:
@@ -249,14 +282,21 @@ def _summarize_resource(resource_type: str, resource: Any) -> str:
             break
 
     # Name (Patient)
-    names = getattr(resource, "name", None)
+    names = _get(resource, "name")
     if names and len(names) > 0:
         name = names[0]
-        family = getattr(name, "family", "") or ""
-        given = getattr(name, "given", None) or []
+        family = _get(name, "family") or ""
+        given = _get(name, "given") or []
         full_name = f"{' '.join(given)} {family}".strip()
         if full_name:
             parts.append(f"name={full_name}")
+
+    # Class (Encounter)
+    enc_class = _get(resource, "class")
+    if enc_class:
+        class_display = _get(enc_class, "display") or _get(enc_class, "code") or ""
+        if class_display:
+            parts.append(f"class={class_display}")
 
     # Simple fields
     for field_name in (
@@ -269,38 +309,46 @@ def _summarize_resource(resource_type: str, resource: Any) -> str:
         "performedDateTime",
         "occurrenceDateTime",
     ):
-        value = getattr(resource, field_name, None)
+        value = _get(resource, field_name)
         if value is not None:
             parts.append(f"{field_name}={value}")
 
     # Subject reference
-    subject = getattr(resource, "subject", None) or getattr(resource, "patient", None)
+    subject = _get(resource, "subject") or _get(resource, "patient")
     if subject:
-        ref = getattr(subject, "reference", None)
+        ref = _get(subject, "reference")
         if ref:
             parts.append(f"subject={ref}")
 
     # Value quantity (Observation)
-    vq = getattr(resource, "valueQuantity", None)
+    vq = _get(resource, "valueQuantity")
     if vq:
-        val = getattr(vq, "value", None)
-        unit = getattr(vq, "unit", None) or getattr(vq, "code", "")
+        val = _get(vq, "value")
+        unit = _get(vq, "unit") or _get(vq, "code") or ""
         if val is not None:
             parts.append(f"value={val} {unit}".strip())
 
     # Clinical status
-    clinical_status = getattr(resource, "clinicalStatus", None)
+    clinical_status = _get(resource, "clinicalStatus")
     if clinical_status:
         text = _extract_codeable_concept(clinical_status)
         if text:
             parts.append(f"clinicalStatus={text}")
 
+    # Period (Encounter)
+    period = _get(resource, "period")
+    if period:
+        start = _get(period, "start") or ""
+        end = _get(period, "end") or ""
+        if start:
+            parts.append(f"period={start}..{end}")
+
     # Address (Patient)
-    addresses = getattr(resource, "address", None)
+    addresses = _get(resource, "address")
     if addresses and len(addresses) > 0:
         addr = addresses[0]
-        city = getattr(addr, "city", "") or ""
-        state = getattr(addr, "state", "") or ""
+        city = _get(addr, "city") or ""
+        state = _get(addr, "state") or ""
         addr_text = ", ".join(p for p in [city, state] if p)
         if addr_text:
             parts.append(f"address={addr_text}")
@@ -309,17 +357,17 @@ def _summarize_resource(resource_type: str, resource: Any) -> str:
 
 
 def _extract_codeable_concept(codeable: Any) -> str:
-    """Extract a display string from a CodeableConcept."""
-    text = getattr(codeable, "text", None)
+    """Extract a display string from a CodeableConcept (dict or object)."""
+    text = _get(codeable, "text")
     if text:
         return text
 
-    coding_list = getattr(codeable, "coding", None)
+    coding_list = _get(codeable, "coding")
     if coding_list and len(coding_list) > 0:
         coding = coding_list[0]
-        display = getattr(coding, "display", None)
-        code = getattr(coding, "code", None)
-        system = getattr(coding, "system", None)
+        display = _get(coding, "display")
+        code = _get(coding, "code")
+        system = _get(coding, "system")
         if display:
             return f"{display} ({code})" if code else display
         if code:

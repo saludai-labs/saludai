@@ -4,6 +4,111 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 3, Sesión 3.1] — 2026-03-04
+
+### Pagination + `_summary=count`
+
+**Core — QueryBuilder:**
+- Agregado `SummaryMode` enum (TRUE, TEXT, DATA, COUNT, FALSE) a `query_builder.py`
+- Agregado método `.summary(mode)` al `FHIRQueryBuilder` con validación
+- Actualizado `__init__.py` con re-export de `SummaryMode`
+
+**Agent — Pagination fix:**
+- `execute_search_fhir()` inyecta `_count=200` por defecto cuando no hay `_count` ni `_summary` explícito
+- `format_bundle_summary()` maneja bundles `_summary=count`: `{total: N}` sin entries → "Total count: N (summary-only, no individual entries returned)."
+- Bundles vacíos sin total → "No results found." (sin "(total: 0)" confuso)
+
+**Agent — Prompt & tool description:**
+- `SEARCH_FHIR_DEFINITION` params description actualizada con `_summary: "count"` y `_count: "200"`
+- `SYSTEM_PROMPT` con nueva sección "Estrategia de consulta" (cuándo usar `_summary: "count"` vs datos completos)
+- `PROMPT_VERSION` bumped a `"v1.1"`
+
+**Tests:**
+- 5 tests nuevos en `test_tools.py`: summary-count bundle format (total>0, total=0, no-total), `_count` default injection, no-override con `_count`/`_summary` explícito
+- 5 tests nuevos en `test_query_builder.py`: `.summary()` con string, enum, valor inválido, combined con otros params
+- Fix `test_prompts.py`: version assertion actualizada a v1.1
+- Total: 355 tests, todos verdes
+
+**Benchmark (Exp 2):**
+- **Accuracy: 82.0%** (41/50) — +22pp vs 60% (Exp 1)
+- Simple: 8/8 (100%) — +50pp
+- Medium: 16/20 (80%) — +20pp
+- Complex: 17/22 (77%) — +13pp
+- 4 errores por API retries/timeouts, 5 incorrectas
+- Avg duration: 16.1s, avg iterations: 2.8
+
+---
+
+## [Sprint 2, Sesión 2.6] — 2026-03-04
+
+### Benchmark Honesto + Documento de Experimentos
+
+**Seed data enriquecido:**
+- Agregados 2 LOINC codes a `loinc.csv`: PA sistólica (8480-6), PA diastólica (8462-4)
+- Enriquecido `generate_seed_data.py` con 3 nuevos resource types:
+  - Observations (163): 6 tipos LOINC, valores correlacionados con condiciones
+  - MedicationRequests (116): 10 medicamentos ATC, correlacionados con condiciones
+  - Encounters (122): 4 tipos (AMB 55%, EMER 20%, IMP 15%, HH 10%)
+- Regenerado `seed_bundle.json`: 536 entries total (55 + 80 + 163 + 116 + 122)
+- Actualizado `seed.sh` con verificación de nuevos resource types
+
+**Benchmark expandido:**
+- Expandido `dataset.json` de 25 a 50 preguntas (8 simple, 20 medium, 22 complex)
+- Endurecidos criterios de aceptación usando números exactos del seed
+- Nuevas subcategorías: observation_query, medication_query, encounter_query, cross_resource, calculation, reference_traversal, advanced_aggregation
+
+**Judge mejorado:**
+- Cambiado judge de Claude Sonnet a Claude Haiku 4.5 (reducción de costo)
+- Agregado pre-check programático para rangos numéricos (determinístico, sin costo LLM)
+- Fix markdown fence parsing para Haiku (`_strip_markdown_fences()`)
+- 8 tests nuevos para numeric range check
+
+**Fixes:**
+- `fhir_client.py`: `search()` retorna raw dict en vez de parsear con fhir.resources (fix MedicationRequest choice-type fields)
+- `tools.py`: `format_bundle_summary()` reescrito para manejar dicts + objects, soporte Encounter class/period, server total display
+- Tests actualizados: test_fhir_client.py (dict access), test_tools.py (dict fixtures)
+
+**Documentación:**
+- Creado `docs/experiments/EXPERIMENTS.md` — documento formal de experimentos (Exp 0-4)
+- Actualizado `docs/knowledge/README.md` con link a experiments
+- Actualizado `README.md` con score honesto (60%)
+
+**Resultado: 60.0% accuracy** (30/50) — Simple 50%, Medium 60%, Complex 64%. Pagination es el blocker principal.
+- Verificación: 374 tests (336 package + 38 benchmark), ruff limpio
+
+---
+
+## [Sprint 2, Sesión 2.5] — 2026-03-04
+
+### FHIR-AgentBench Baseline (benchmarks/)
+- Creado `benchmarks/config.py` — BenchmarkConfig con pydantic-settings (SALUDAI_BENCH_ prefix)
+- Creado `benchmarks/dataset.py` — EvalQuestion frozen dataclass + load_dataset() con validación
+- Creado `benchmarks/dataset.json` — 25 preguntas curadas contra seed data:
+  - 8 simple (conteos, demografía, existencia)
+  - 10 medium (terminology resolution + filtros combinados)
+  - 7 complex (multi-resource, comorbilidad, agregación geográfica)
+- Creado `benchmarks/judge.py` — AnswerJudge con LLM-as-judge:
+  - Evaluación binaria CORRECT/INCORRECT
+  - Tolerante a formato, estricta en facts
+  - Fallback a INCORRECT si parseo JSON falla
+- Creado `benchmarks/metrics.py` — BenchmarkMetrics + CategoryMetrics + compute_metrics()
+- Creado `benchmarks/results.py` — QuestionResult + write_results_json() + print_summary()
+- Creado `benchmarks/harness.py` — EvalHarness: orquesta agent + judge secuencialmente, timeout por pregunta
+- Creado `benchmarks/run_eval.py` — CLI con argparse: --category, --question, --output-dir
+- Creado `benchmarks/__main__.py` — soporte para `python -m benchmarks`
+- Creados 30 tests en 4 archivos:
+  - test_dataset (9): carga, IDs únicos, categorías, campos, custom path, errores
+  - test_judge (8): correct/incorrect/malformed/empty, notes, lowercase verdict
+  - test_metrics (9): empty/correct/incorrect/mixed/errors, avg duration/iterations, categories
+  - test_results (4): output file, directories, UTF-8, print_summary
+- Actualizado `pyproject.toml` — benchmarks en testpaths y known-first-party
+- Actualizado `.gitignore` — benchmarks/results/ excluido
+- Actualizado `README.md` — sección Benchmark con tabla de scores
+- **Baseline: 88.0% accuracy** (22/25) — Simple 88%, Medium 100%, Complex 71%
+- Verificación: 30 benchmark tests + 307 package tests = 337 total, ruff limpio
+
+---
+
 ## [Sprint 2, Sesión 2.4] — 2026-03-04
 
 ### Langfuse Integration (saludai-agent)

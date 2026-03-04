@@ -55,6 +55,9 @@ _DATE_RE = re.compile(
 # Valid _total values per FHIR spec
 _VALID_TOTAL_VALUES = frozenset({"none", "estimate", "accurate"})
 
+# Valid _summary values per FHIR spec
+_VALID_SUMMARY_VALUES = frozenset({"true", "text", "data", "count", "false"})
+
 
 # ---------------------------------------------------------------------------
 # Enums
@@ -92,6 +95,16 @@ class DatePrefix(enum.StrEnum):
     LE = "le"
     SA = "sa"
     EB = "eb"
+
+
+class SummaryMode(enum.StrEnum):
+    """FHIR _summary parameter modes."""
+
+    TRUE = "true"
+    TEXT = "text"
+    DATA = "data"
+    COUNT = "count"
+    FALSE = "false"
 
 
 class SortOrder(enum.StrEnum):
@@ -587,6 +600,24 @@ class FHIRQueryBuilder:
         if not fields:
             raise QueryBuilderValidationError("_elements requires at least one field")
         self._params.append(("_elements", ",".join(fields)))
+        return self
+
+    def summary(self, mode: str | SummaryMode) -> FHIRQueryBuilder:
+        """Set the ``_summary`` parameter.
+
+        Args:
+            mode: One of ``"true"``, ``"text"``, ``"data"``, ``"count"``,
+                or ``"false"``.  Can also be a ``SummaryMode`` enum value.
+
+        Returns:
+            Self for chaining.
+        """
+        mode_str = str(mode)
+        if mode_str not in _VALID_SUMMARY_VALUES:
+            raise QueryBuilderValidationError(
+                f"_summary must be one of {sorted(_VALID_SUMMARY_VALUES)}, got {mode_str!r}"
+            )
+        self._params.append(("_summary", mode_str))
         return self
 
     # -- Build --------------------------------------------------------------

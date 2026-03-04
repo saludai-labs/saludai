@@ -81,6 +81,15 @@
 **Qué pasó:** El venv se creó con Python 3.14 (default del sistema) pero langfuse SDK usa pydantic v1 internamente, que no es compatible con 3.14.
 **Regla:** Siempre crear el venv con `uv venv --python 3.12`. El proyecto especifica `>=3.12` pero 3.14 rompe dependencias. Verificar con `uv run python --version`.
 
+### 2026-03-04: fhir.resources v8+ con Pydantic v2 extra="forbid" rompe choice-type fields
+**Qué pasó:** `fhir.resources` parseo de MedicationRequest falló porque Pydantic v2 con `extra="forbid"` rechaza `medicationCodeableConcept` como campo extra (espera solo `medication`).
+**Por qué estuvo mal:** FHIR R4 usa "choice types" donde un field como `medication[x]` se serializa como `medicationCodeableConcept` o `medicationReference`. La librería fhir.resources v8+ es demasiado estricta.
+**Regla:** Para `FHIRClient.search()`, retornar el raw dict en vez de parsear con fhir.resources. Solo usar `model_validate()` para `read()` de recursos individuales donde el tipo es conocido y no tiene choice types problemáticos.
+
+### 2026-03-04: Haiku no respeta instrucciones complejas de range-checking en judge prompts
+**Qué pasó:** El judge prompt decía "si notes dice 'entre 13 y 17', aceptar cualquier número en ese rango". Haiku reconocía el rango en su razonamiento pero igual devolvía INCORRECT.
+**Regla:** Para evaluación de rangos numéricos, usar pre-check programático (regex + comparación) en vez de confiar en que un LLM pequeño siga instrucciones de comparación numérica. Solo caer al LLM para evaluación semántica.
+
 <!-- Ejemplo de formato:
 ### 2026-03-05: No usar requests, usar httpx
 **Qué pasó:** Usé `requests` para el FHIR client.

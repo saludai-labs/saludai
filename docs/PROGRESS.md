@@ -1,8 +1,8 @@
 # SaludAI — Estado Actual
 
 **Última actualización:** 2026-03-04
-**Sprint actual:** Sprint 2 — El Cerebro del Agente
-**Sesión actual:** 2.4 — Langfuse Integration (completada)
+**Sprint actual:** Sprint 3 — Multi-turn y Precisión
+**Sesión actual:** 3.1 — Pagination + `_summary=count` (completada)
 
 ---
 
@@ -13,43 +13,40 @@
 🟢 **Sesión 2.2 completa** — FHIR Query Builder implementado. Frozen dataclasses para params, fluent builder API, factory shortcuts (snomed, loinc, cie10), soporte para chained params, _include/_revinclude, _sort, _count, _total, _elements. 96 tests nuevos, todos verdes.
 🟢 **Sesión 2.3 completa** — Agent Loop v1 implementado en saludai-agent. LLM native tool calling, provider-agnostic (Anthropic/OpenAI/Ollama), 2 tools (resolve_terminology + search_fhir), max iterations cap, bundle summary formatter. 126 tests nuevos (125 nuevos + 1 existente), todos verdes.
 🟢 **Sesión 2.4 completa** — Langfuse integration. Tracer protocol + LangfuseTracer + NoOpTracer. Instrumentación explícita del agent loop (generations, tool calls, traces). 29 tests nuevos (155 total agent), todos verdes.
+🟢 **Sesión 2.5 completa** — FHIR-AgentBench baseline. Framework de evaluación con 25 preguntas curadas, LLM-as-judge, métricas por categoría. Baseline: **88% accuracy** (22/25). 30 tests nuevos (337 total), todos verdes.
+🟢 **Sesión 2.6 completa** — Benchmark honesto + Documento de Experimentos. Seed enriquecido (536 entries, 5 resource types), 50 preguntas (8 simple, 20 medium, 22 complex), judge híbrido (programmatic + Haiku), fix MedicationRequest parsing. **Baseline honesto: 60% accuracy** (30/50). 8 tests nuevos (374 total), todos verdes.
+🟢 **Sesión 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
 
 ## Última Sesión Completada
 
-**Sprint 2, Sesión 2.4** — Langfuse Integration
+**Sprint 3, Sesión 3.1** — Pagination + `_summary=count`
 
 ### Lo que se hizo
-- `saludai_agent/config.py` — Agregado `langfuse_enabled: bool = False`
-- `saludai_agent/types.py` — Agregados `trace_id: str | None` y `trace_url: str | None` a `AgentResult`
-- `saludai_agent/tracing.py` (NUEVO, ~240 líneas):
-  - `Tracer` Protocol (runtime-checkable): `start_trace`, `log_generation`, `log_tool_call`, `end_trace`, `flush`
-  - `NoOpTracer` — no-op silencioso cuando tracing deshabilitado
-  - `LangfuseTracer` — wraps `langfuse.Langfuse`, crea trace → generations + spans → end
-  - `create_tracer(config)` — factory con fallback a NoOpTracer si init falla
-  - Helpers: `_summarise_messages()`, `_response_to_dict()`
-- `saludai_agent/loop.py` — Instrumentación:
-  - `tracer` parámetro opcional en `AgentLoop.__init__` (default NoOpTracer)
-  - `start_trace()` al inicio de `run()`
-  - `log_generation()` después de cada `llm.generate()`
-  - `log_tool_call()` después de cada tool execution
-  - `end_trace()` al finalizar (éxito, max iterations, o error)
-  - `trace_id`/`trace_url` propagados a `AgentResult`
-- `saludai_agent/__init__.py` — Exports: `Tracer`, `LangfuseTracer`, `NoOpTracer`, `create_tracer`
-- `scripts/demo_agent.py` — Integrado `create_tracer()`, muestra trace_id/trace_url, `flush()` al final
-- Tests: 29 nuevos (test_tracing.py: 22 tests, test_loop.py: 4 tests tracing, 3 tests tipos)
-- Trace hierarchy: `agent_run` → `llm_call_N` (generation) + `tool:name` (span)
+- `packages/saludai-core/src/saludai_core/query_builder.py` — `SummaryMode` enum + `.summary()` method en `FHIRQueryBuilder`
+- `packages/saludai-core/src/saludai_core/__init__.py` — Re-export `SummaryMode`
+- `packages/saludai-agent/src/saludai_agent/tools.py`:
+  - `execute_search_fhir()` — inyecta `_count=200` por defecto (no sobreescribe si hay `_count` o `_summary` explícito)
+  - `format_bundle_summary()` — maneja bundles `_summary=count` (total > 0 sin entries → "Total count: N")
+  - `SEARCH_FHIR_DEFINITION` — descripción de params actualizada con `_summary` y `_count`
+- `packages/saludai-agent/src/saludai_agent/prompts.py` — Sección "Estrategia de consulta" en SYSTEM_PROMPT, `PROMPT_VERSION = "v1.1"`
+- Tests: 5 tests nuevos en test_tools.py (summary-count format, _count injection, no-override), 5 tests nuevos en test_query_builder.py (.summary() con string/enum/invalid/combined), 1 fix test_prompts.py (version bump)
+
+### Resultados del Benchmark (Exp 2)
+- **Accuracy total: 82.0%** (41/50 correctas)
+- Simple: 8/8 (100%) — +50pp vs Exp 1
+- Medium: 16/20 (80%) — +20pp vs Exp 1
+- Complex: 17/22 (77%) — +13pp vs Exp 1
+- Errors: 4 (API retries/timeouts)
+- Incorrect: 5
+- Avg duration: 16.1s por pregunta
+- Avg iterations: 2.8
+- Agent: Claude Sonnet 4.5
+- Judge: Claude Haiku 4.5 (híbrido)
 
 ### Verificación
-- `uv run pytest packages/saludai-agent/` → 155 passed
-- `uv run pytest packages/saludai-core/` → 150 passed (sin regresión)
+- `uv run pytest` → 355 passed
 - `uv run ruff check .` → All checks passed
-- `uv run ruff format --check .` → All files formatted
-
-### Prueba E2E con Langfuse
-- `SALUDAI_LANGFUSE_ENABLED=true uv run python scripts/demo_agent.py "Pacientes con diabetes tipo 2"`
-- 3 iteraciones, 2 tool calls (resolve_terminology + search_fhir), 15 pacientes encontrados
-- Trace visible en Langfuse Cloud con jerarquía completa: agent_run → llm_call_1/2/3 + tool spans
-- Python 3.12.10 (bajado de 3.14 por incompatibilidad langfuse/pydantic v1)
+- `uv run python -m benchmarks.run_eval` → 82% accuracy
 
 ## Sprint 1 — Completado
 
@@ -60,20 +57,26 @@ Todas las sesiones del Sprint 1 están finalizadas:
 - ✅ 1.4 — saludai-core: FHIR client (connect, search, read)
 - ✅ 1.5 — README, LICENSE, CONTRIBUTING.md
 
-## Sprint 2 — En Progreso
+## Sprint 2 — Completado
 
 - ✅ 2.1 — Terminology Resolver (SNOMED CT AR, CIE-10, LOINC)
 - ✅ 2.2 — FHIR Query Builder
 - ✅ 2.3 — Agent Loop v1
 - ✅ 2.4 — Langfuse integration
-- ⬜ 2.5 — FHIR-AgentBench baseline
+- ✅ 2.5 — FHIR-AgentBench baseline (88%, inflado)
+- ✅ 2.6 — Benchmark Honesto + Documento de Experimentos (60%, baseline real)
+
+## Sprint 3 — En Progreso
+
+- ✅ 3.1 — Pagination + `_summary=count` (60% → 82%)
 
 ## Próxima Sesión
 
-**Sprint:** 2 — El Cerebro del Agente
-**Sesión:** 2.5 — FHIR-AgentBench: clonar, setup, primer eval baseline
-**Objetivo:** Score baseline documentado, benchmark reproducible
-**Referencia:** `docs/ROADMAP.md` → Sprint 2 → Sesión 2.5
+**Sprint:** 3 — Multi-turn y Precisión
+**Sesión:** 3.2 — Reference Navigator (resolve refs, multi-hop)
+**Objetivo:** Mejorar navegación de referencias entre recursos (MedicationRequest → Patient → Conditions)
+**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.2
+**Fallas restantes (Exp 2):** 5 INCORRECT + 4 ERRORS — analizar patrones para priorizar siguiente mejora
 
 ## Blockers
 
@@ -102,6 +105,7 @@ Ninguno.
 - **Frozen dataclasses** para todos los param types — inmutabilidad garantizada
 - **Factory shortcuts** (snomed, loinc, cie10) — ergonomía sin perder tipado
 - **validate=False escape hatch** — permite resource types custom sin romper API
+- **LLM-as-judge** para benchmark — evaluación binaria CORRECT/INCORRECT, tolerante a formato
 
 ## Decisiones Pendientes
 
