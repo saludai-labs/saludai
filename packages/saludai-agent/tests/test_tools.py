@@ -10,10 +10,12 @@ import pytest
 
 from saludai_agent.exceptions import ToolExecutionError
 from saludai_agent.tools import (
+    EXECUTE_CODE_DEFINITION,
     GET_RESOURCE_DEFINITION,
     RESOLVE_TERMINOLOGY_DEFINITION,
     SEARCH_FHIR_DEFINITION,
     ToolRegistry,
+    execute_code,
     execute_get_resource,
     execute_resolve_terminology,
     execute_search_fhir,
@@ -72,6 +74,17 @@ class TestToolDefinitions:
         assert "resource_type" in schema["properties"]
         assert "resource_id" in schema["properties"]
         assert set(schema["required"]) == {"resource_type", "resource_id"}
+
+    def test_execute_code_name(self) -> None:
+        assert EXECUTE_CODE_DEFINITION["name"] == "execute_code"
+
+    def test_execute_code_has_description(self) -> None:
+        assert len(EXECUTE_CODE_DEFINITION["description"]) > 10
+
+    def test_execute_code_required_fields(self) -> None:
+        schema = EXECUTE_CODE_DEFINITION["input_schema"]
+        assert "code" in schema["properties"]
+        assert "code" in schema["required"]
 
 
 # ---------------------------------------------------------------------------
@@ -419,6 +432,111 @@ class TestFormatBundleSummary:
 
 
 # ---------------------------------------------------------------------------
+# execute_code
+# ---------------------------------------------------------------------------
+
+
+class TestExecuteCode:
+    """execute_code runs sandboxed Python and captures output."""
+
+    def test_simple_print(self) -> None:
+        result = execute_code({"code": "print('hello')"})
+        assert result.strip() == "hello"
+
+    def test_counter_aggregation(self) -> None:
+        code = (
+            "from collections import Counter\n"
+            "data = ['a', 'b', 'a', 'c', 'a', 'b']\n"
+            "print(Counter(data).most_common())"
+        )
+        result = execute_code({"code": code})
+        assert "('a', 3)" in result
+
+    def test_datetime_available(self) -> None:
+        result = execute_code({"code": "print(datetime.date(2024, 1, 1).isoformat())"})
+        assert "2024-01-01" in result
+
+    def test_json_available(self) -> None:
+        result = execute_code({"code": "print(json.dumps({'key': 'value'}))"})
+        assert '"key"' in result
+
+    def test_math_available(self) -> None:
+        result = execute_code({"code": "print(math.sqrt(144))"})
+        assert "12" in result
+
+    def test_statistics_available(self) -> None:
+        result = execute_code({"code": "print(statistics.mean([10, 20, 30]))"})
+        assert "20" in result
+
+    def test_re_available(self) -> None:
+        result = execute_code({"code": "print(re.findall(r'\\d+', 'abc123def456'))"})
+        assert "123" in result
+
+    def test_multiple_prints(self) -> None:
+        code = "print('line1')\nprint('line2')"
+        result = execute_code({"code": code})
+        assert "line1" in result
+        assert "line2" in result
+
+    # -- Security tests --
+
+    def test_no_file_access(self) -> None:
+        result = execute_code({"code": "open('test.txt', 'w')"})
+        assert "Error" in result
+
+    def test_no_import_os(self) -> None:
+        result = execute_code({"code": "import os"})
+        assert "Error" in result
+
+    def test_no_import_subprocess(self) -> None:
+        result = execute_code({"code": "import subprocess"})
+        assert "Error" in result
+
+    def test_no_eval(self) -> None:
+        result = execute_code({"code": "eval('1+1')"})
+        assert "Error" in result
+
+    def test_no_exec(self) -> None:
+        result = execute_code({"code": "exec('print(1)')"})
+        assert "Error" in result
+
+    def test_no_dunder_import(self) -> None:
+        result = execute_code({"code": "__import__('os')"})
+        assert "Error" in result
+
+    # -- Edge cases --
+
+    def test_timeout_infinite_loop(self) -> None:
+        result = execute_code({"code": "while True: pass"})
+        assert "timed out" in result
+
+    def test_empty_code(self) -> None:
+        result = execute_code({"code": ""})
+        assert "Error" in result
+
+    def test_no_output_hint(self) -> None:
+        result = execute_code({"code": "x = 42"})
+        assert "No output" in result
+        assert "print" in result
+
+    def test_output_truncation(self) -> None:
+        code = "print('x' * 5000)"
+        result = execute_code({"code": code})
+        assert len(result) <= 4100  # 4000 + truncation message
+        assert "truncated" in result
+
+    def test_syntax_error(self) -> None:
+        result = execute_code({"code": "def foo(:"})
+        assert "Error" in result
+        assert "SyntaxError" in result
+
+    def test_runtime_error(self) -> None:
+        result = execute_code({"code": "print(1/0)"})
+        assert "Error" in result
+        assert "ZeroDivisionError" in result
+
+
+# ---------------------------------------------------------------------------
 # ToolRegistry
 # ---------------------------------------------------------------------------
 
@@ -432,14 +550,14 @@ class TestToolRegistry:
         registry = ToolRegistry(fhir_client=client, terminology_resolver=resolver)
         defs = registry.definitions()
         names = {d["name"] for d in defs}
-        assert names == {"resolve_terminology", "search_fhir", "get_resource"}
+        assert names == {"resolve_terminology", "search_fhir", "get_resource", "execute_code"}
 
     def test_definitions_without_resolver(self) -> None:
         client = MagicMock()
         registry = ToolRegistry(fhir_client=client, terminology_resolver=None)
         defs = registry.definitions()
         names = {d["name"] for d in defs}
-        assert names == {"search_fhir", "get_resource"}
+        assert names == {"search_fhir", "get_resource", "execute_code"}
 
     @pytest.mark.asyncio
     async def test_execute_unknown_tool(self) -> None:
@@ -502,6 +620,19 @@ class TestToolRegistry:
         result = await registry.execute(tc)
         assert result.is_error is False
         assert "Patient/p-1" in result.content
+
+    @pytest.mark.asyncio
+    async def test_execute_code_via_registry(self) -> None:
+        client = MagicMock()
+        registry = ToolRegistry(fhir_client=client)
+        tc = ToolCall(
+            id="tc_1",
+            name="execute_code",
+            arguments={"code": "print(2 + 3)"},
+        )
+        result = await registry.execute(tc)
+        assert result.is_error is False
+        assert "5" in result.content
 
     @pytest.mark.asyncio
     async def test_execute_tool_error_raises(self) -> None:

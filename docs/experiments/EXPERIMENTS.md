@@ -123,7 +123,7 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 |--------|----------|--------|--------|---------|----------------|
 | 3.1 (Pagination) | **82.0%** | 8/8 (100%) | 16/20 (80%) | 17/22 (77%) | **+22pp** |
 | 3.2 (Reference nav) | **86.0%** | 8/8 (100%) | 19/20 (95%) | 16/22 (73%) | **+26pp** |
-| 3.3 (Code interpreter) | | | | | |
+| 3.3 (Code interpreter) | **94.0%** | 8/8 (100%) | 19/20 (95%) | 20/22 (91%) | **+34pp** |
 | 3.4 (Prompt opt) | | | | | |
 
 ### Análisis — Sesión 3.1
@@ -162,6 +162,22 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 - **Aggregation sin code interpreter (M09, C20, C21):** El LLM no puede contar/agrupar correctamente 100+ registros en contexto → necesita Code Interpreter
 - **Cross-resource join con conteo (C03, C05):** El LLM falla cruzando Patient addresses con Condition results cuando hay muchos registros
 - **Non-determinism (C07, C18):** Estas preguntas pasan/fallan entre corridas — el LLM a veces cuenta mal los datos complejos
+
+### Análisis — Sesión 3.3
+
+**Cambios implementados:**
+1. Nuevo tool `execute_code` — sandbox Python con builtins restringidos, timeout 5s, módulos pre-importados (json, collections, datetime, math, statistics, re)
+2. `_restricted_import()` — whitelist de módulos permitidos (bloquea os, subprocess, etc.)
+3. System prompt v1.3 con sección "Procesamiento de datos" — regla de usar execute_code para >10 recursos
+
+**Impacto por categoría:**
+- **Complex 91%:** Salto masivo de 73% → 91%. M09 (condiciones frecuentes), C03, C07, C18, C20 (distribución encounters), C21 (medicamento más prescripto) ahora pasan gracias a Counter/aggregation via código.
+- **Medium 95%:** Estable. M07 flipped a INCORRECT por non-determinism.
+- **Simple 100%:** Sin cambios.
+
+**Patrones de fallas restantes (3):**
+- **Non-determinism (M07, C14):** Pasan/fallan entre corridas — el LLM a veces interpreta mal datos complejos
+- **Timeout (C05):** Query compleja con muchos datos excede 120s
 
 ### Target Final
 - **Accuracy ≥ 80%** con Sonnet al final del Sprint 3 (baseline: 60%)
@@ -231,6 +247,7 @@ Historial completo de todas las ejecuciones del benchmark.
 | 2026-03-04 | 1 | Sonnet 4.5 | 50q (v2) | 60.0% | 50% | 60% | 64% | Baseline honesto |
 | 2026-03-04 | 2 | Sonnet 4.5 | 50q (v2) | 82.0% | 100% | 80% | 77% | Pagination fix (`_count=200`, `_summary=count`) |
 | 2026-03-04 | 3 | Sonnet 4.5 | 50q (v2) | 86.0% | 100% | 95% | 73% | Terminology fix, `get_resource` tool, max_iterations=8, prompt v1.2 |
+| 2026-03-04 | 4 | Sonnet 4.5 | 50q (v2) | 94.0% | 100% | 95% | 91% | Code interpreter (`execute_code`), prompt v1.3 |
 
 ---
 

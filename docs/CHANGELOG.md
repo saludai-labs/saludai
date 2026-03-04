@@ -4,6 +4,41 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 3, Sesión 3.3] — 2026-03-04
+
+### Code Interpreter Tool
+
+**Agent — Nueva tool `execute_code`:**
+- `EXECUTE_CODE_DEFINITION` — JSON schema para ejecución de Python sandboxeado
+- `execute_code()` — executor con sandbox:
+  - Builtins restringidos (whitelist de ~35 funciones seguras)
+  - `_restricted_import()` — solo permite json, collections, datetime, math, statistics, re
+  - Timeout via threading (5s limit)
+  - Output truncation (4000 chars max)
+  - Error handling (syntax, runtime, timeout)
+- Registrado en `ToolRegistry.__init__()` (siempre disponible, sin deps externas)
+
+**Agent — Prompt v1.3:**
+- Documentación de `execute_code` como herramienta #4
+- Nueva sección "Procesamiento de datos" con regla de usar execute_code para >10 recursos
+- Instrucción explícita: "SIEMPRE usá execute_code para conteo/agrupación con >10 recursos"
+
+**Tests:**
+- 26 tests nuevos: definition (3), executor funcionalidad (8), executor seguridad (5), executor edge cases (6), registry (1), prompts (2), + 2 assertions actualizadas
+- Total: 391 tests, todos verdes
+
+**Benchmark (Exp 4):**
+- **Accuracy: 94.0%** (47/50) — +8pp vs 86% (Exp 3)
+- Simple: 8/8 (100%)
+- Medium: 19/20 (95%)
+- Complex: 20/22 (91%) — +18pp vs Exp 3
+- Fixes confirmados: M09, C03, C07, C18, C20, C21 ahora pasan (6 recuperadas)
+- Nuevas fallas por non-determinism: M07, C14 (2 nuevas)
+- C05 sigue con timeout
+- Avg duration: 33.7s (sube por execute_code overhead), avg iterations: 3.5
+
+---
+
 ## [Sprint 3, Sesión 3.2] — 2026-03-04
 
 ### Reference Navigator + Fixes

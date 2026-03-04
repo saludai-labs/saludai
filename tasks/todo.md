@@ -182,3 +182,17 @@
 - [x] Benchmark: 86.0% accuracy (43/50, 0 errors) — +4pp vs Exp 2
 - [x] Documentar Exp 3 en EXPERIMENTS.md
 - [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md
+
+## Sesión: Sprint 3, Sesión 3.3
+
+- [x] Agregar `EXECUTE_CODE_DEFINITION` a tools.py
+- [x] Implementar `execute_code()` con sandbox (builtins, imports, timeout)
+- [x] Registrar `execute_code` en `ToolRegistry`
+- [x] Actualizar system prompt a v1.3 (tool #4, sección "Procesamiento de datos")
+- [x] Tests nuevos (~26 tests: definition, executor, safety, edge cases, registry, prompts)
+- [x] `uv run ruff check .` → All checks passed
+- [x] `uv run ruff format .` → limpio
+- [x] `uv run pytest` → 391 passed
+- [x] Benchmark: 94.0% accuracy (47/50, 1 error) — +8pp vs Exp 3
+- [x] Documentar Exp 4 en EXPERIMENTS.md
+- [x] Actualizar PROGRESS.md, CHANGELOG.md, ROADMAP.md, todo.md

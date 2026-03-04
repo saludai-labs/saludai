@@ -38,6 +38,12 @@ class TestSystemPrompt:
     def test_mentions_get_resource(self) -> None:
         assert "get_resource" in SYSTEM_PROMPT
 
+    def test_mentions_execute_code(self) -> None:
+        assert "execute_code" in SYSTEM_PROMPT
+
+    def test_mentions_data_processing(self) -> None:
+        assert "Procesamiento de datos" in SYSTEM_PROMPT
+
     def test_mentions_include(self) -> None:
         assert "_include" in SYSTEM_PROMPT
 
@@ -53,4 +59,4 @@ class TestPromptVersion:
         assert "." in PROMPT_VERSION
 
     def test_current_version(self) -> None:
-        assert PROMPT_VERSION == "v1.2"
+        assert PROMPT_VERSION == "v1.3"

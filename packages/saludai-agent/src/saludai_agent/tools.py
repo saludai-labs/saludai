@@ -1,4 +1,4 @@
-"""Agent tools: resolve_terminology, search_fhir, and tool registry.
+"""Agent tools: resolve_terminology, search_fhir, execute_code, and tool registry.
 
 Tools bridge the LLM's tool-calling interface with the actual saludai-core
 services (``TerminologyResolver``, ``FHIRClient``).  The ``ToolRegistry``
@@ -7,7 +7,9 @@ holds tool definitions (JSON schemas for the LLM) and execution functions.
 
 from __future__ import annotations
 
+import io
 import json
+import threading
 from typing import TYPE_CHECKING, Any
 
 import structlog
@@ -112,10 +114,180 @@ SEARCH_FHIR_DEFINITION: dict[str, Any] = {
     },
 }
 
+EXECUTE_CODE_DEFINITION: dict[str, Any] = {
+    "name": "execute_code",
+    "description": (
+        "Ejecuta código Python para procesar y analizar datos. "
+        "Usá esta herramienta cuando necesites contar, agrupar, filtrar o "
+        "calcular sobre los datos obtenidos de búsquedas FHIR. "
+        "Módulos disponibles: json, collections (Counter, defaultdict), "
+        "datetime, math, statistics, re. Usá print() para mostrar resultados."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "code": {
+                "type": "string",
+                "description": (
+                    "Código Python a ejecutar. Usá print() para producir "
+                    "output visible. Ejemplo: "
+                    "from collections import Counter; "
+                    "print(Counter(['a','b','a']).most_common())"
+                ),
+            },
+        },
+        "required": ["code"],
+    },
+}
+
 
 # ---------------------------------------------------------------------------
 # Tool execution functions
 # ---------------------------------------------------------------------------
+
+# -- execute_code sandbox ---------------------------------------------------
+
+_CODE_TIMEOUT_SECONDS: int = 5
+_CODE_MAX_OUTPUT_CHARS: int = 4000
+
+_SAFE_BUILTINS: dict[str, Any] = {
+    name: __builtins__[name] if isinstance(__builtins__, dict) else getattr(__builtins__, name)  # type: ignore[index]
+    for name in (
+        "abs",
+        "all",
+        "any",
+        "bool",
+        "dict",
+        "divmod",
+        "enumerate",
+        "filter",
+        "float",
+        "format",
+        "frozenset",
+        "hash",
+        "int",
+        "isinstance",
+        "issubclass",
+        "iter",
+        "len",
+        "list",
+        "map",
+        "max",
+        "min",
+        "next",
+        "pow",
+        "print",
+        "range",
+        "repr",
+        "reversed",
+        "round",
+        "set",
+        "slice",
+        "sorted",
+        "str",
+        "sum",
+        "tuple",
+        "type",
+        "zip",
+    )
+}
+# Explicitly excluded: open, exec, eval, __import__, compile, globals, locals,
+# getattr, setattr, delattr, input, breakpoint, exit, quit, memoryview, vars
+
+
+_ALLOWED_MODULES: frozenset[str] = frozenset(
+    ("json", "collections", "datetime", "math", "statistics", "re")
+)
+
+
+def execute_code(arguments: dict[str, Any]) -> str:
+    """Execute sandboxed Python code and return captured stdout.
+
+    Args:
+        arguments: Tool call arguments (``code``).
+
+    Returns:
+        Captured stdout output, an error message, or a hint about missing print().
+    """
+    import collections
+    import datetime
+    import math
+    import re as re_mod
+    import statistics
+
+    code = arguments.get("code", "")
+    if not code.strip():
+        return "Error: no code provided."
+
+    output_buffer = io.StringIO()
+
+    def safe_print(*args: object, **kwargs: Any) -> None:
+        kwargs["file"] = output_buffer
+        print(*args, **kwargs)
+
+    allowed_modules: dict[str, Any] = {
+        "json": json,
+        "collections": collections,
+        "datetime": datetime,
+        "math": math,
+        "statistics": statistics,
+        "re": re_mod,
+    }
+
+    def _restricted_import(
+        name: str,
+        globals: dict[str, Any] | None = None,
+        locals: dict[str, Any] | None = None,
+        fromlist: tuple[str, ...] = (),
+        level: int = 0,
+    ) -> Any:
+        if name not in _ALLOWED_MODULES:
+            msg = f"import of '{name}' is not allowed"
+            raise ImportError(msg)
+        return allowed_modules[name]
+
+    restricted_builtins = {
+        **_SAFE_BUILTINS,
+        "print": safe_print,
+        "__import__": _restricted_import,
+    }
+
+    restricted_globals: dict[str, Any] = {
+        "__builtins__": restricted_builtins,
+        **allowed_modules,
+        "Counter": collections.Counter,
+        "defaultdict": collections.defaultdict,
+    }
+
+    error: str | None = None
+
+    def _run() -> None:
+        nonlocal error
+        try:
+            compiled = compile(code, "<agent_code>", "exec")
+            exec(compiled, restricted_globals)
+        except Exception as exc:
+            error = f"Error: {type(exc).__name__}: {exc}"
+
+    thread = threading.Thread(target=_run, daemon=True)
+    thread.start()
+    thread.join(timeout=_CODE_TIMEOUT_SECONDS)
+
+    if thread.is_alive():
+        return "Error: code execution timed out (limit: 5s)."
+
+    if error is not None:
+        return error
+
+    output = output_buffer.getvalue()
+    if not output:
+        return "(No output produced. Did you forget to use print()?)"
+
+    if len(output) > _CODE_MAX_OUTPUT_CHARS:
+        return output[:_CODE_MAX_OUTPUT_CHARS] + "\n... (output truncated)"
+
+    return output
+
 
 _SYSTEM_MAP: dict[str, str] = {
     "snomed_ct": "SNOMED_CT",
@@ -450,6 +622,10 @@ class ToolRegistry:
         self._tools["get_resource"] = GET_RESOURCE_DEFINITION
         self._executors["get_resource"] = self._execute_get_resource
 
+        # Register execute_code (always available, no external deps)
+        self._tools["execute_code"] = EXECUTE_CODE_DEFINITION
+        self._executors["execute_code"] = self._execute_code
+
         # Register resolve_terminology (only if resolver is provided)
         if terminology_resolver is not None:
             self._tools["resolve_terminology"] = RESOLVE_TERMINOLOGY_DEFINITION
@@ -508,3 +684,7 @@ class ToolRegistry:
     async def _execute_get_resource(self, arguments: dict[str, Any]) -> str:
         """Async wrapper for get_resource."""
         return await execute_get_resource(self._fhir_client, arguments)
+
+    def _execute_code(self, arguments: dict[str, Any]) -> str:
+        """Sync wrapper for execute_code."""
+        return execute_code(arguments)

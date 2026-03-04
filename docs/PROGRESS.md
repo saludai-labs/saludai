@@ -17,45 +17,42 @@
 🟢 **Sesión 2.6 completa** — Benchmark honesto + Documento de Experimentos. Seed enriquecido (536 entries, 5 resource types), 50 preguntas (8 simple, 20 medium, 22 complex), judge híbrido (programmatic + Haiku), fix MedicationRequest parsing. **Baseline honesto: 60% accuracy** (30/50). 8 tests nuevos (374 total), todos verdes.
 🟢 **Sesión 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
 🟢 **Sesión 3.2 completa** — Reference Navigator + Fixes. Terminology disambiguation fix, nuevo tool `get_resource`, max_iterations 5→8, system prompt v1.2 con guidance de `_include`/`_revinclude`. **Accuracy: 86.0%** (43/50, 0 errors). 365 tests, todos verdes.
+🟢 **Sesión 3.3 completa** — Code Interpreter tool. Sandbox Python execution para conteo/agrupación. **Accuracy: 94.0%** (47/50, 1 error). 391 tests, todos verdes.
 
 ## Última Sesión Completada
 
-**Sprint 3, Sesión 3.2** — Reference Navigator + Fixes
+**Sprint 3, Sesión 3.3** — Code Interpreter
 
 ### Lo que se hizo
-- `packages/saludai-core/src/saludai_core/data/snomed_ar.csv` — Fix display de `38341003`: "Hipertensión arterial" → "Hipertensión arterial sistémica" (evita exact-match espurio con 59621000)
-- `packages/saludai-core/src/saludai_core/fhir_client.py` — Nuevo método `read_raw()` que retorna raw dict sin parsear con fhir.resources
 - `packages/saludai-agent/src/saludai_agent/tools.py`:
-  - `GET_RESOURCE_DEFINITION` — nueva tool definition para lectura de recurso individual
-  - `execute_get_resource()` — executor que usa `fhir_client.read_raw()` + `_summarize_resource()`
-  - `ToolRegistry.__init__()` — registra `get_resource` (siempre disponible)
-- `packages/saludai-agent/src/saludai_agent/config.py` — `agent_max_iterations` default 5 → 8
-- `packages/saludai-agent/src/saludai_agent/prompts.py` — `PROMPT_VERSION = "v1.2"`, secciones "Navegación de referencias" y "Medicamentos", documentación de `get_resource`
-- `.env` y `.env.example` — `SALUDAI_AGENT_MAX_ITERATIONS=8`
-- Tests: 12 tests nuevos/actualizados (terminology disambiguation, get_resource definition/execution/registry, prompt version bump, max_iterations default)
+  - `EXECUTE_CODE_DEFINITION` — tool definition para ejecución de Python sandboxeado
+  - `execute_code()` — executor con sandbox (builtins restringidos, `_restricted_import`, timeout, output truncation)
+  - Módulos pre-importados: json, collections, datetime, math, statistics, re
+  - `ToolRegistry.__init__()` — registra `execute_code` (siempre disponible)
+- `packages/saludai-agent/src/saludai_agent/prompts.py` — `PROMPT_VERSION = "v1.3"`, tool #4 `execute_code`, sección "Procesamiento de datos"
+- Tests: 26 tests nuevos (execute_code definition×3, executor×17, registry×1, prompts×2, registry assertions×2 actualizados)
 
-### Resultados del Benchmark (Exp 3)
-- **Accuracy total: 86.0%** (43/50 correctas)
+### Resultados del Benchmark (Exp 4)
+- **Accuracy total: 94.0%** (47/50 correctas) — +8pp vs Exp 3
 - Simple: 8/8 (100%)
-- Medium: 19/20 (95%) — +15pp vs Exp 2
-- Complex: 16/22 (73%)
-- Errors: 0 (antes 4) — max_iterations=8 eliminó todos los timeouts
-- Incorrect: 7
-- Avg duration: 19.0s por pregunta
-- Avg iterations: 3.1
+- Medium: 19/20 (95%)
+- Complex: 20/22 (91%) — +18pp vs Exp 3
+- Errors: 1 (C05 timeout)
+- Incorrect: 2 (M07, C14 — non-determinism)
+- Avg duration: 33.7s por pregunta
+- Avg iterations: 3.5
 - Agent: Claude Sonnet 4.5
 - Judge: Claude Haiku 4.5 (híbrido)
 
-### Fallas restantes (7)
-- **M09** (medium): aggregation — condiciones frecuentes → Code Interpreter
-- **C03, C05** (complex): cross-resource join — LLM counting errors
-- **C07, C18** (complex): non-determinism — pasan/fallan entre corridas
-- **C20, C21** (complex): aggregation — distribución/ranking → Code Interpreter
+### Fallas restantes (3)
+- **M07** (medium): non-determinism (pasa/falla entre corridas)
+- **C05** (complex): timeout (120s) — query compleja con muchos datos
+- **C14** (complex): non-determinism (pasa/falla entre corridas)
 
 ### Verificación
-- `uv run pytest` → 365 passed
+- `uv run pytest` → 391 passed
 - `uv run ruff check .` → All checks passed
-- `uv run python -m benchmarks.run_eval` → 86% accuracy (0 errors)
+- `uv run python -m benchmarks.run_eval` → 94% accuracy (1 error)
 
 ## Sprint 1 — Completado
 
@@ -79,14 +76,15 @@ Todas las sesiones del Sprint 1 están finalizadas:
 
 - ✅ 3.1 — Pagination + `_summary=count` (60% → 82%)
 - ✅ 3.2 — Reference Navigator + Fixes (82% → 86%, 0 errors)
+- ✅ 3.3 — Code Interpreter (86% → 94%, +8pp)
 
 ## Próxima Sesión
 
 **Sprint:** 3 — Multi-turn y Precisión
-**Sesión:** 3.3 — Code Interpreter (sandboxed Python execution)
-**Objetivo:** Agregar tool de ejecución de código Python para que el agente pueda contar, agrupar y calcular sobre los resultados FHIR. Esto debería fijar M09, C20, C21 (aggregation) y mejorar C03, C05.
-**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.3
-**Fallas restantes (Exp 3):** 7 INCORRECT (3 aggregation, 2 LLM counting, 2 non-determinism)
+**Sesión:** 3.4 — AR Profile Validator + mejoras terminology
+**Objetivo:** Validación contra perfiles openRSD, mejoras de terminología
+**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.4
+**Fallas restantes (Exp 4):** 2 non-determinism (M07, C14), 1 timeout (C05)
 
 ## Blockers
 

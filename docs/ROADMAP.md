@@ -94,7 +94,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 |---|-------|--------------------|
 | 3.1 ✅ | Pagination + `_summary=count` | Benchmark 60% → 82% |
 | 3.2 ✅ | Reference Navigator + Fixes | Benchmark 82% → 86%, 0 errors |
-| 3.3 | Code Interpreter tool (sandboxed Python execution) | Agente calcula promedios, filtra, agrupa |
+| 3.3 ✅ | Code Interpreter tool (sandboxed Python execution) | Benchmark 86% → 94%, agente calcula/agrupa con código |
 | 3.4 | AR Profile Validator + mejoras terminology | Validación contra perfiles openRSD |
 | 3.5 | Re-eval benchmark + prompt optimization | Score mejorado, before/after en README |
 

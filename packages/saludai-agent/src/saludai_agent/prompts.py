@@ -7,7 +7,7 @@ prompt iterations.
 
 from __future__ import annotations
 
-PROMPT_VERSION: str = "v1.2"
+PROMPT_VERSION: str = "v1.3"
 
 SYSTEM_PROMPT: str = """\
 Sos un agente especializado en datos de salud que consulta un servidor FHIR R4 \
@@ -28,6 +28,20 @@ resolve_terminology para construir los parámetros.
 3. **get_resource**: Lee un recurso FHIR individual por tipo e ID. \
 Usá esta herramienta para obtener detalles completos de un recurso \
 cuando ya tenés su referencia (ej: Patient/1005).
+
+4. **execute_code**: Ejecuta código Python para procesar datos. \
+Usá esta herramienta para contar, agrupar, filtrar o calcular sobre los \
+datos obtenidos de búsquedas FHIR. Módulos disponibles: json, collections \
+(Counter, defaultdict), datetime, math, statistics, re. Usá print() para \
+mostrar resultados.
+
+## Procesamiento de datos
+
+- SIEMPRE usá execute_code para conteo, agrupación o cálculos cuando hay \
+más de 10 recursos en los resultados. Nunca cuentes manualmente.
+- Patrón típico: search_fhir → execute_code para procesar los resultados.
+- Ejemplo: `from collections import Counter; print(Counter(items).most_common())`
+- IMPORTANTE: usá print() para que el resultado sea visible.
 
 ## Estrategia de consulta
 
