@@ -49,9 +49,28 @@ known-first-party = ["saludai_core", "saludai_agent", "saludai_mcp", "saludai_ap
 [tool.pytest.ini_options]
 testpaths = ["packages", "benchmarks"]
 asyncio_mode = "auto"
-addopts = "--import-mode=importlib"
+addopts = "--import-mode=importlib --cov --cov-report=term-missing"
 markers = [
     "integration: tests that require external services (HAPI FHIR, etc.)",
+]
+
+[tool.coverage.run]
+source = [
+    "saludai_core",
+    "saludai_agent",
+    "saludai_mcp",
+    "saludai_api",
+    "benchmarks",
+]
+
+[tool.coverage.report]
+fail_under = 70
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.",
+    "@overload",
 ]
 
 [tool.mypy]
