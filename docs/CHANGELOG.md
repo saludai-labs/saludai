@@ -4,6 +4,22 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.1] — 2026-03-05
+
+### MCP Server
+
+**Nuevo paquete `saludai-mcp` implementado:**
+- `config.py` — `MCPConfig` (FHIR URL, timeout, locale, server name) via pydantic-settings
+- `server.py` — FastMCP server con 4 tools: `resolve_terminology`, `search_fhir`, `get_resource`, `run_python`
+- Lifespan pattern para inicializar FHIRClient + TerminologyResolver + LocalePack
+- Entry point CLI: `saludai-mcp` (stdio transport, compatible con Claude Desktop, Claude Code, Cursor, etc.)
+- Reutiliza ejecutores de `saludai_agent.tools` — zero duplicacion de logica
+- 17 tests nuevos (config, tool registration, tool execution con mocks)
+
+**Totales:** 466 passed, 9 skipped. Ruff limpio.
+
+---
+
 ## [Sprint 3, Sesion 3.6] — 2026-03-05
 
 ### FHIR Awareness en Locale Packs

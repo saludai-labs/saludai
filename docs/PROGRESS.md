@@ -1,8 +1,8 @@
 # SaludAI — Estado Actual
 
 **Ultima actualizacion:** 2026-03-05
-**Sprint actual:** Sprint 3 — Multi-turn y Precision
-**Sesion actual:** 3.6 — FHIR Awareness en Locale Packs (completada)
+**Sprint actual:** Sprint 4 — Producto y Lanzamiento
+**Sesion actual:** 4.1 — MCP Server (completada)
 
 ---
 
@@ -22,24 +22,25 @@
 🟢 **Sesion 3.4b completa** — Sistema de locale packs. Extensibilidad por pais/region. 375 tests, todos verdes.
 🟢 **Sesion 3.5 completa** — Judge fix + re-eval. **Accuracy: 98.0%** (49/50). 375 tests, todos verdes.
 🟢 **Sesion 3.6 completa** — FHIR Awareness en locale packs. 6 tipos nuevos, AR pack con datos openRSD reales, prompt dinamico, ADR-008. 449 tests, todos verdes.
+🟢 **Sesion 4.1 completa** — MCP Server. FastMCP con 4 tools, lifespan, CLI entry point. 466 tests, todos verdes.
 
 ## Ultima Sesion Completada
 
-**Sprint 3, Sesion 3.6** — FHIR Awareness en Locale Packs
+**Sprint 4, Sesion 4.1** — MCP Server
 
 ### Lo que se hizo
-- **6 tipos nuevos en `_types.py`**: FHIRProfileDef, ExtensionDef, IdentifierSystemDef, CustomOperationDef, CustomSearchParamDef, LocaleResourceConfig
-- **Prompt builder** (`_prompt_builder.py`): genera seccion de FHIR awareness desde metadata del pack
-- **AR pack actualizado** con datos reales de AR.FHIR.CORE / openRSD: 6 profiles, 7 extensions, 3 identifier systems, 1 operation, 8 resource configs, validation notes
-- **System prompt** del AR pack ahora incluye seccion de awareness generada dinamicamente
-- **37 tests nuevos** para tipos, prompt builder, AR awareness
-- **LOCALE_GUIDE.md** actualizado con todos los tipos nuevos
-- **ADR-008**: FHIR Awareness en Locale Packs
-- **ROADMAP.md**: sesion 3.6 agregada, Level 2 en backlog
+- **`config.py`**: MCPConfig con FHIR URL, timeout, locale, server name
+- **`server.py`**: FastMCP server con 4 tools (resolve_terminology, search_fhir, get_resource, run_python)
+- **Lifespan**: inicializa FHIRClient, TerminologyResolver, LocalePack al startup; cleanup al shutdown
+- **CLI**: `saludai-mcp` entry point con stdio transport
+- **Zero duplicacion**: reutiliza ejecutores de `saludai_agent.tools`
+- **17 tests nuevos**: config, tool registration (schemas), tool execution (mocked)
+- **`__init__.py`** actualizado con exports
 
 ### Verificacion
-- `uv run pytest --no-cov` → 449 passed, 9 skipped
+- `uv run pytest --no-cov` → 466 passed, 9 skipped
 - `uv run ruff check .` → All checks passed
+- `uv run saludai-mcp` → arranca, inicializa terminology (173 concepts), se detiene limpio
 
 ## Sprint 1 — Completado
 
@@ -69,12 +70,20 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 - ✅ 3.5 — Judge fix + re-eval benchmark (94% → 98%)
 - ✅ 3.6 — FHIR Awareness en locale packs (Level 1)
 
+## Sprint 4 — En progreso
+
+- ✅ 4.1 — MCP Server (FastMCP, 4 tools, CLI entry point, 17 tests)
+- [ ] 4.2 — FastAPI REST API + OpenAPI docs
+- [ ] 4.3 — PyPI packaging + Docker image publicada
+- [ ] 4.4 — 3 Jupyter notebooks + README final con badges
+- [ ] 4.5 — Blog post + video demo 5 min
+
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.1 — MCP Server
-**Objetivo:** Implementar MCP server con todos los tools + tests e2e
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.1
+**Sesion:** 4.2 — FastAPI REST API
+**Objetivo:** Implementar API REST con OpenAPI docs, misma funcionalidad que MCP
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.2
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
 **Planificado:** FHIR Awareness Level 2 (ejecucion) — Sprint 5 o inicio Etapa 2
 

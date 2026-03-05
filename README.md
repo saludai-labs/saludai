@@ -33,7 +33,7 @@ uv run python -m benchmarks.run_eval --category simple
 
 ## Current Status
 
-**Sprint 3 (Precision) — Complete.** The project currently provides:
+**Sprint 4 (Product) — In progress.** The project currently provides:
 
 - UV monorepo with 4 packages (core, agent, mcp, api)
 - Docker Compose setup with HAPI FHIR R4 + 536 synthetic Argentine clinical resources
@@ -42,11 +42,12 @@ uv run python -m benchmarks.run_eval --category simple
 - FHIR query builder with fluent API
 - Agent loop with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
 - 5 tools: resolve_terminology, search_fhir, get_resource, execute_code (sandboxed Python)
+- **MCP server** (`saludai-mcp`) — connect from Claude Desktop, Claude Code, Cursor, or any MCP client
 - Locale packs for multi-country support (Argentina built-in)
 - Full Langfuse tracing integration
 - FHIR-AgentBench evaluation framework (50 questions, hybrid LLM-as-judge)
 - GitHub Actions CI with Ruff linting, Pytest, and coverage (84.57%)
-- 375+ passing tests (unit + integration)
+- 466 passing tests (unit + integration)
 
 ## Quick Start
 
@@ -80,6 +81,36 @@ data/seed/          # Synthetic Argentine patient data (Synthea-style)
 benchmarks/         # FHIR-AgentBench evaluation scripts
 docs/               # Architecture, roadmap, ADRs
 ```
+
+## MCP Server
+
+SaludAI exposes its tools via the [Model Context Protocol](https://modelcontextprotocol.io), compatible with Claude Desktop, Claude Code, Cursor, and any MCP client.
+
+```bash
+# Start FHIR server first
+docker compose up -d
+
+# Run the MCP server (stdio transport)
+uv run saludai-mcp
+```
+
+**Claude Desktop / Claude Code config** (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "saludai": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/saludai", "saludai-mcp"],
+      "env": {
+        "SALUDAI_FHIR_SERVER_URL": "http://localhost:8080/fhir"
+      }
+    }
+  }
+}
+```
+
+**Available tools:** `resolve_terminology`, `search_fhir`, `get_resource`, `run_python`
 
 ## Locale Packs — Multi-Country Support
 
