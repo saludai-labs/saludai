@@ -3,35 +3,32 @@
 > Actualizar al inicio de cada sesion con las tareas concretas.
 > Marcar como completadas durante la sesion.
 
-## Sesion: Sprint 4, Sesion 4.8 — Parametro `_has` (reverse chaining) en Query Builder
+## Sesion: Sprint 4, Sesion 4.9 — FHIR Awareness Level 2
 
-### 1. Implementar `HasParam` dataclass + `has()` method
-- [x] `HasParam` frozen dataclass: `resource_type`, `search_param`, `target_param`, `value` (ParamValue | str)
-- [x] `FHIRQueryBuilder.has()` method con fluent API
-- [x] Validacion de parametros vacios
+### Deliverable B: AR Custom Search Params
+- [x] Agregar `_CUSTOM_SEARCH_PARAMS` tuple con 4 params AR-especificos
+- [x] Importar `CustomSearchParamDef` y pasar al constructor de `LocalePack`
+- [x] Test: AR pack tiene custom_search_params no vacios
+- [x] Test: prompt incluye "Parametros de busqueda custom"
 
-### 2. Exportar en `__init__.py`
-- [x] Agregar `HasParam` a los exports de `query_builder.py`
-- [x] Agregar `HasParam` a imports y `__all__` del `__init__.py` de saludai-core
+### Deliverable A: Extension-Aware Resource Summarizer
+- [x] `_extract_extension_value()` — extrae valor segun value_type
+- [x] `_extract_extensions(resource, extension_defs)` — traduce URLs a name=value
+- [x] Agregar `extension_defs` param a `_summarize_resource()`
+- [x] Agregar `extension_defs` param a `format_bundle_summary()`
+- [x] Agregar `extension_defs` param a `execute_search_fhir()` y `execute_get_resource()`
+- [x] `ToolRegistry.__init__` almacena `_extension_defs` del locale pack
+- [x] Wiring: registry pasa extension_defs a executors
+- [x] Tests: string, boolean, code, CodeableConcept, Coding, Address
+- [x] Tests: coding fallback to code, unknown URL skipped, no extensions, empty defs
+- [x] Tests: integration con summarize_resource, format_bundle_summary, ToolRegistry
 
-### 3. Tests
-- [x] Test basico: `Patient?_has:Condition:subject:code=snomed`
-- [x] Test con value como ParamValue (TokenParam, DateParam)
-- [x] Test con value como string plano
-- [x] Test multiple `_has` (Patient con Condition + Observation)
-- [x] Test parametros vacios lanzan error (3 tests)
-- [x] Test golden: 2 queries clinicas realistas con `_has`
-- [x] Test chaining: `.has()` retorna self
-- [x] Test frozen: HasParam es inmutable
-- [x] Test combinado con otros params (address-state + _has + _count)
-
-### 4. Verificacion
+### Verificacion
 - [x] `uv run ruff check .` — All checks passed
-- [x] `uv run pytest --no-cov` — 495 passed
+- [x] `uv run pytest --no-cov` — 510 passed, 11 skipped
 
 ### Protocolo fin de sesion
 - [x] `docs/PROGRESS.md` — actualizar estado
 - [x] `docs/CHANGELOG.md` — registrar cambios
-- [x] `docs/ROADMAP.md` — marcar 4.8 como completada
+- [x] `docs/ROADMAP.md` — marcar 4.9 como completada
 - [x] `tasks/todo.md` — marcar tareas completadas
-- [x] `tasks/backlog.md` — marcar item completado

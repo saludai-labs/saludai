@@ -18,10 +18,10 @@ from saludai_agent.exceptions import ToolExecutionError
 from saludai_agent.types import ToolCall, ToolResult
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable
+    from collections.abc import Awaitable, Callable, Sequence
 
     from saludai_core.fhir_client import FHIRClient
-    from saludai_core.locales._types import LocalePack
+    from saludai_core.locales._types import ExtensionDef, LocalePack
     from saludai_core.terminology import TerminologyResolver, TerminologySystem
 
 logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
@@ -353,6 +353,7 @@ _DEFAULT_COUNT = "200"
 async def execute_search_fhir(
     fhir_client: FHIRClient,
     arguments: dict[str, Any],
+    extension_defs: Sequence[ExtensionDef] = (),
 ) -> str:
     """Execute the search_fhir tool.
 
@@ -363,6 +364,7 @@ async def execute_search_fhir(
     Args:
         fhir_client: The FHIR client instance.
         arguments: Tool call arguments (``resource_type``, optional ``params``).
+        extension_defs: Extension definitions for human-readable extension output.
 
     Returns:
         A token-efficient text summary of the search results.
@@ -375,18 +377,20 @@ async def execute_search_fhir(
         params = {**params, "_count": _DEFAULT_COUNT}
 
     bundle = await fhir_client.search(resource_type, params)
-    return format_bundle_summary(bundle)
+    return format_bundle_summary(bundle, extension_defs=extension_defs)
 
 
 async def execute_get_resource(
     fhir_client: FHIRClient,
     arguments: dict[str, Any],
+    extension_defs: Sequence[ExtensionDef] = (),
 ) -> str:
     """Execute the get_resource tool.
 
     Args:
         fhir_client: The FHIR client instance.
         arguments: Tool call arguments (``resource_type``, ``resource_id``).
+        extension_defs: Extension definitions for human-readable extension output.
 
     Returns:
         A token-efficient text summary of the resource.
@@ -394,7 +398,90 @@ async def execute_get_resource(
     resource_type = arguments.get("resource_type", "")
     resource_id = arguments.get("resource_id", "")
     resource = await fhir_client.read_raw(resource_type, resource_id)
-    return _summarize_resource(resource_type, resource)
+    return _summarize_resource(resource_type, resource, extension_defs=extension_defs)
+
+
+# ---------------------------------------------------------------------------
+# Extension extraction
+# ---------------------------------------------------------------------------
+
+# Map ExtensionDef.value_type → FHIR value[x] field name
+_VALUE_TYPE_FIELD: dict[str, str] = {
+    "string": "valueString",
+    "boolean": "valueBoolean",
+    "code": "valueCode",
+    "CodeableConcept": "valueCodeableConcept",
+    "Coding": "valueCoding",
+    "Address": "valueAddress",
+}
+
+
+def _extract_extension_value(ext_data: dict[str, Any], value_type: str) -> str | None:
+    """Extract a display value from a FHIR extension entry based on its value type."""
+    field = _VALUE_TYPE_FIELD.get(value_type)
+    if field is None:
+        return None
+    raw = ext_data.get(field)
+    if raw is None:
+        return None
+
+    if value_type in ("string", "code"):
+        return str(raw)
+    if value_type == "boolean":
+        return str(raw)
+    if value_type == "CodeableConcept":
+        return _extract_codeable_concept(raw) or None
+    if value_type == "Coding":
+        display = _get(raw, "display")
+        if display:
+            return str(display)
+        code = _get(raw, "code")
+        return str(code) if code else None
+    if value_type == "Address":
+        parts = [
+            _get(raw, "city"),
+            _get(raw, "state"),
+            _get(raw, "country"),
+        ]
+        text = ", ".join(str(p) for p in parts if p)
+        return text or None
+    return None
+
+
+def _extract_extensions(
+    resource: dict[str, Any],
+    extension_defs: Sequence[ExtensionDef],
+) -> list[str]:
+    """Extract human-readable name=value pairs from top-level extensions.
+
+    Uses locale pack ``ExtensionDef`` entries to translate opaque extension
+    URLs into readable labels.  Unknown extension URLs are skipped.
+
+    Args:
+        resource: A FHIR resource as a raw dict.
+        extension_defs: Extension definitions from the locale pack.
+
+    Returns:
+        A list of ``"name=value"`` strings for recognised extensions.
+    """
+    extensions = resource.get("extension")
+    if not extensions or not extension_defs:
+        return []
+
+    # Build a lookup by URL for O(1) matching
+    url_map: dict[str, ExtensionDef] = {ed.url: ed for ed in extension_defs}
+
+    pairs: list[str] = []
+    for ext in extensions:
+        url = ext.get("url", "")
+        edef = url_map.get(url)
+        if edef is None:
+            continue
+        value = _extract_extension_value(ext, edef.value_type)
+        if value is not None:
+            pairs.append(f"{edef.name}={value}")
+
+    return pairs
 
 
 # ---------------------------------------------------------------------------
@@ -416,7 +503,10 @@ _RESOURCE_EXTRACTORS: dict[str, list[str]] = {
 }
 
 
-def format_bundle_summary(bundle: dict[str, Any] | Any) -> str:
+def format_bundle_summary(
+    bundle: dict[str, Any] | Any,
+    extension_defs: Sequence[ExtensionDef] = (),
+) -> str:
     """Format a FHIR Bundle into a token-efficient text summary.
 
     Extracts key fields per resource type so the LLM can reason about the
@@ -425,6 +515,8 @@ def format_bundle_summary(bundle: dict[str, Any] | Any) -> str:
     Args:
         bundle: A FHIR Bundle as a raw dict (from ``FHIRClient.search``)
             or a ``fhir.resources`` Bundle instance.
+        extension_defs: Extension definitions from the locale pack for
+            translating extension URLs into human-readable labels.
 
     Returns:
         A human-readable summary string.
@@ -464,7 +556,7 @@ def format_bundle_summary(bundle: dict[str, Any] | Any) -> str:
     for rtype, resources in by_type.items():
         lines.append(f"## {rtype} ({len(resources)})")
         for resource in resources:
-            summary = _summarize_resource(rtype, resource)
+            summary = _summarize_resource(rtype, resource, extension_defs=extension_defs)
             lines.append(f"- {summary}")
         lines.append("")
 
@@ -478,7 +570,11 @@ def _get(obj: Any, key: str) -> Any:
     return getattr(obj, key, None)
 
 
-def _summarize_resource(resource_type: str, resource: Any) -> str:
+def _summarize_resource(
+    resource_type: str,
+    resource: Any,
+    extension_defs: Sequence[ExtensionDef] = (),
+) -> str:
     """Summarize a single FHIR resource into a compact string."""
     parts: list[str] = []
 
@@ -568,6 +664,11 @@ def _summarize_resource(resource_type: str, resource: Any) -> str:
         if addr_text:
             parts.append(f"address={addr_text}")
 
+    # Extensions (from locale pack)
+    if extension_defs and isinstance(resource, dict):
+        ext_pairs = _extract_extensions(resource, extension_defs)
+        parts.extend(ext_pairs)
+
     return " | ".join(parts) if parts else "(empty resource)"
 
 
@@ -615,6 +716,7 @@ class ToolRegistry:
         self._fhir_client = fhir_client
         self._terminology_resolver = terminology_resolver
         self._locale_pack = locale_pack
+        self._extension_defs = locale_pack.extensions if locale_pack else ()
         self._tools: dict[str, dict[str, Any]] = {}
         self._executors: dict[str, Callable[..., Awaitable[str] | str]] = {}
 
@@ -722,11 +824,15 @@ class ToolRegistry:
 
     async def _execute_search_fhir(self, arguments: dict[str, Any]) -> str:
         """Async wrapper for search_fhir."""
-        return await execute_search_fhir(self._fhir_client, arguments)
+        return await execute_search_fhir(
+            self._fhir_client, arguments, extension_defs=self._extension_defs
+        )
 
     async def _execute_get_resource(self, arguments: dict[str, Any]) -> str:
         """Async wrapper for get_resource."""
-        return await execute_get_resource(self._fhir_client, arguments)
+        return await execute_get_resource(
+            self._fhir_client, arguments, extension_defs=self._extension_defs
+        )
 
     def _execute_code(self, arguments: dict[str, Any]) -> str:
         """Sync wrapper for execute_code."""

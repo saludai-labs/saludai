@@ -2,7 +2,7 @@
 
 **Ultima actualizacion:** 2026-03-05
 **Sprint actual:** Sprint 4 — Producto y Lanzamiento
-**Sesion actual:** 4.8 — Parametro `_has` en Query Builder (completada)
+**Sesion actual:** 4.9 — FHIR Awareness Level 2 (completada)
 
 ---
 
@@ -23,22 +23,29 @@
 🟢 **Sesion 3.5 completa** — Judge fix + re-eval. **Accuracy: 98.0%** (49/50). 375 tests, todos verdes.
 🟢 **Sesion 3.6 completa** — FHIR Awareness en locale packs. 6 tipos nuevos, AR pack con datos openRSD reales, prompt dinamico, ADR-008. 449 tests, todos verdes.
 🟢 **Sesion 4.1 completa** — MCP Server. FastMCP con 4 tools, lifespan, CLI entry point. 466 tests, todos verdes.
+🟢 **Sesion 4.9 completa** — FHIR Awareness Level 2. Extension-aware summarizer, AR custom search params. 510 tests, todos verdes.
 
 ## Ultima Sesion Completada
 
-**Sprint 4, Sesion 4.8** — Parametro `_has` (reverse chaining) en Query Builder
+**Sprint 4, Sesion 4.9** — FHIR Awareness Level 2: extension parsing + custom search params
 
 ### Lo que se hizo
-- **`HasParam` dataclass** — frozen, slots, con `param_name` property que genera `_has:<type>:<param>:<target>` y `to_fhir()` que serializa el value.
-- **`FHIRQueryBuilder.has()` method** — fluent API para agregar reverse chaining. Valida parametros vacios.
-- **Soporte flexible de values** — acepta `ParamValue` (TokenParam, DateParam, etc.) o string plano.
-- **Multiples `_has`** — se pueden encadenar para buscar recursos referenciados por multiples tipos.
-- **Exports** — `HasParam` agregado a `saludai_core.__init__` y `__all__`.
-- **16 tests nuevos** — 5 para `HasParam`, 9 para `FHIRQueryBuilder.has()`, 2 golden tests clinicos.
+
+**Deliverable A: Extension-Aware Resource Summarizer**
+- **`_extract_extensions(resource, extension_defs)`** — traduce URLs opacos de extensiones FHIR a pares `nombre=valor` legibles usando `ExtensionDef` del locale pack.
+- **`_extract_extension_value()`** — extrae valor segun `value_type`: string, boolean, code, CodeableConcept, Coding, Address.
+- **Integrado en `_summarize_resource()` y `format_bundle_summary()`** — ambos aceptan `extension_defs` param.
+- **`ToolRegistry` wiring** — almacena `_extension_defs` del locale pack y lo pasa a `execute_search_fhir` y `execute_get_resource`.
+- **15 tests nuevos** — cada value_type, URL desconocido skipped, sin extensions, integracion con summarizer/bundle/registry.
+
+**Deliverable B: AR Custom Search Params**
+- **`_CUSTOM_SEARCH_PARAMS`** — 4 params AR-especificos (edad, provincia, cobertura, esquema-nomivac).
+- **Pasados al constructor de `LocalePack`** — prompt builder ya los renderiza.
+- **2 tests nuevos** — AR pack tiene custom_search_params, prompt los incluye.
 
 ### Verificacion
 - `uv run ruff check .` → All checks passed
-- `uv run pytest --no-cov` → 495 passed
+- `uv run pytest --no-cov` → 510 passed, 11 skipped
 
 ## Sprint 1 — Completado
 
@@ -78,16 +85,16 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 - ✅ 4.6 — Quick wins: limpiar data/, licencia datos, `execute(query)` [S]
 - ✅ 4.7 — Locale pack discovery via `entry_points` [M]
 - [x] 4.8 — Parámetro `_has` (reverse chaining) en Query Builder [M]
-- [ ] 4.9 — FHIR Awareness Level 2: validación y ejecución [L]
+- [x] 4.9 — FHIR Awareness Level 2: extension parsing + custom search params [L]
 
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.9 — FHIR Awareness Level 2: validacion y ejecucion
-**Objetivo:** Tool `$validate`, parsing de extensions, query builder aware de SearchParams locales
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.9
+**Sesion:** 4.5 — Blog post + video demo 5 min
+**Objetivo:** Publicar blog y video demo del proyecto
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.5
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
-**Pendiente:** 4.5 (blog/video), 4.9 (backlog tecnico)
+**Pendiente:** 4.5 (blog/video)
 
 ## Blockers
 

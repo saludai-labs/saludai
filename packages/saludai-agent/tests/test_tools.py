@@ -15,6 +15,7 @@ from saludai_agent.tools import (
     RESOLVE_TERMINOLOGY_DEFINITION,
     SEARCH_FHIR_DEFINITION,
     ToolRegistry,
+    _extract_extensions,
     execute_code,
     execute_get_resource,
     execute_resolve_terminology,
@@ -646,3 +647,267 @@ class TestToolRegistry:
         )
         with pytest.raises(ToolExecutionError, match="connection failed"):
             await registry.execute(tc)
+
+
+# ---------------------------------------------------------------------------
+# Extension extraction
+# ---------------------------------------------------------------------------
+
+
+def _make_ext_def(
+    url: str = "http://example.com/ext",
+    name: str = "TestExt",
+    value_type: str = "string",
+    context: str = "Patient",
+) -> Any:
+    """Create an ExtensionDef-like object for tests."""
+    from saludai_core.locales._types import ExtensionDef
+
+    return ExtensionDef(
+        url=url,
+        name=name,
+        description="test",
+        value_type=value_type,
+        context=context,
+    )
+
+
+class TestExtractExtensions:
+    """_extract_extensions translates extension URLs into name=value pairs."""
+
+    def test_string_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/fathers-family",
+            name="Apellido paterno",
+            value_type="string",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {"url": "http://example.com/fathers-family", "valueString": "González"},
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Apellido paterno=González"]
+
+    def test_boolean_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/matricula",
+            name="Matricula habilitada",
+            value_type="boolean",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {"url": "http://example.com/matricula", "valueBoolean": True},
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Matricula habilitada=True"]
+
+    def test_code_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/status",
+            name="Estado",
+            value_type="code",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {"url": "http://example.com/status", "valueCode": "active"},
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Estado=active"]
+
+    def test_codeable_concept_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/etnia",
+            name="Etnia",
+            value_type="CodeableConcept",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {
+                    "url": "http://example.com/etnia",
+                    "valueCodeableConcept": {
+                        "coding": [{"code": "12345", "display": "Mapuche"}],
+                    },
+                },
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert len(result) == 1
+        assert "Etnia=" in result[0]
+        assert "Mapuche" in result[0]
+
+    def test_coding_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/esquema",
+            name="Esquema NOMIVAC",
+            value_type="Coding",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {
+                    "url": "http://example.com/esquema",
+                    "valueCoding": {"code": "BCG", "display": "BCG neonatal"},
+                },
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Esquema NOMIVAC=BCG neonatal"]
+
+    def test_coding_extension_fallback_to_code(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/esquema",
+            name="Esquema",
+            value_type="Coding",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {"url": "http://example.com/esquema", "valueCoding": {"code": "BCG"}},
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Esquema=BCG"]
+
+    def test_address_extension(self) -> None:
+        ext_def = _make_ext_def(
+            url="http://example.com/birthPlace",
+            name="Lugar de nacimiento",
+            value_type="Address",
+        )
+        resource: dict[str, Any] = {
+            "extension": [
+                {
+                    "url": "http://example.com/birthPlace",
+                    "valueAddress": {
+                        "city": "Rosario",
+                        "state": "Santa Fe",
+                        "country": "Argentina",
+                    },
+                },
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == ["Lugar de nacimiento=Rosario, Santa Fe, Argentina"]
+
+    def test_unknown_url_skipped(self) -> None:
+        ext_def = _make_ext_def(url="http://example.com/known")
+        resource: dict[str, Any] = {
+            "extension": [
+                {"url": "http://example.com/unknown", "valueString": "ignored"},
+            ],
+        }
+        result = _extract_extensions(resource, [ext_def])
+        assert result == []
+
+    def test_no_extensions_on_resource(self) -> None:
+        ext_def = _make_ext_def()
+        resource: dict[str, Any] = {"id": "1"}
+        result = _extract_extensions(resource, [ext_def])
+        assert result == []
+
+    def test_empty_extension_defs(self) -> None:
+        resource: dict[str, Any] = {
+            "extension": [{"url": "http://example.com/ext", "valueString": "x"}],
+        }
+        result = _extract_extensions(resource, [])
+        assert result == []
+
+    def test_integration_with_summarize_resource(self) -> None:
+        """Extensions appear in _summarize_resource output."""
+        from saludai_agent.tools import _summarize_resource
+
+        ext_def = _make_ext_def(
+            url="http://example.com/etnia",
+            name="Etnia",
+            value_type="string",
+        )
+        resource: dict[str, Any] = {
+            "resourceType": "Patient",
+            "id": "p-1",
+            "name": [{"family": "García", "given": ["Juan"]}],
+            "gender": "male",
+            "birthDate": "1990-01-01",
+            "address": [],
+            "extension": [
+                {"url": "http://example.com/etnia", "valueString": "Mapuche"},
+            ],
+        }
+        result = _summarize_resource("Patient", resource, extension_defs=[ext_def])
+        assert "Etnia=Mapuche" in result
+        assert "Patient/p-1" in result
+
+    def test_integration_with_format_bundle_summary(self) -> None:
+        """Extensions appear in format_bundle_summary output."""
+        ext_def = _make_ext_def(
+            url="http://example.com/etnia",
+            name="Etnia",
+            value_type="string",
+        )
+        bundle: dict[str, Any] = {
+            "resourceType": "Bundle",
+            "type": "searchset",
+            "total": 1,
+            "entry": [
+                {
+                    "resource": {
+                        "resourceType": "Patient",
+                        "id": "p-1",
+                        "name": [{"family": "López", "given": ["Ana"]}],
+                        "gender": "female",
+                        "birthDate": "1985-03-10",
+                        "address": [],
+                        "extension": [
+                            {"url": "http://example.com/etnia", "valueString": "Guaraní"},
+                        ],
+                    }
+                }
+            ],
+        }
+        result = format_bundle_summary(bundle, extension_defs=[ext_def])
+        assert "Etnia=Guaraní" in result
+
+    @pytest.mark.asyncio
+    async def test_registry_passes_extension_defs(self) -> None:
+        """ToolRegistry passes locale pack extensions to summarizer."""
+        from saludai_core.locales._types import ExtensionDef, LocalePack
+
+        ext = ExtensionDef(
+            url="http://example.com/etnia",
+            name="Etnia",
+            description="test",
+            value_type="string",
+            context="Patient",
+        )
+        locale_pack = LocalePack(
+            code="test",
+            name="Test",
+            language="en",
+            terminology_systems=(),
+            system_prompt="test",
+            tool_descriptions={},
+            tool_system_enum=(),
+            extensions=(ext,),
+        )
+        client = MagicMock()
+        client.read_raw = AsyncMock(
+            return_value={
+                "resourceType": "Patient",
+                "id": "p-1",
+                "name": [{"family": "Test", "given": ["User"]}],
+                "gender": "male",
+                "birthDate": "1990-01-01",
+                "address": [],
+                "extension": [
+                    {"url": "http://example.com/etnia", "valueString": "Quechua"},
+                ],
+            }
+        )
+        registry = ToolRegistry(fhir_client=client, locale_pack=locale_pack)
+        tc = ToolCall(
+            id="tc_1",
+            name="get_resource",
+            arguments={"resource_type": "Patient", "resource_id": "p-1"},
+        )
+        result = await registry.execute(tc)
+        assert "Etnia=Quechua" in result.content

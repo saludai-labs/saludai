@@ -4,6 +4,27 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.9] — 2026-03-05
+
+### FHIR Awareness Level 2: Extension Parsing + Custom Search Params
+
+**Extension-Aware Resource Summarizer (tools.py):**
+- `_extract_extensions(resource, extension_defs)` traduce extension URLs a pares `nombre=valor` legibles
+- `_extract_extension_value()` soporta 6 value types: string, boolean, code, CodeableConcept, Coding, Address
+- `_summarize_resource()` y `format_bundle_summary()` aceptan `extension_defs` param
+- `ToolRegistry` almacena `_extension_defs` del locale pack y los pasa a search/get executors
+- URLs desconocidos se ignoran silenciosamente (graceful degradation)
+
+**AR Custom Search Params (_pack.py):**
+- 4 parametros AR-especificos: edad, provincia, cobertura, esquema-nomivac
+- `CustomSearchParamDef` importado y `_CUSTOM_SEARCH_PARAMS` pasado al constructor
+- Prompt builder ya renderiza seccion "Parametros de busqueda custom" con datos reales
+
+**Tests:** 15 nuevos (extension extraction) + 2 nuevos (custom search params) = 17 nuevos
+- Total: 510 passed, 11 skipped
+
+---
+
 ## [Sprint 4, Sesion 4.8] — 2026-03-05
 
 ### Parametro `_has` (reverse chaining) en Query Builder

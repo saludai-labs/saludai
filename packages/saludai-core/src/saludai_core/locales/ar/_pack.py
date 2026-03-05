@@ -11,6 +11,7 @@ from __future__ import annotations
 from saludai_core.locales._prompt_builder import build_fhir_awareness_section
 from saludai_core.locales._types import (
     CustomOperationDef,
+    CustomSearchParamDef,
     ExtensionDef,
     FHIRProfileDef,
     IdentifierSystemDef,
@@ -213,6 +214,37 @@ _CUSTOM_OPERATIONS = (
 )
 
 # ---------------------------------------------------------------------------
+# Custom search parameters (AR-specific)
+# ---------------------------------------------------------------------------
+
+_CUSTOM_SEARCH_PARAMS = (
+    CustomSearchParamDef(
+        name="edad",
+        resource_type="Patient",
+        description="Edad calculada del paciente (no nativo FHIR, usar birthdate en su lugar)",
+        expression="",
+    ),
+    CustomSearchParamDef(
+        name="provincia",
+        resource_type="Patient",
+        description="Provincia de residencia (equivale a address-state con codigos INDEC)",
+        expression="Patient.address.state",
+    ),
+    CustomSearchParamDef(
+        name="cobertura",
+        resource_type="Patient",
+        description="Obra social o prepaga del paciente (buscar via Coverage.beneficiary)",
+        expression="",
+    ),
+    CustomSearchParamDef(
+        name="esquema-nomivac",
+        resource_type="Immunization",
+        description="Esquema de vacunacion NOMIVAC (extension NomivacEsquema)",
+        expression="Immunization.protocolApplied.series",
+    ),
+)
+
+# ---------------------------------------------------------------------------
 # Resource configs
 # ---------------------------------------------------------------------------
 
@@ -356,6 +388,7 @@ def _build_ar_pack() -> LocalePack:
         fhir_profiles=_PROFILES,
         extensions=_EXTENSIONS,
         custom_operations=_CUSTOM_OPERATIONS,
+        custom_search_params=_CUSTOM_SEARCH_PARAMS,
         identifier_systems=_IDENTIFIER_SYSTEMS,
         resource_configs=_RESOURCE_CONFIGS,
         validation_notes=_VALIDATION_NOTES,

@@ -123,7 +123,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | 4.6 ✅ | Quick wins: limpiar data/, licencia datos, `execute(query)` | CSVs redundantes eliminados, licencia definida, convenience method con tests |
 | 4.7 ✅ | Locale pack discovery via `entry_points` | Paquetes externos pueden registrar locale packs sin tocar core |
 | 4.8 ✅ | Parámetro `_has` (reverse chaining) en Query Builder | `_has` funcional con tests, queries complejas habilitadas |
-| 4.9 | FHIR Awareness Level 2 — validación y ejecución | Tool `$validate`, parsing de extensions, query builder aware de SearchParams locales |
+| 4.9 ✅ | FHIR Awareness Level 2 — extension parsing + custom search params | Extension-aware summarizer, AR custom search params, prompt con datos reales |
 
 ### Definición de Done
 - [ ] `pip install saludai && saludai serve` → MCP server corriendo
@@ -135,7 +135,8 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 - [ ] `FHIRClient.execute(query)` funcional con tests
 - [ ] Locale packs descubribles via `entry_points`
 - [ ] `_has` en Query Builder con tests
-- [ ] Tool `$validate` funcional contra HAPI FHIR
+- [x] Extension-aware resource summarizer (parsing + display en tools)
+- [x] AR custom search params en locale pack + prompt
 
 ---
 

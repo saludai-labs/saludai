@@ -516,6 +516,17 @@ class TestARLocalePackFHIRAwareness:
         op_names = {op.name for op in AR_LOCALE_PACK.custom_operations}
         assert "$summary" in op_names
 
+    def test_has_custom_search_params(self) -> None:
+        assert len(AR_LOCALE_PACK.custom_search_params) >= 3
+        names = {sp.name for sp in AR_LOCALE_PACK.custom_search_params}
+        assert "provincia" in names
+        assert "esquema-nomivac" in names
+
+    def test_system_prompt_includes_custom_search_params(self) -> None:
+        prompt = AR_LOCALE_PACK.system_prompt
+        assert "Parametros de busqueda custom" in prompt
+        assert "provincia" in prompt
+
     def test_has_resource_configs(self) -> None:
         assert len(AR_LOCALE_PACK.resource_configs) >= 6
         types = {rc.resource_type for rc in AR_LOCALE_PACK.resource_configs}
