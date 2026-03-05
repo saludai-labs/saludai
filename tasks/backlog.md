@@ -18,7 +18,7 @@
 ## Query Builder — fuera de scope (posible Sprint 3+)
 
 - [ ] Registro completo de search params válidos por resource type (validación estricta)
-- [ ] Parámetro `_has` (reverse chaining) → **planificado: sesión 4.8**
+- [x] ~~Parámetro `_has` (reverse chaining)~~ (completado sesion 4.8)
 - [ ] Composite parameters (e.g. `component-code-value-quantity`)
 - [x] ~~`FHIRClient.execute(query)`~~ — convenience method implementado (sesión 4.6)
 

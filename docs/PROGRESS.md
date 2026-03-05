@@ -2,7 +2,7 @@
 
 **Ultima actualizacion:** 2026-03-05
 **Sprint actual:** Sprint 4 — Producto y Lanzamiento
-**Sesion actual:** 4.4 — Jupyter notebooks + README final (completada)
+**Sesion actual:** 4.8 — Parametro `_has` en Query Builder (completada)
 
 ---
 
@@ -26,19 +26,19 @@
 
 ## Ultima Sesion Completada
 
-**Sprint 4, Sesion 4.7** — Locale pack discovery via `entry_points`
+**Sprint 4, Sesion 4.8** — Parametro `_has` (reverse chaining) en Query Builder
 
 ### Lo que se hizo
-- **Entry-point discovery** — `load_locale_pack()` ahora busca packs externos en `importlib.metadata.entry_points(group="saludai.locales")` como fallback despues de los built-in.
-- **`available_locales()` expandido** — retorna built-in + entry points registrados.
-- **Validacion** — entry points que no son `LocalePack` lanzan `LocaleNotFoundError` con mensaje descriptivo.
-- **Built-in priority** — packs built-in (`"ar"`) siempre ganan sobre entry points con el mismo codigo.
-- **6 tests nuevos** — `TestEntryPointDiscovery` cubre: discovery, prioridad, invalidez, not-found, available_locales, error message.
-- **`LOCALE_GUIDE.md` actualizado** — seccion "Registrar via entry points" con instrucciones de `pyproject.toml`.
+- **`HasParam` dataclass** — frozen, slots, con `param_name` property que genera `_has:<type>:<param>:<target>` y `to_fhir()` que serializa el value.
+- **`FHIRQueryBuilder.has()` method** — fluent API para agregar reverse chaining. Valida parametros vacios.
+- **Soporte flexible de values** — acepta `ParamValue` (TokenParam, DateParam, etc.) o string plano.
+- **Multiples `_has`** — se pueden encadenar para buscar recursos referenciados por multiples tipos.
+- **Exports** — `HasParam` agregado a `saludai_core.__init__` y `__all__`.
+- **16 tests nuevos** — 5 para `HasParam`, 9 para `FHIRQueryBuilder.has()`, 2 golden tests clinicos.
 
 ### Verificacion
 - `uv run ruff check .` → All checks passed
-- `uv run pytest --no-cov` → 479 passed, 11 skipped
+- `uv run pytest --no-cov` → 495 passed
 
 ## Sprint 1 — Completado
 
@@ -77,17 +77,17 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 - [ ] 4.5 — Blog post + video demo 5 min
 - ✅ 4.6 — Quick wins: limpiar data/, licencia datos, `execute(query)` [S]
 - ✅ 4.7 — Locale pack discovery via `entry_points` [M]
-- [ ] 4.8 — Parámetro `_has` (reverse chaining) en Query Builder [M]
+- [x] 4.8 — Parámetro `_has` (reverse chaining) en Query Builder [M]
 - [ ] 4.9 — FHIR Awareness Level 2: validación y ejecución [L]
 
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.8 — Parametro `_has` (reverse chaining) en Query Builder
-**Objetivo:** Soporte de `_has` en el query builder para consultas complejas
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.8
+**Sesion:** 4.9 — FHIR Awareness Level 2: validacion y ejecucion
+**Objetivo:** Tool `$validate`, parsing de extensions, query builder aware de SearchParams locales
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.9
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
-**Pendiente:** 4.5 (blog/video), 4.8-4.9 (backlog tecnico)
+**Pendiente:** 4.5 (blog/video), 4.9 (backlog tecnico)
 
 ## Blockers
 

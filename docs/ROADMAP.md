@@ -122,7 +122,7 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | 4.5 | Blog post + video demo 5 min + publicar en comunidades | Blog en dev.to, video en YouTube |
 | 4.6 ✅ | Quick wins: limpiar data/, licencia datos, `execute(query)` | CSVs redundantes eliminados, licencia definida, convenience method con tests |
 | 4.7 ✅ | Locale pack discovery via `entry_points` | Paquetes externos pueden registrar locale packs sin tocar core |
-| 4.8 | Parámetro `_has` (reverse chaining) en Query Builder | `_has` funcional con tests, queries complejas habilitadas |
+| 4.8 ✅ | Parámetro `_has` (reverse chaining) en Query Builder | `_has` funcional con tests, queries complejas habilitadas |
 | 4.9 | FHIR Awareness Level 2 — validación y ejecución | Tool `$validate`, parsing de extensions, query builder aware de SearchParams locales |
 
 ### Definición de Done

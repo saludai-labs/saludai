@@ -252,6 +252,52 @@ class IncludeParam:
 
 
 @dataclass(frozen=True, slots=True)
+class HasParam:
+    """A FHIR ``_has`` (reverse chaining) search parameter.
+
+    Allows searching for resources that are *referenced by* other resources
+    matching certain criteria.
+
+    The FHIR format is: ``_has:<resource_type>:<search_param>:<target_param>=<value>``
+
+    Args:
+        resource_type: The referencing resource type (e.g. ``"Condition"``).
+        search_param: The reference search parameter in the referencing resource
+            (e.g. ``"subject"`` — the field that points back to the current resource).
+        target_param: The search parameter to filter on in the referencing resource
+            (e.g. ``"code"``).
+        value: The value to match. Can be a ``ParamValue`` object (TokenParam,
+            DateParam, etc.) or a plain string.
+
+    Example::
+
+        # Patient?_has:Condition:subject:code=http://snomed.info/sct|44054006
+        HasParam(
+            resource_type="Condition",
+            search_param="subject",
+            target_param="code",
+            value=snomed("44054006"),
+        )
+    """
+
+    resource_type: str
+    search_param: str
+    target_param: str
+    value: TokenParam | DateParam | ReferenceParam | QuantityParam | StringParam | str = ""
+
+    @property
+    def param_name(self) -> str:
+        """Return the FHIR parameter name ``_has:<type>:<param>:<target>``."""
+        return f"_has:{self.resource_type}:{self.search_param}:{self.target_param}"
+
+    def to_fhir(self) -> str:
+        """Serialize the value portion of the ``_has`` parameter."""
+        if isinstance(self.value, str):
+            return self.value
+        return self.value.to_fhir()
+
+
+@dataclass(frozen=True, slots=True)
 class SortParam:
     """A FHIR _sort parameter.
 
@@ -540,6 +586,53 @@ class FHIRQueryBuilder:
             reverse=True,
         )
         self._params.append((inc.param_name, inc.to_fhir()))
+        return self
+
+    # -- Has (reverse chaining) --------------------------------------------
+
+    def has(
+        self,
+        resource_type: str,
+        search_param: str,
+        target_param: str,
+        value: ParamValue | str,
+    ) -> FHIRQueryBuilder:
+        """Add a ``_has`` (reverse chaining) parameter.
+
+        Searches for resources that are referenced by ``resource_type`` via
+        ``search_param``, where the referencing resource matches
+        ``target_param=value``.
+
+        Args:
+            resource_type: The referencing resource type (e.g. ``"Condition"``).
+            search_param: The reference param pointing back (e.g. ``"subject"``).
+            target_param: The param to filter on (e.g. ``"code"``).
+            value: The value to match (ParamValue or plain string).
+
+        Returns:
+            Self for chaining.
+
+        Example::
+
+            # Patient?_has:Condition:subject:code=http://snomed.info/sct|44054006
+            FHIRQueryBuilder("Patient").has(
+                "Condition", "subject", "code", snomed("44054006")
+            )
+        """
+        if not resource_type:
+            raise QueryBuilderValidationError("_has resource_type cannot be empty")
+        if not search_param:
+            raise QueryBuilderValidationError("_has search_param cannot be empty")
+        if not target_param:
+            raise QueryBuilderValidationError("_has target_param cannot be empty")
+
+        has_param = HasParam(
+            resource_type=resource_type,
+            search_param=search_param,
+            target_param=target_param,
+            value=value,
+        )
+        self._params.append((has_param.param_name, has_param.to_fhir()))
         return self
 
     # -- Sort, count, total, elements ---------------------------------------

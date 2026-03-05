@@ -13,6 +13,7 @@ from saludai_core.query_builder import (
     FHIRQuery,
     FHIRQueryBuilder,
     FHIRResourceType,
+    HasParam,
     IncludeParam,
     SortOrder,
     SortParam,
@@ -488,7 +489,137 @@ class TestFHIRQueryToParams:
 
 
 # ---------------------------------------------------------------------------
-# 11. TestChainedParams
+# 11. TestHasParam
+# ---------------------------------------------------------------------------
+
+
+class TestHasParam:
+    """Tests for HasParam (reverse chaining)."""
+
+    def test_param_name(self) -> None:
+        hp = HasParam(resource_type="Condition", search_param="subject", target_param="code")
+        assert hp.param_name == "_has:Condition:subject:code"
+
+    def test_to_fhir_with_token(self) -> None:
+        hp = HasParam(
+            resource_type="Condition",
+            search_param="subject",
+            target_param="code",
+            value=snomed("44054006"),
+        )
+        assert hp.to_fhir() == f"{SNOMED_CT_SYSTEM}|44054006"
+
+    def test_to_fhir_with_string(self) -> None:
+        hp = HasParam(
+            resource_type="Condition",
+            search_param="subject",
+            target_param="code",
+            value="active",
+        )
+        assert hp.to_fhir() == "active"
+
+    def test_to_fhir_with_date(self) -> None:
+        hp = HasParam(
+            resource_type="Encounter",
+            search_param="subject",
+            target_param="date",
+            value=date_param("ge", "2024-01-01"),
+        )
+        assert hp.to_fhir() == "ge2024-01-01"
+
+    def test_frozen(self) -> None:
+        hp = HasParam(
+            resource_type="Condition",
+            search_param="subject",
+            target_param="code",
+            value="test",
+        )
+        with pytest.raises(AttributeError):
+            hp.resource_type = "Other"  # type: ignore[misc]
+
+
+# ---------------------------------------------------------------------------
+# 12. TestFHIRQueryBuilderHas
+# ---------------------------------------------------------------------------
+
+
+class TestFHIRQueryBuilderHas:
+    """Tests for the FHIRQueryBuilder.has() method."""
+
+    def test_basic_has(self) -> None:
+        """Patient?_has:Condition:subject:code=snomed"""
+        query = (
+            FHIRQueryBuilder("Patient")
+            .has("Condition", "subject", "code", snomed("44054006"))
+            .build()
+        )
+        params = query.to_params()
+        assert params["_has:Condition:subject:code"] == f"{SNOMED_CT_SYSTEM}|44054006"
+
+    def test_has_with_string_value(self) -> None:
+        query = (
+            FHIRQueryBuilder("Patient")
+            .has("Condition", "subject", "clinical-status", "active")
+            .build()
+        )
+        params = query.to_params()
+        assert params["_has:Condition:subject:clinical-status"] == "active"
+
+    def test_has_with_date_value(self) -> None:
+        query = (
+            FHIRQueryBuilder("Patient")
+            .has("Encounter", "subject", "date", date_param("ge", "2024-01-01"))
+            .build()
+        )
+        params = query.to_params()
+        assert params["_has:Encounter:subject:date"] == "ge2024-01-01"
+
+    def test_has_chaining_returns_self(self) -> None:
+        builder = FHIRQueryBuilder("Patient")
+        result = builder.has("Condition", "subject", "code", snomed("44054006"))
+        assert result is builder
+
+    def test_multiple_has(self) -> None:
+        """Patient with both a Condition and an Observation."""
+        query = (
+            FHIRQueryBuilder("Patient")
+            .has("Condition", "subject", "code", snomed("44054006"))
+            .has("Observation", "subject", "code", loinc("2339-0"))
+            .build()
+        )
+        params = query.to_params()
+        assert params["_has:Condition:subject:code"] == f"{SNOMED_CT_SYSTEM}|44054006"
+        assert params["_has:Observation:subject:code"] == f"{LOINC_SYSTEM}|2339-0"
+
+    def test_has_empty_resource_type_raises(self) -> None:
+        with pytest.raises(QueryBuilderValidationError, match="_has resource_type cannot be empty"):
+            FHIRQueryBuilder("Patient").has("", "subject", "code", "test")
+
+    def test_has_empty_search_param_raises(self) -> None:
+        with pytest.raises(QueryBuilderValidationError, match="_has search_param cannot be empty"):
+            FHIRQueryBuilder("Patient").has("Condition", "", "code", "test")
+
+    def test_has_empty_target_param_raises(self) -> None:
+        with pytest.raises(QueryBuilderValidationError, match="_has target_param cannot be empty"):
+            FHIRQueryBuilder("Patient").has("Condition", "subject", "", "test")
+
+    def test_has_combined_with_other_params(self) -> None:
+        """_has combined with regular search params."""
+        query = (
+            FHIRQueryBuilder("Patient")
+            .where_string("address-state", "Buenos Aires")
+            .has("Condition", "subject", "code", snomed("44054006"))
+            .count(200)
+            .build()
+        )
+        params = query.to_params()
+        assert params["address-state"] == "Buenos Aires"
+        assert params["_has:Condition:subject:code"] == f"{SNOMED_CT_SYSTEM}|44054006"
+        assert params["_count"] == "200"
+
+
+# ---------------------------------------------------------------------------
+# 13. TestChainedParams
 # ---------------------------------------------------------------------------
 
 
@@ -524,7 +655,7 @@ class TestChainedParams:
 
 
 # ---------------------------------------------------------------------------
-# 12. TestGolden — real clinical queries
+# 14. TestGolden — real clinical queries
 # ---------------------------------------------------------------------------
 
 
@@ -633,6 +764,36 @@ class TestGolden:
         params = query.to_params()
         assert params["code"] == f"{LOINC_SYSTEM}|2339-0"
         assert params["value-quantity"] == "gt126.0|http://unitsofmeasure.org|mg/dL"
+
+    def test_pacientes_con_diabetes_usando_has(self) -> None:
+        """Pacientes mayores de 60 que tienen diabetes tipo 2 (usando _has)."""
+        query = (
+            FHIRQueryBuilder("Patient")
+            .where_date("birthdate", "le", "1966-01-01")
+            .has("Condition", "subject", "code", snomed("44054006"))
+            .count(200)
+            .build()
+        )
+        params = query.to_params()
+        assert params == {
+            "birthdate": "le1966-01-01",
+            "_has:Condition:subject:code": f"{SNOMED_CT_SYSTEM}|44054006",
+            "_count": "200",
+        }
+
+    def test_pacientes_con_medicacion_activa_y_condicion(self) -> None:
+        """Pacientes con medicacion activa Y una condicion especifica."""
+        query = (
+            FHIRQueryBuilder("Patient")
+            .has("Condition", "subject", "code", snomed("38341003"))
+            .has("MedicationRequest", "subject", "status", "active")
+            .where_string("address-state", "Buenos Aires")
+            .build()
+        )
+        params = query.to_params()
+        assert params["_has:Condition:subject:code"] == f"{SNOMED_CT_SYSTEM}|38341003"
+        assert params["_has:MedicationRequest:subject:status"] == "active"
+        assert params["address-state"] == "Buenos Aires"
 
 
 # ---------------------------------------------------------------------------

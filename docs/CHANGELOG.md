@@ -4,6 +4,19 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.8] — 2026-03-05
+
+### Parametro `_has` (reverse chaining) en Query Builder
+- `HasParam` frozen dataclass con `param_name` property y `to_fhir()` serialization
+- `FHIRQueryBuilder.has()` fluent method con validacion de parametros vacios
+- Soporte para values como `ParamValue` (TokenParam, DateParam, etc.) o string plano
+- Soporte para multiples `_has` en la misma query (e.g. Condition + MedicationRequest)
+- `HasParam` exportado en `saludai_core.__init__` y `__all__`
+- 16 tests nuevos: 5 en `TestHasParam`, 9 en `TestFHIRQueryBuilderHas`, 2 golden tests clinicos
+- Total: 495 tests passed (vs 479 en sesion anterior)
+
+---
+
 ## [Sprint 4, Sesion 4.7] — 2026-03-05
 
 ### Locale pack discovery via entry points
