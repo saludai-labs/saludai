@@ -1,10 +1,10 @@
 # SaludAI
 
-**The most precise FHIR agent for Latin America** — benchmarked against FHIR-AgentBench, with full observability, designed for public health systems.
+**A FHIR agent for Latin America** — with full observability, designed for public health systems.
 
 [![CI](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml/badge.svg)](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Benchmark: 98%](https://img.shields.io/badge/FHIR--AgentBench-98%25-brightgreen)](docs/experiments/EXPERIMENTS.md)
+[![Benchmark: 98%](https://img.shields.io/badge/FHIR_Benchmark-98%25_(50q)-brightgreen)](docs/experiments/EXPERIMENTS.md)
 [![Coverage: 84.57%](https://img.shields.io/badge/Coverage-84.57%25-green)](.github/workflows/ci.yml)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://python.org)
 
@@ -17,7 +17,7 @@ Get: A structured, sourced answer with full Langfuse tracing of every step.
 
 ## Benchmark
 
-SaludAI is evaluated against a custom FHIR-AgentBench inspired by [Verily/KAIST/MIT FHIR-AgentBench](https://arxiv.org/abs/2509.19319) ([repo](https://github.com/glee4810/FHIR-AgentBench)), adapted for Argentine clinical data.
+SaludAI is evaluated on a 50-question FHIR benchmark inspired by [FHIR-AgentBench](https://arxiv.org/abs/2509.19319) (Verily/KAIST/MIT, [repo](https://github.com/glee4810/FHIR-AgentBench)), adapted for Argentine clinical data. The benchmark is smaller in scope (50 questions, 5 resource types) but covers terminology resolution, multi-resource queries, and aggregation — with a hybrid judge (programmatic + LLM) for reproducible scoring.
 
 | Model | Accuracy | Simple (8) | Medium (20) | Complex (22) | Avg Duration |
 |-------|----------|------------|-------------|--------------|-------------|
