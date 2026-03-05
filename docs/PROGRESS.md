@@ -1,55 +1,52 @@
 # SaludAI — Estado Actual
 
-**Última actualización:** 2026-03-05
-**Sprint actual:** Sprint 3 — Multi-turn y Precisión
-**Sesión actual:** 3.4b — Sistema de Locale Packs (completada)
+**Ultima actualizacion:** 2026-03-05
+**Sprint actual:** Sprint 3 — Multi-turn y Precision
+**Sesion actual:** 3.6 — FHIR Awareness en Locale Packs (completada)
 
 ---
 
 ## Estado General
 
-🟢 **Sprint 1 completo** — Monorepo configurado, CI activo, Docker Compose con HAPI FHIR R4, FHIR client funcional, repo presentable para público.
-🟢 **Sesión 2.1 completa** — TerminologyResolver implementado con SNOMED CT AR (~96 códigos), CIE-10 (~45 códigos), LOINC (~30 códigos). Fuzzy matching con rapidfuzz. 35 tests nuevos, todos verdes.
-🟢 **Sesión 2.2 completa** — FHIR Query Builder implementado. Frozen dataclasses para params, fluent builder API, factory shortcuts (snomed, loinc, cie10), soporte para chained params, _include/_revinclude, _sort, _count, _total, _elements. 96 tests nuevos, todos verdes.
-🟢 **Sesión 2.3 completa** — Agent Loop v1 implementado en saludai-agent. LLM native tool calling, provider-agnostic (Anthropic/OpenAI/Ollama), 2 tools (resolve_terminology + search_fhir), max iterations cap, bundle summary formatter. 126 tests nuevos (125 nuevos + 1 existente), todos verdes.
-🟢 **Sesión 2.4 completa** — Langfuse integration. Tracer protocol + LangfuseTracer + NoOpTracer. Instrumentación explícita del agent loop (generations, tool calls, traces). 29 tests nuevos (155 total agent), todos verdes.
-🟢 **Sesión 2.5 completa** — FHIR-AgentBench baseline. Framework de evaluación con 25 preguntas curadas, LLM-as-judge, métricas por categoría. Baseline: **88% accuracy** (22/25). 30 tests nuevos (337 total), todos verdes.
-🟢 **Sesión 2.6 completa** — Benchmark honesto + Documento de Experimentos. Seed enriquecido (536 entries, 5 resource types), 50 preguntas (8 simple, 20 medium, 22 complex), judge híbrido (programmatic + Haiku), fix MedicationRequest parsing. **Baseline honesto: 60% accuracy** (30/50). 8 tests nuevos (374 total), todos verdes.
-🟢 **Sesión 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
-🟢 **Sesión 3.2 completa** — Reference Navigator + Fixes. Terminology disambiguation fix, nuevo tool `get_resource`, max_iterations 5→8, system prompt v1.2 con guidance de `_include`/`_revinclude`. **Accuracy: 86.0%** (43/50, 0 errors). 365 tests, todos verdes.
-🟢 **Sesión 3.3 completa** — Code Interpreter tool. Sandbox Python execution para conteo/agrupación. **Accuracy: 94.0%** (47/50, 1 error). 391 tests, todos verdes.
-🟢 **Sesión 3.4a completa** — Limpieza de deuda técnica. ADRs 002, 004, 005. Coverage config (84.57%). CI con coverage.
-🟢 **Sesión 3.4b completa** — Sistema de locale packs. Extensibilidad por país/región. 375 tests, todos verdes.
+🟢 **Sprint 1 completo** — Monorepo configurado, CI activo, Docker Compose con HAPI FHIR R4, FHIR client funcional, repo presentable para publico.
+🟢 **Sesion 2.1 completa** — TerminologyResolver implementado con SNOMED CT AR (~96 codigos), CIE-10 (~45 codigos), LOINC (~30 codigos). Fuzzy matching con rapidfuzz. 35 tests nuevos, todos verdes.
+🟢 **Sesion 2.2 completa** — FHIR Query Builder implementado. Frozen dataclasses para params, fluent builder API, factory shortcuts (snomed, loinc, cie10), soporte para chained params, _include/_revinclude, _sort, _count, _total, _elements. 96 tests nuevos, todos verdes.
+🟢 **Sesion 2.3 completa** — Agent Loop v1 implementado en saludai-agent. LLM native tool calling, provider-agnostic (Anthropic/OpenAI/Ollama), 2 tools (resolve_terminology + search_fhir), max iterations cap, bundle summary formatter. 126 tests nuevos (125 nuevos + 1 existente), todos verdes.
+🟢 **Sesion 2.4 completa** — Langfuse integration. Tracer protocol + LangfuseTracer + NoOpTracer. Instrumentacion explicita del agent loop (generations, tool calls, traces). 29 tests nuevos (155 total agent), todos verdes.
+🟢 **Sesion 2.5 completa** — FHIR-AgentBench baseline. Framework de evaluacion con 25 preguntas curadas, LLM-as-judge, metricas por categoria. Baseline: **88% accuracy** (22/25). 30 tests nuevos (337 total), todos verdes.
+🟢 **Sesion 2.6 completa** — Benchmark honesto + Documento de Experimentos. Seed enriquecido (536 entries, 5 resource types), 50 preguntas (8 simple, 20 medium, 22 complex), judge hibrido (programmatic + Haiku), fix MedicationRequest parsing. **Baseline honesto: 60% accuracy** (30/50). 8 tests nuevos (374 total), todos verdes.
+🟢 **Sesion 3.1 completa** — Pagination + `_summary=count`. Default `_count=200`, `SummaryMode` enum, format summary-count bundles, system prompt con estrategia de consulta. **Accuracy: 82.0%** (41/50). 355 tests, todos verdes.
+🟢 **Sesion 3.2 completa** — Reference Navigator + Fixes. Terminology disambiguation fix, nuevo tool `get_resource`, max_iterations 5→8, system prompt v1.2 con guidance de `_include`/`_revinclude`. **Accuracy: 86.0%** (43/50, 0 errors). 365 tests, todos verdes.
+🟢 **Sesion 3.3 completa** — Code Interpreter tool. Sandbox Python execution para conteo/agrupacion. **Accuracy: 94.0%** (47/50, 1 error). 391 tests, todos verdes.
+🟢 **Sesion 3.4a completa** — Limpieza de deuda tecnica. ADRs 002, 004, 005. Coverage config (84.57%). CI con coverage.
+🟢 **Sesion 3.4b completa** — Sistema de locale packs. Extensibilidad por pais/region. 375 tests, todos verdes.
+🟢 **Sesion 3.5 completa** — Judge fix + re-eval. **Accuracy: 98.0%** (49/50). 375 tests, todos verdes.
+🟢 **Sesion 3.6 completa** — FHIR Awareness en locale packs. 6 tipos nuevos, AR pack con datos openRSD reales, prompt dinamico, ADR-008. 449 tests, todos verdes.
 
-## Última Sesión Completada
+## Ultima Sesion Completada
 
-**Sprint 3, Sesión 3.4b** — Sistema de Locale Packs
+**Sprint 3, Sesion 3.6** — FHIR Awareness en Locale Packs
 
 ### Lo que se hizo
-- **Locale types:** `saludai_core/locales/_types.py` — `LocalePack` + `TerminologySystemDef` (frozen dataclasses)
-- **Locale factory:** `saludai_core/locales/__init__.py` — `load_locale_pack(code)` con registry built-in
-- **AR locale pack:** `saludai_core/locales/ar/` — pack completo con CSVs, prompt, tool descriptions
-- **TerminologyResolver refactor:** acepta `locale_pack` param, carga CSVs del pack via `importlib.resources`
-- **Agent wiring:** `AgentConfig.locale`, `ToolRegistry` con locale pack, `AgentLoop` usa pack prompt
-- **Backward compat:** `prompts.py` re-exporta `SYSTEM_PROMPT` desde AR pack
-- **Exception:** `LocaleNotFoundError` en `saludai_core.exceptions`
-- **ADR-007:** `docs/decisions/007-locale-packs.md`
-- **LOCALE_GUIDE.md:** guía para crear locale packs
-- **ARCHITECTURE.md:** sección 5b locale packs + ADR en registro
-- **README.md:** sección "Locale Packs — Multi-Country Support"
+- **6 tipos nuevos en `_types.py`**: FHIRProfileDef, ExtensionDef, IdentifierSystemDef, CustomOperationDef, CustomSearchParamDef, LocaleResourceConfig
+- **Prompt builder** (`_prompt_builder.py`): genera seccion de FHIR awareness desde metadata del pack
+- **AR pack actualizado** con datos reales de AR.FHIR.CORE / openRSD: 6 profiles, 7 extensions, 3 identifier systems, 1 operation, 8 resource configs, validation notes
+- **System prompt** del AR pack ahora incluye seccion de awareness generada dinamicamente
+- **37 tests nuevos** para tipos, prompt builder, AR awareness
+- **LOCALE_GUIDE.md** actualizado con todos los tipos nuevos
+- **ADR-008**: FHIR Awareness en Locale Packs
+- **ROADMAP.md**: sesion 3.6 agregada, Level 2 en backlog
 
-### Verificación
-- `uv run pytest` → 375 passed (366 passed, 9 skipped)
+### Verificacion
+- `uv run pytest --no-cov` → 449 passed, 9 skipped
 - `uv run ruff check .` → All checks passed
-- `uv run ruff format --check .` → All formatted
-- 31 tests nuevos (locale types, factory, AR pack, terminology resolver con pack, agent integration)
 
 ## Sprint 1 — Completado
 
-Todas las sesiones del Sprint 1 están finalizadas:
+Todas las sesiones del Sprint 1 estan finalizadas:
 - ✅ 1.1 — Monorepo UV + estructura de paquetes
 - ✅ 1.2 — GitHub Actions CI + pre-commit hooks
-- ✅ 1.3 — Docker Compose: HAPI FHIR R4 + datos sintéticos argentinos
+- ✅ 1.3 — Docker Compose: HAPI FHIR R4 + datos sinteticos argentinos
 - ✅ 1.4 — saludai-core: FHIR client (connect, search, read)
 - ✅ 1.5 — README, LICENSE, CONTRIBUTING.md
 
@@ -62,21 +59,24 @@ Todas las sesiones del Sprint 1 están finalizadas:
 - ✅ 2.5 — FHIR-AgentBench baseline (88%, inflado)
 - ✅ 2.6 — Benchmark Honesto + Documento de Experimentos (60%, baseline real)
 
-## Sprint 3 — En Progreso
+## Sprint 3 — Completado
 
 - ✅ 3.1 — Pagination + `_summary=count` (60% → 82%)
 - ✅ 3.2 — Reference Navigator + Fixes (82% → 86%, 0 errors)
 - ✅ 3.3 — Code Interpreter (86% → 94%, +8pp)
-- ✅ 3.4a — Limpieza de deuda técnica (ADRs, coverage config)
-- ✅ 3.4b — Sistema de locale packs (extensibilidad por país/región)
+- ✅ 3.4a — Limpieza de deuda tecnica (ADRs, coverage config)
+- ✅ 3.4b — Sistema de locale packs (extensibilidad por pais/region)
+- ✅ 3.5 — Judge fix + re-eval benchmark (94% → 98%)
+- ✅ 3.6 — FHIR Awareness en locale packs (Level 1)
 
-## Próxima Sesión
+## Proxima Sesion
 
-**Sprint:** 3 — Multi-turn y Precisión
-**Sesión:** 3.5 — Re-eval benchmark + prompt optimization
-**Objetivo:** Re-evaluar benchmark, optimizar prompt, mejorar score
-**Referencia:** `docs/ROADMAP.md` → Sprint 3 → Sesión 3.5
-**Fallas restantes (Exp 4):** 2 non-determinism (M07, C14), 1 timeout (C05)
+**Sprint:** 4 — Producto y Lanzamiento
+**Sesion:** 4.1 — MCP Server
+**Objetivo:** Implementar MCP server con todos los tools + tests e2e
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.1
+**Fallas restantes (Exp 5):** 1 max iterations (C05)
+**Planificado:** FHIR Awareness Level 2 (ejecucion) — Sprint 5 o inicio Etapa 2
 
 ## Blockers
 
@@ -87,26 +87,27 @@ Ninguno.
 - GitHub Org: `saludai-labs` (confirmado)
 - Git remote via HTTPS (no SSH)
 - Root pyproject.toml es workspace virtual (sin build-system)
-- `dependency-groups.dev` para dev-dependencies (estándar actual de UV)
-- CI: Python 3.12 single version (sin matrix — no agrega valor todavía)
-- CI: Sin mypy por ahora (no hay código real que tipar)
+- `dependency-groups.dev` para dev-dependencies (estandar actual de UV)
+- CI: Python 3.12 single version (sin matrix — no agrega valor todavia)
+- CI: Sin mypy por ahora (no hay codigo real que tipar)
 - CI: Sin coverage enforcement (no hay tests sustanciales)
 - Pre-commit: `ruff-pre-commit` oficial (no ruff via sistema)
-- Pytest: `--import-mode=importlib` para monorepos con test files homónimos
+- Pytest: `--import-mode=importlib` para monorepos con test files homonimos
 - **Langfuse Cloud (free tier)** en vez de self-hosted (ADR-006)
-- **HAPI FHIR con H2 en memoria** — datos efímeros, sin PostgreSQL extra
-- **fhir.resources default** — compatible con R4, sin sub-módulo específico
+- **HAPI FHIR con H2 en memoria** — datos efimeros, sin PostgreSQL extra
+- **fhir.resources default** — compatible con R4, sin sub-modulo especifico
 - **TerminologyResolver sync** — todo es CPU en memoria, no necesita async
 - **CSVs embebidos** — legibles, diffeables, editables por no-programadores
-- **rapidfuzz** — ~10x más rápido que difflib, provee token_sort_ratio + partial_ratio
+- **rapidfuzz** — ~10x mas rapido que difflib, provee token_sort_ratio + partial_ratio
 - **Scores 0-100** — consistente con escala de rapidfuzz (EXACT_MATCH_SCORE = 100.0)
 - **No stripear acentos** — rapidfuzz maneja variantes naturalmente
 - **QueryBuilder puramente sync** — solo transforma datos, no hace I/O
 - **Frozen dataclasses** para todos los param types — inmutabilidad garantizada
-- **Factory shortcuts** (snomed, loinc, cie10) — ergonomía sin perder tipado
+- **Factory shortcuts** (snomed, loinc, cie10) — ergonomia sin perder tipado
 - **validate=False escape hatch** — permite resource types custom sin romper API
-- **LLM-as-judge** para benchmark — evaluación binaria CORRECT/INCORRECT, tolerante a formato
+- **LLM-as-judge** para benchmark — evaluacion binaria CORRECT/INCORRECT, tolerante a formato
+- **FHIR Awareness Level 1** — metadata declarativa en locale packs (ADR-008)
 
 ## Decisiones Pendientes
 
-- [ ] Licencia exacta del repo de datos sintéticos (¿Apache 2.0? ¿CC-BY-4.0?)
+- [ ] Licencia exacta del repo de datos sinteticos (Apache 2.0? CC-BY-4.0?)

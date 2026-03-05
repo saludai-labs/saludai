@@ -9,7 +9,17 @@ locale.  Future locales can be added as built-in packs or discovered via
 from __future__ import annotations
 
 from saludai_core.exceptions import LocaleNotFoundError
-from saludai_core.locales._types import LocalePack, TerminologySystemDef
+from saludai_core.locales._prompt_builder import build_fhir_awareness_section
+from saludai_core.locales._types import (
+    CustomOperationDef,
+    CustomSearchParamDef,
+    ExtensionDef,
+    FHIRProfileDef,
+    IdentifierSystemDef,
+    LocalePack,
+    LocaleResourceConfig,
+    TerminologySystemDef,
+)
 
 # ---------------------------------------------------------------------------
 # Built-in locale registry (lazy — imported on first access)
@@ -47,8 +57,15 @@ def available_locales() -> list[str]:
 
 
 __all__ = [
+    "CustomOperationDef",
+    "CustomSearchParamDef",
+    "ExtensionDef",
+    "FHIRProfileDef",
+    "IdentifierSystemDef",
     "LocalePack",
+    "LocaleResourceConfig",
     "TerminologySystemDef",
     "available_locales",
+    "build_fhir_awareness_section",
     "load_locale_pack",
 ]

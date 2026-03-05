@@ -94,8 +94,11 @@ class TestAgentLoopWithLocalePack:
 class TestPromptsBackwardCompat:
     """prompts.py SYSTEM_PROMPT is backward compatible with AR pack."""
 
-    def test_prompt_equals_ar_pack(self) -> None:
-        assert AR_LOCALE_PACK.system_prompt == SYSTEM_PROMPT
+    def test_ar_pack_prompt_starts_with_base(self) -> None:
+        assert AR_LOCALE_PACK.system_prompt.startswith(SYSTEM_PROMPT)
+
+    def test_ar_pack_prompt_includes_awareness(self) -> None:
+        assert "Perfiles FHIR locales" in AR_LOCALE_PACK.system_prompt
 
     def test_prompt_version_exists(self) -> None:
         from saludai_agent.prompts import PROMPT_VERSION

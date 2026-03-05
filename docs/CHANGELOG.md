@@ -4,6 +4,71 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 3, Sesion 3.6] — 2026-03-05
+
+### FHIR Awareness en Locale Packs
+
+**Tipos nuevos en `_types.py`:**
+- `FHIRProfileDef` — perfiles FHIR locales con extensiones obligatorias
+- `ExtensionDef` — extensiones FHIR con URL, tipo de valor, contexto
+- `IdentifierSystemDef` — sistemas de identificacion (DNI, REFEPS, REFES)
+- `CustomOperationDef` — operaciones FHIR custom ($summary)
+- `CustomSearchParamDef` — parametros de busqueda custom
+- `LocaleResourceConfig` — uso y search params comunes por recurso
+
+**Prompt builder (`_prompt_builder.py`):**
+- `build_fhir_awareness_section()` genera seccion markdown desde metadata del pack
+- Cubre: profiles, extensions, identifiers, operations, search params, resources, validation
+
+**AR locale pack actualizado con datos reales de AR.FHIR.CORE / openRSD:**
+- 6 profiles (Patient, Practitioner, Organization, Location, Immunization, Composition)
+- 7 extensions (Etnia, apellido paterno/materno, identidad de genero, NOMIVAC, etc.)
+- 3 identifier systems (DNI/RENAPER, REFEPS, REFES)
+- 1 custom operation ($summary)
+- 8 resource configs con search params comunes
+- Validation notes (DNI obligatorio, campos required en Federador)
+
+**System prompt:** AR pack ahora incluye seccion de FHIR awareness generada dinamicamente
+
+**Tests:** 37 tests nuevos (tipos, prompt builder, AR awareness), 449 total
+
+**Documentacion:**
+- `docs/LOCALE_GUIDE.md` actualizado con nuevos tipos y ejemplo completo
+- `docs/decisions/008-fhir-awareness-locale-packs.md` — ADR-008
+- `docs/ROADMAP.md` — Level 2 (ejecucion) planificado
+
+---
+
+## [Sprint 3, Sesión 3.5] — 2026-03-05
+
+### Re-eval Benchmark + Judge Fix
+
+**Benchmark — Judge regex fixes:**
+- `benchmarks/judge.py`: Nuevo pattern para bare `X-Y` ranges (sin "Rango:" prefix) — fix M07
+- `benchmarks/judge.py`: Tolerancia a `%` en patterns `entre X% y Y%` — fix C14
+- `benchmarks/judge.py`: En-dash literales reemplazados con `\u2013` (ruff RUF001 fix)
+- `benchmarks/config.py`: `question_timeout_seconds` de 120 a 180
+
+**Tests:**
+- 5 tests nuevos en `test_judge.py`: bare dash range (in/out), percentage range (Aceptar/entre, in/out)
+- Total: 21 tests en test_judge.py, todos verdes
+
+**Benchmark (Exp 5):**
+- **Accuracy: 98.0%** (49/50) — +4pp vs 94% (Exp 4)
+- Simple: 8/8 (100%)
+- Medium: 20/20 (100%) — +5pp vs Exp 4 (M07 corregido)
+- Complex: 21/22 (95%) — +4pp vs Exp 4 (C14 corregido)
+- Falla restante: C05 (max iterations exceeded, no timeout)
+- Avg duration: 34.6s, avg iterations: 3.6
+
+**Documentación:**
+- `docs/experiments/EXPERIMENTS.md` — Exp 5 documentado
+- `README.md` — Score actualizado a 98%
+- `docs/ROADMAP.md` — Sesión 3.5 marcada ✅
+- `docs/PROGRESS.md` — Estado actualizado
+
+---
+
 ## [Sprint 3, Sesión 3.4b] — 2026-03-05
 
 ### Sistema de Locale Packs

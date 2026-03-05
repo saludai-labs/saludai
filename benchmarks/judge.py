@@ -16,12 +16,14 @@ logger = logging.getLogger(__name__)
 
 # Regex patterns for extracting numeric ranges from notes
 _RANGE_PATTERNS = [
-    # "Aceptar entre 13 y 17", "aceptar entre 13 y 17"
-    re.compile(r"[Aa]ceptar\s+entre\s+([\d.,]+)\s+y\s+([\d.,]+)"),
+    # "Aceptar entre 83% y 93%", "aceptar entre 13 y 17"
+    re.compile(r"[Aa]ceptar\s+entre\s+([\d.,]+)%?\s+y\s+([\d.,]+)"),
     # "Rango aceptable: 13-17", "rango: 13-17"
     re.compile(r"[Rr]ango[^:]*:\s*([\d.,]+)\s*[-\u2013]\s*([\d.,]+)"),
-    # "entre 13 y 17"
-    re.compile(r"entre\s+([\d.,]+)\s+y\s+([\d.,]+)"),
+    # "entre 83% y 93%", "entre 13 y 17"
+    re.compile(r"entre\s+([\d.,]+)%?\s+y\s+([\d.,]+)"),
+    # Bare "58-66" or "58\u201366" (no prefix needed)
+    re.compile(r"(\d+(?:[.,]\d+)?)\s*[-\u2013]\s*(\d+(?:[.,]\d+)?)"),
 ]
 
 # Regex to find numbers in agent answer

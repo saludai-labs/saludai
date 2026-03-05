@@ -1,4 +1,4 @@
-"""Tests for locale pack types, factory, and AR pack."""
+"""Tests for locale pack types, factory, AR pack, and FHIR awareness."""
 
 from __future__ import annotations
 
@@ -6,9 +6,15 @@ import pytest
 
 from saludai_core.exceptions import LocaleNotFoundError
 from saludai_core.locales import (
+    CustomOperationDef,
+    ExtensionDef,
+    FHIRProfileDef,
+    IdentifierSystemDef,
     LocalePack,
+    LocaleResourceConfig,
     TerminologySystemDef,
     available_locales,
+    build_fhir_awareness_section,
     load_locale_pack,
 )
 from saludai_core.locales.ar import AR_LOCALE_PACK
@@ -141,3 +147,400 @@ class TestTerminologyResolverWithLocalePack:
         default_resolver = TerminologyResolver()
         pack_resolver = TerminologyResolver(locale_pack=AR_LOCALE_PACK)
         assert default_resolver.concept_count == pack_resolver.concept_count
+
+
+# =====================================================================
+# FHIR awareness types
+# =====================================================================
+
+
+class TestExtensionDef:
+    """ExtensionDef is frozen and has expected fields."""
+
+    def test_frozen(self) -> None:
+        ext = ExtensionDef(
+            url="http://example.com/ext",
+            name="Test",
+            description="A test extension",
+            value_type="string",
+            context="Patient",
+        )
+        with pytest.raises(AttributeError):
+            ext.url = "other"  # type: ignore[misc]
+
+    def test_fields(self) -> None:
+        ext = ExtensionDef(
+            url="http://example.com/ext",
+            name="Test",
+            description="desc",
+            value_type="CodeableConcept",
+            context="Patient",
+        )
+        assert ext.url == "http://example.com/ext"
+        assert ext.value_type == "CodeableConcept"
+        assert ext.context == "Patient"
+
+
+class TestFHIRProfileDef:
+    """FHIRProfileDef is frozen and supports mandatory extensions."""
+
+    def test_frozen(self) -> None:
+        p = FHIRProfileDef(
+            resource_type="Patient",
+            profile_url="http://example.com/Patient",
+            name="Test",
+            description="Test profile",
+        )
+        with pytest.raises(AttributeError):
+            p.resource_type = "other"  # type: ignore[misc]
+
+    def test_default_empty_extensions(self) -> None:
+        p = FHIRProfileDef(
+            resource_type="Patient",
+            profile_url="http://example.com/Patient",
+            name="Test",
+            description="desc",
+        )
+        assert p.mandatory_extensions == ()
+
+    def test_with_mandatory_extensions(self) -> None:
+        ext = ExtensionDef(
+            url="http://example.com/ext",
+            name="E",
+            description="d",
+            value_type="string",
+            context="Patient",
+        )
+        p = FHIRProfileDef(
+            resource_type="Patient",
+            profile_url="http://example.com/Patient",
+            name="Test",
+            description="desc",
+            mandatory_extensions=(ext,),
+        )
+        assert len(p.mandatory_extensions) == 1
+        assert p.mandatory_extensions[0].name == "E"
+
+
+class TestCustomOperationDef:
+    """CustomOperationDef is frozen."""
+
+    def test_server_level(self) -> None:
+        op = CustomOperationDef(
+            name="$validate",
+            resource_type=None,
+            description="Validate",
+        )
+        assert op.resource_type is None
+
+    def test_resource_level(self) -> None:
+        op = CustomOperationDef(
+            name="$summary",
+            resource_type="Patient",
+            description="IPS summary",
+        )
+        assert op.resource_type == "Patient"
+
+
+class TestIdentifierSystemDef:
+    """IdentifierSystemDef is frozen."""
+
+    def test_fields(self) -> None:
+        idef = IdentifierSystemDef(
+            system_uri="http://example.com/dni",
+            name="DNI",
+            description="National ID",
+            resource_types=("Patient",),
+        )
+        assert idef.name == "DNI"
+        assert "Patient" in idef.resource_types
+
+    def test_default_empty_resources(self) -> None:
+        idef = IdentifierSystemDef(
+            system_uri="http://example.com",
+            name="Test",
+            description="d",
+        )
+        assert idef.resource_types == ()
+
+
+class TestLocaleResourceConfig:
+    """LocaleResourceConfig is frozen."""
+
+    def test_fields(self) -> None:
+        rc = LocaleResourceConfig(
+            resource_type="Patient",
+            usage_note="Demographics",
+            common_search_params=("identifier", "name"),
+        )
+        assert rc.resource_type == "Patient"
+        assert "identifier" in rc.common_search_params
+
+
+class TestLocalPackBackwardCompatibility:
+    """LocalePack with only original fields still works."""
+
+    def test_minimal_pack(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="Test",
+            language="en",
+            terminology_systems=(),
+            system_prompt="test",
+            tool_descriptions={},
+            tool_system_enum=(),
+        )
+        assert pack.fhir_profiles == ()
+        assert pack.extensions == ()
+        assert pack.custom_operations == ()
+        assert pack.custom_search_params == ()
+        assert pack.identifier_systems == ()
+        assert pack.resource_configs == ()
+        assert pack.validation_notes == ""
+
+
+# =====================================================================
+# Prompt builder
+# =====================================================================
+
+
+class TestBuildFHIRAwarenessSection:
+    """build_fhir_awareness_section generates correct prompt sections."""
+
+    def test_empty_pack_returns_empty(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="Test",
+            language="en",
+            terminology_systems=(),
+            system_prompt="test",
+            tool_descriptions={},
+            tool_system_enum=(),
+        )
+        assert build_fhir_awareness_section(pack) == ""
+
+    def test_profiles_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="TestLand",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            fhir_profiles=(
+                FHIRProfileDef(
+                    resource_type="Patient",
+                    profile_url="http://example.com/Patient",
+                    name="Test Patient",
+                    description="A test profile",
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Perfiles FHIR locales (TestLand)" in section
+        assert "Patient" in section
+        assert "Test Patient" in section
+
+    def test_profiles_with_extensions(self) -> None:
+        ext = ExtensionDef(
+            url="http://example.com/ext",
+            name="MyExt",
+            description="d",
+            value_type="string",
+            context="Patient",
+        )
+        pack = LocalePack(
+            code="xx",
+            name="T",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            fhir_profiles=(
+                FHIRProfileDef(
+                    resource_type="Patient",
+                    profile_url="http://example.com/Patient",
+                    name="P",
+                    description="d",
+                    mandatory_extensions=(ext,),
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Extensiones obligatorias: MyExt" in section
+
+    def test_extensions_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="T",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            extensions=(
+                ExtensionDef(
+                    url="http://example.com/ext",
+                    name="Etnia",
+                    description="Ethnic group",
+                    value_type="CodeableConcept",
+                    context="Patient",
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Extensiones FHIR" in section
+        assert "Etnia" in section
+        assert "CodeableConcept" in section
+
+    def test_identifier_systems_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="T",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            identifier_systems=(
+                IdentifierSystemDef(
+                    system_uri="http://example.com/dni",
+                    name="DNI",
+                    description="National ID",
+                    resource_types=("Patient",),
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Sistemas de identificacion" in section
+        assert "DNI" in section
+        assert "Patient" in section
+
+    def test_operations_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="T",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            custom_operations=(
+                CustomOperationDef(
+                    name="$summary",
+                    resource_type="Patient",
+                    description="IPS summary",
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Operaciones FHIR custom" in section
+        assert "$summary" in section
+
+    def test_resource_configs_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="TestLand",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            resource_configs=(
+                LocaleResourceConfig(
+                    resource_type="Patient",
+                    usage_note="Demographics with DNI",
+                    common_search_params=("identifier", "name"),
+                ),
+            ),
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Recursos FHIR en TestLand" in section
+        assert "identifier, name" in section
+
+    def test_validation_notes_section(self) -> None:
+        pack = LocalePack(
+            code="xx",
+            name="T",
+            language="en",
+            terminology_systems=(),
+            system_prompt="",
+            tool_descriptions={},
+            tool_system_enum=(),
+            validation_notes="Patient requires DNI",
+        )
+        section = build_fhir_awareness_section(pack)
+        assert "Reglas de validacion locales" in section
+        assert "Patient requires DNI" in section
+
+
+# =====================================================================
+# AR pack FHIR awareness
+# =====================================================================
+
+
+class TestARLocalePackFHIRAwareness:
+    """AR pack includes real openRSD FHIR awareness data."""
+
+    def test_has_profiles(self) -> None:
+        assert len(AR_LOCALE_PACK.fhir_profiles) >= 5
+        types = {p.resource_type for p in AR_LOCALE_PACK.fhir_profiles}
+        assert "Patient" in types
+        assert "Practitioner" in types
+        assert "Immunization" in types
+
+    def test_patient_profile_has_extensions(self) -> None:
+        patient_profiles = [p for p in AR_LOCALE_PACK.fhir_profiles if p.resource_type == "Patient"]
+        assert len(patient_profiles) == 1
+        assert len(patient_profiles[0].mandatory_extensions) >= 2
+
+    def test_has_extensions(self) -> None:
+        assert len(AR_LOCALE_PACK.extensions) >= 5
+        names = {e.name for e in AR_LOCALE_PACK.extensions}
+        assert "Etnia" in names
+        assert "Esquema NOMIVAC" in names
+
+    def test_has_identifier_systems(self) -> None:
+        assert len(AR_LOCALE_PACK.identifier_systems) >= 3
+        names = {i.name for i in AR_LOCALE_PACK.identifier_systems}
+        assert "DNI" in names
+        assert "REFEPS" in names
+        assert "REFES" in names
+
+    def test_has_custom_operations(self) -> None:
+        assert len(AR_LOCALE_PACK.custom_operations) >= 1
+        op_names = {op.name for op in AR_LOCALE_PACK.custom_operations}
+        assert "$summary" in op_names
+
+    def test_has_resource_configs(self) -> None:
+        assert len(AR_LOCALE_PACK.resource_configs) >= 6
+        types = {rc.resource_type for rc in AR_LOCALE_PACK.resource_configs}
+        assert "Patient" in types
+        assert "Condition" in types
+        assert "MedicationRequest" in types
+
+    def test_has_validation_notes(self) -> None:
+        assert "DNI" in AR_LOCALE_PACK.validation_notes
+        assert "birthDate" in AR_LOCALE_PACK.validation_notes
+
+    def test_system_prompt_includes_awareness(self) -> None:
+        prompt = AR_LOCALE_PACK.system_prompt
+        assert "Perfiles FHIR locales" in prompt
+        assert "Extensiones FHIR" in prompt
+        assert "Sistemas de identificacion" in prompt
+        assert "Recursos FHIR en Argentina" in prompt
+
+    def test_profile_urls_are_valid(self) -> None:
+        for p in AR_LOCALE_PACK.fhir_profiles:
+            assert p.profile_url.startswith("http")
+            assert "StructureDefinition" in p.profile_url
+
+    def test_extension_urls_are_valid(self) -> None:
+        for e in AR_LOCALE_PACK.extensions:
+            assert e.url.startswith("http")
+
+    def test_identifier_uris_are_valid(self) -> None:
+        for i in AR_LOCALE_PACK.identifier_systems:
+            assert i.system_uri.startswith("http")

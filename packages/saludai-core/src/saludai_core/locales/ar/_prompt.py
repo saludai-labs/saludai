@@ -1,7 +1,10 @@
 """System prompt for the Argentina locale.
 
-This is the full system prompt used by the FHIR agent when operating
-in the Argentine health system context.
+This is the base system prompt used by the FHIR agent when operating
+in the Argentine health system context.  The FHIR awareness section
+(profiles, extensions, identifiers, etc.) is appended dynamically by
+``build_fhir_awareness_section`` at pack construction time — see
+``_pack.py``.
 """
 
 from __future__ import annotations

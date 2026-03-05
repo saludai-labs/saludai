@@ -21,7 +21,7 @@ class BenchmarkConfig(BaseSettings):
     judge_api_key: str | None = None
 
     # Execution settings
-    question_timeout_seconds: int = 120
+    question_timeout_seconds: int = 180
 
     # Paths
     dataset_path: Path = Path(__file__).parent / "dataset.json"

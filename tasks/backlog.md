@@ -22,6 +22,18 @@
 - [ ] Composite parameters (e.g. `component-code-value-quantity`)
 - [ ] `FHIRClient.execute(query)` — convenience method que acepta `FHIRQuery` directamente (sesión 2.3)
 
+## FHIR Awareness Level 2 — Ejecucion (Sprint 5 o Etapa 2)
+
+> ADR-008. Level 1 (awareness/metadata) implementado en sesion 3.6.
+> Level 2 agrega ejecucion real: validacion, operaciones, parsing de extensions.
+
+- [ ] Validar responses del agente contra profiles locales (StructureDefinition)
+- [ ] Tool `$validate` que invoca la operacion del servidor FHIR
+- [ ] Query builder aware de custom SearchParameters del locale pack
+- [ ] Parsing inteligente de extensions en resultados FHIR (extraer y mostrar)
+- [ ] Auto-sugerir search params del locale pack en el prompt del agente
+- [ ] Tests e2e con servidor FHIR real que tenga profiles argentinos cargados
+
 ## Ideas para sprints futuros
 
 - [ ] FHIR Subscriptions support (real-time notifications)

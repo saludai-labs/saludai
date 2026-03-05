@@ -18,7 +18,7 @@ SaludAI is evaluated against a custom FHIR-AgentBench inspired by [Verily/KAIST/
 
 | Model | Accuracy | Simple (8) | Medium (20) | Complex (22) | Avg Duration |
 |-------|----------|------------|-------------|--------------|-------------|
-| Claude Sonnet 4.5 | **82.0%** | 8/8 (100%) | 16/20 (80%) | 17/22 (77%) | 16.1s |
+| Claude Sonnet 4.5 | **98.0%** | 8/8 (100%) | 20/20 (100%) | 21/22 (95%) | 34.6s |
 
 *Evaluated on 50 questions against 536 synthetic Argentine clinical resources (5 FHIR types: Patient, Condition, Observation, MedicationRequest, Encounter). LLM-as-judge scoring with hybrid programmatic + Claude Haiku. See [docs/experiments/EXPERIMENTS.md](docs/experiments/EXPERIMENTS.md) for full methodology.*
 
@@ -33,18 +33,20 @@ uv run python -m benchmarks.run_eval --category simple
 
 ## Current Status
 
-**Sprint 2 (Agent Brain) — Complete.** The project currently provides:
+**Sprint 3 (Precision) — Complete.** The project currently provides:
 
 - UV monorepo with 4 packages (core, agent, mcp, api)
 - Docker Compose setup with HAPI FHIR R4 + 536 synthetic Argentine clinical resources
 - Async FHIR client (`saludai-core`) with connection, search, and read operations
 - Terminology resolver (SNOMED CT AR, CIE-10, LOINC) with fuzzy matching
 - FHIR query builder with fluent API
-- Agent loop v1 with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
+- Agent loop with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
+- 5 tools: resolve_terminology, search_fhir, get_resource, execute_code (sandboxed Python)
+- Locale packs for multi-country support (Argentina built-in)
 - Full Langfuse tracing integration
 - FHIR-AgentBench evaluation framework (50 questions, hybrid LLM-as-judge)
-- GitHub Actions CI with Ruff linting and Pytest
-- 374 passing tests (unit + integration)
+- GitHub Actions CI with Ruff linting, Pytest, and coverage (84.57%)
+- 375+ passing tests (unit + integration)
 
 ## Quick Start
 

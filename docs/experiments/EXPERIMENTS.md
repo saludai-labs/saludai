@@ -124,7 +124,7 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 | 3.1 (Pagination) | **82.0%** | 8/8 (100%) | 16/20 (80%) | 17/22 (77%) | **+22pp** |
 | 3.2 (Reference nav) | **86.0%** | 8/8 (100%) | 19/20 (95%) | 16/22 (73%) | **+26pp** |
 | 3.3 (Code interpreter) | **94.0%** | 8/8 (100%) | 19/20 (95%) | 20/22 (91%) | **+34pp** |
-| 3.4 (Prompt opt) | | | | | |
+| 3.5 (Judge fix + timeout) | **98.0%** | 8/8 (100%) | 20/20 (100%) | 21/22 (95%) | **+38pp** |
 
 ### Análisis — Sesión 3.1
 
@@ -179,10 +179,26 @@ Cada sesión del Sprint 3 mejorará la accuracy en las categorías que aborda:
 - **Non-determinism (M07, C14):** Pasan/fallan entre corridas — el LLM a veces interpreta mal datos complejos
 - **Timeout (C05):** Query compleja con muchos datos excede 120s
 
+### Análisis — Sesión 3.5
+
+**Cambios implementados:**
+1. Judge regex fix: nuevo pattern para bare `X-Y` ranges (sin prefijo "Rango:") — matchea notes como `"Activas: 58-66"`
+2. Judge regex fix: tolerancia a `%` en patterns `entre X% y Y%` — matchea notes como `"Aceptar entre 83% y 93%"`
+3. Timeout bump: `question_timeout_seconds` de 120 a 180
+4. 5 tests nuevos para los patterns corregidos
+
+**Impacto por categoría:**
+- **Medium 100%:** M07 ahora pasa — el judge detecta correctamente que la respuesta del agente está en el rango `58-66`
+- **Complex 95%:** C14 ahora pasa — el judge parsea correctamente `"entre 83% y 93%"` con `%`
+- **Simple 100%:** Sin cambios.
+
+**Falla restante (1):**
+- **Max iterations (C05):** Query compleja excede 8 iteraciones (no timeout, sino límite de iteraciones)
+
 ### Target Final
-- **Accuracy ≥ 80%** con Sonnet al final del Sprint 3 (baseline: 60%)
-- **Simple ≥ 88%** (resolver pagination debería cubrir esto)
-- **Complex ≥ 75%** (baseline: 64%, mejora via multi-turn + reference nav)
+- **Accuracy ≥ 80%** con Sonnet al final del Sprint 3 (baseline: 60%) — **SUPERADO: 98%**
+- **Simple ≥ 88%** (resolver pagination debería cubrir esto) — **SUPERADO: 100%**
+- **Complex ≥ 75%** (baseline: 64%, mejora via multi-turn + reference nav) — **SUPERADO: 95%**
 
 ---
 
@@ -248,6 +264,7 @@ Historial completo de todas las ejecuciones del benchmark.
 | 2026-03-04 | 2 | Sonnet 4.5 | 50q (v2) | 82.0% | 100% | 80% | 77% | Pagination fix (`_count=200`, `_summary=count`) |
 | 2026-03-04 | 3 | Sonnet 4.5 | 50q (v2) | 86.0% | 100% | 95% | 73% | Terminology fix, `get_resource` tool, max_iterations=8, prompt v1.2 |
 | 2026-03-04 | 4 | Sonnet 4.5 | 50q (v2) | 94.0% | 100% | 95% | 91% | Code interpreter (`execute_code`), prompt v1.3 |
+| 2026-03-05 | 5 | Sonnet 4.5 | 50q (v2) | 98.0% | 100% | 100% | 95% | Judge regex fix (bare ranges, %), timeout 180s |
 
 ---
 

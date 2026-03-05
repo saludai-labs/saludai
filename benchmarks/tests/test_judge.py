@@ -180,6 +180,51 @@ class TestNumericRangeCheck:
         assert v_lo is not None and v_lo.correct is True
         assert v_hi is not None and v_hi.correct is True
 
+    def test_bare_dash_range(self) -> None:
+        """Bare '58-66' without prefix should be matched (M07 fix)."""
+        v = AnswerJudge._check_numeric_range(
+            "Hay 61 condiciones activas.",
+            "Activas: 58-66, Resueltas: 14-22",
+        )
+        assert v is not None
+        assert v.correct is True
+
+    def test_bare_dash_range_outside(self) -> None:
+        """Bare dash range: number outside should fail."""
+        v = AnswerJudge._check_numeric_range(
+            "Hay 100 condiciones activas.",
+            "Activas: 58-66, Resueltas: 14-22",
+        )
+        assert v is not None
+        assert v.correct is False
+
+    def test_percentage_range(self) -> None:
+        """Notes with '%' after numbers should be matched (C14 fix)."""
+        v = AnswerJudge._check_numeric_range(
+            "El 88% de los pacientes tiene cobertura.",
+            "Aceptar entre 83% y 93%",
+        )
+        assert v is not None
+        assert v.correct is True
+
+    def test_percentage_range_entre(self) -> None:
+        """'entre X% y Y%' without 'Aceptar' prefix."""
+        v = AnswerJudge._check_numeric_range(
+            "Aproximadamente 90%.",
+            "entre 83% y 93%",
+        )
+        assert v is not None
+        assert v.correct is True
+
+    def test_percentage_range_outside(self) -> None:
+        """Percentage outside range should fail."""
+        v = AnswerJudge._check_numeric_range(
+            "El 50% tiene cobertura.",
+            "Aceptar entre 83% y 93%",
+        )
+        assert v is not None
+        assert v.correct is False
+
     @pytest.mark.asyncio
     async def test_range_bypasses_llm(self) -> None:
         """When a numeric range matches, the LLM should NOT be called."""
