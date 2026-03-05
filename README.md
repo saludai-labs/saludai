@@ -17,7 +17,7 @@ Get: A structured, sourced answer with full Langfuse tracing of every step.
 
 ## Benchmark
 
-SaludAI is evaluated against a custom FHIR-AgentBench inspired by [Verily/KAIST/MIT FHIR-AgentBench](https://arxiv.org/abs/2408.01693), adapted for Argentine clinical data.
+SaludAI is evaluated against a custom FHIR-AgentBench inspired by [Verily/KAIST/MIT FHIR-AgentBench](https://arxiv.org/abs/2509.19319) ([repo](https://github.com/glee4810/FHIR-AgentBench)), adapted for Argentine clinical data.
 
 | Model | Accuracy | Simple (8) | Medium (20) | Complex (22) | Avg Duration |
 |-------|----------|------------|-------------|--------------|-------------|

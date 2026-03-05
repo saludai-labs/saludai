@@ -1,8 +1,7 @@
 # ADR-005: FHIR R4 Only
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

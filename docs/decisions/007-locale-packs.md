@@ -1,8 +1,7 @@
 # ADR-007: Sistema de Locale Packs
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-05
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

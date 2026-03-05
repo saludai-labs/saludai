@@ -1,0 +1,9 @@
+CLAUDE.md
+.public-ignore
+sync-public.sh
+tasks/
+docs/PROGRESS.md
+docs/ROADMAP.md
+docs/CHANGELOG.md
+docs/knowledge/
+scripts/

@@ -1,8 +1,7 @@
 # ADR-003: Python-first con Polyglot Estratégico
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 
@@ -54,4 +53,5 @@ Lenguajes aprobados como "escapatorias estratégicas":
 - [UV workspace docs](https://docs.astral.sh/uv/concepts/workspaces/)
 - [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
 - [fhir.resources (Python FHIR models)](https://github.com/nazrulworld/fhir.resources)
-- [Verily FHIR-AgentBench — implemented in Python](https://github.com/google-health/fhir-agentbench)
+- [Verily FHIR-AgentBench (paper)](https://arxiv.org/abs/2509.19319)
+- [FHIR-AgentBench (repo)](https://github.com/glee4810/FHIR-AgentBench)

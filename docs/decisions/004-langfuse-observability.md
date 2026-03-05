@@ -1,8 +1,7 @@
 # ADR-004: Langfuse para Observabilidad
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

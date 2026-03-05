@@ -1,8 +1,7 @@
 # ADR-000: Template
 
 **Estado:** [Propuesta | Aceptada | Reemplazada por ADR-XXX]
-**Fecha:** YYYY-MM-DD
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

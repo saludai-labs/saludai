@@ -458,14 +458,14 @@ Los módulos premium (M3-M5) viven en el repo privado `saludai-private` pero imp
 
 ## Registro de Cambios Arquitectónicos
 
-| Fecha | ADR | Decisión |
-|-------|-----|----------|
-| 2026-03 | 001 | Monorepo con UV workspaces |
-| 2026-03 | 002 | No LangChain — agent loop custom |
-| 2026-03 | 003 | Python-first con polyglot estratégico |
-| 2026-03 | 004 | Langfuse para observability |
-| 2026-03 | 005 | FHIR R4 only |
-| 2026-03 | 006 | Langfuse Cloud (free tier) para desarrollo |
-| 2026-03 | 007 | Sistema de locale packs para extensibilidad por país |
+| ADR | Decisión |
+|-----|----------|
+| 001 | Monorepo con UV workspaces |
+| 002 | No LangChain — agent loop custom |
+| 003 | Python-first con polyglot estratégico |
+| 004 | Langfuse para observability |
+| 005 | FHIR R4 only |
+| 006 | Langfuse Cloud (free tier) para desarrollo |
+| 007 | Sistema de locale packs para extensibilidad por país |
 
 Ver `docs/decisions/` para el detalle de cada ADR.

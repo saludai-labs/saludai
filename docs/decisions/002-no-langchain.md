@@ -1,8 +1,7 @@
 # ADR-002: No LangChain — Custom Agent Loop
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

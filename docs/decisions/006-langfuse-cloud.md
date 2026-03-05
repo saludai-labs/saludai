@@ -1,8 +1,7 @@
 # ADR-006: Langfuse Cloud (free tier) para desarrollo
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

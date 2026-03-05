@@ -1,8 +1,7 @@
 # ADR-001: Monorepo con UV Workspaces
 
 **Estado:** Aceptada
-**Fecha:** 2026-03-03
-**Autor:** Fede
+**Autor:** SaludAI
 
 ## Contexto
 

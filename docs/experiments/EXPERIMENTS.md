@@ -5,7 +5,7 @@
 
 ## Contexto
 
-SaludAI evalúa su agente FHIR contra un benchmark inspirado en [FHIR-AgentBench](https://arxiv.org/abs/2408.01693) (Verily/KAIST/MIT), adaptado para datos clínicos argentinos. El objetivo es medir mejoras progresivas en precisión, cobertura de recursos y capacidad multi-turn.
+SaludAI evalúa su agente FHIR contra un benchmark inspirado en [FHIR-AgentBench](https://arxiv.org/abs/2509.19319) (Verily/KAIST/MIT, [repo](https://github.com/glee4810/FHIR-AgentBench)), adaptado para datos clínicos argentinos. El objetivo es medir mejoras progresivas en precisión, cobertura de recursos y capacidad multi-turn.
 
 ### Datos Sintéticos
 
@@ -257,14 +257,14 @@ Cada componente del agente contribuye de forma medible a la accuracy. Desactivar
 
 Historial completo de todas las ejecuciones del benchmark.
 
-| Fecha | Exp | Modelo | Dataset | Accuracy | Simple | Medium | Complex | Notas |
-|-------|-----|--------|---------|----------|--------|--------|---------|-------|
-| 2026-03-04 | 0 | Sonnet 4.5 | 25q (v1) | 88.0% | 88% | 100% | 71% | Baseline inflado |
-| 2026-03-04 | 1 | Sonnet 4.5 | 50q (v2) | 60.0% | 50% | 60% | 64% | Baseline honesto |
-| 2026-03-04 | 2 | Sonnet 4.5 | 50q (v2) | 82.0% | 100% | 80% | 77% | Pagination fix (`_count=200`, `_summary=count`) |
-| 2026-03-04 | 3 | Sonnet 4.5 | 50q (v2) | 86.0% | 100% | 95% | 73% | Terminology fix, `get_resource` tool, max_iterations=8, prompt v1.2 |
-| 2026-03-04 | 4 | Sonnet 4.5 | 50q (v2) | 94.0% | 100% | 95% | 91% | Code interpreter (`execute_code`), prompt v1.3 |
-| 2026-03-05 | 5 | Sonnet 4.5 | 50q (v2) | 98.0% | 100% | 100% | 95% | Judge regex fix (bare ranges, %), timeout 180s |
+| Exp | Modelo | Dataset | Accuracy | Simple | Medium | Complex | Notas |
+|-----|--------|---------|----------|--------|--------|---------|-------|
+| 0 | Sonnet 4.5 | 25q (v1) | 88.0% | 88% | 100% | 71% | Baseline inflado |
+| 1 | Sonnet 4.5 | 50q (v2) | 60.0% | 50% | 60% | 64% | Baseline honesto |
+| 2 | Sonnet 4.5 | 50q (v2) | 82.0% | 100% | 80% | 77% | Pagination fix (`_count=200`, `_summary=count`) |
+| 3 | Sonnet 4.5 | 50q (v2) | 86.0% | 100% | 95% | 73% | Terminology fix, `get_resource` tool, max_iterations=8, prompt v1.2 |
+| 4 | Sonnet 4.5 | 50q (v2) | 94.0% | 100% | 95% | 91% | Code interpreter (`execute_code`), prompt v1.3 |
+| 5 | Sonnet 4.5 | 50q (v2) | 98.0% | 100% | 100% | 95% | Judge regex fix (bare ranges, %), timeout 180s |
 
 ---
 
