@@ -1,0 +1,452 @@
+[
+  {
+    "id": "S01",
+    "question": "¿Cuántos pacientes hay registrados en el sistema?",
+    "expected_answer": "Hay 55 pacientes registrados en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El número exacto es 55. Aceptar si dice 55."
+  },
+  {
+    "id": "S02",
+    "question": "¿Cuántos pacientes son de sexo masculino?",
+    "expected_answer": "Hay 23 pacientes de sexo masculino.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El número exacto es 23. Aceptar entre 21 y 25."
+  },
+  {
+    "id": "S03",
+    "question": "¿Cuántos pacientes son de sexo femenino?",
+    "expected_answer": "Hay 32 pacientes de sexo femenino.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El número exacto es 32. Aceptar entre 30 y 34."
+  },
+  {
+    "id": "S04",
+    "question": "¿Cuántas condiciones clínicas hay registradas en total?",
+    "expected_answer": "Hay 80 condiciones clínicas registradas.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El número exacto es 80. Aceptar entre 76 y 84."
+  },
+  {
+    "id": "S05",
+    "question": "¿Cuántos pacientes viven en la provincia de Buenos Aires?",
+    "expected_answer": "Hay 23 pacientes en la provincia de Buenos Aires.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El número exacto es 23. Aceptar entre 21 y 25."
+  },
+  {
+    "id": "S06",
+    "question": "¿Cuántos pacientes viven en Córdoba?",
+    "expected_answer": "Hay 7 pacientes en Córdoba.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El número exacto es 7. Aceptar entre 5 y 9."
+  },
+  {
+    "id": "S07",
+    "question": "¿Hay pacientes registrados en la provincia de Salta?",
+    "expected_answer": "Sí, hay 2 pacientes registrados en la provincia de Salta.",
+    "category": "simple",
+    "subcategory": "existence",
+    "requires_tools": true,
+    "notes": "Hay exactamente 2 pacientes en Salta. Aceptar si confirma que sí hay pacientes en Salta."
+  },
+  {
+    "id": "S08",
+    "question": "¿Cuántos pacientes son mayores de 60 años?",
+    "expected_answer": "Hay 15 pacientes mayores de 60 años.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El número exacto es 15 (fecha de referencia 2025-01-01). Aceptar entre 13 y 17."
+  },
+  {
+    "id": "M01",
+    "question": "¿Cuántos pacientes tienen diabetes mellitus tipo 2?",
+    "expected_answer": "Hay 15 pacientes con diabetes mellitus tipo 2 (código SNOMED 44054006).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 44054006. Hay 15 pacientes únicos con DM2 (17 condiciones, algunas duplicadas por paciente). Aceptar entre 13 y 17 si cuenta pacientes, o 15-19 si cuenta condiciones."
+  },
+  {
+    "id": "M02",
+    "question": "¿Cuántos pacientes tienen hipertensión arterial?",
+    "expected_answer": "Hay 20 pacientes con hipertensión arterial esencial (código SNOMED 59621000).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 59621000. Hay 20 pacientes únicos (22 condiciones). Aceptar entre 18 y 24."
+  },
+  {
+    "id": "M03",
+    "question": "¿Hay pacientes con enfermedad de Chagas?",
+    "expected_answer": "Sí, hay 1 paciente con enfermedad de Chagas (código SNOMED 77506005).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 77506005. Hay exactamente 1 paciente. Aceptar si confirma existencia y menciona el código correcto."
+  },
+  {
+    "id": "M04",
+    "question": "Buscar pacientes con asma en el sistema",
+    "expected_answer": "Hay 7 pacientes con asma (código SNOMED 195967001) en el sistema.",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 195967001. Hay 7 pacientes. Aceptar entre 5 y 9 si resuelve el término correctamente."
+  },
+  {
+    "id": "M05",
+    "question": "¿Cuántos pacientes de Buenos Aires tienen hipertensión?",
+    "expected_answer": "Hay 9 pacientes en Buenos Aires con hipertensión arterial.",
+    "category": "medium",
+    "subcategory": "filter_combined",
+    "requires_tools": true,
+    "notes": "Combina filtro geográfico (Buenos Aires) con terminology (SNOMED 59621000). El número exacto es 9. Aceptar entre 7 y 11."
+  },
+  {
+    "id": "M06",
+    "question": "¿Hay pacientes con tuberculosis?",
+    "expected_answer": "Sí, hay 3 pacientes con tuberculosis (código SNOMED 56717001).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 56717001. Hay 3 pacientes. Aceptar si confirma existencia con el código correcto y dice 1-5."
+  },
+  {
+    "id": "M07",
+    "question": "¿Cuántas condiciones activas hay vs resueltas?",
+    "expected_answer": "Hay 62 condiciones activas y 18 condiciones resueltas.",
+    "category": "medium",
+    "subcategory": "status_filter",
+    "requires_tools": true,
+    "notes": "Activas: 62, Resueltas: 18. Aceptar si distingue entre active y resolved. Activas: 58-66, Resueltas: 14-22."
+  },
+  {
+    "id": "M08",
+    "question": "¿Cuántos pacientes tienen diabetes tipo 1?",
+    "expected_answer": "Hay 2 pacientes con diabetes mellitus tipo 1 (código SNOMED 73211009).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 73211009. Hay exactamente 2 pacientes. Aceptar entre 1 y 3 si distingue correctamente tipo 1 de tipo 2."
+  },
+  {
+    "id": "M09",
+    "question": "Listar las condiciones más frecuentes en el sistema",
+    "expected_answer": "Las condiciones más frecuentes son: hipertensión arterial esencial (22), diabetes mellitus tipo 2 (17), asma (7), y cardiopatía isquémica (7).",
+    "category": "medium",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "Top 4: HTA 22, DM2 17, Asma 7, Cardiopatía isquémica 7. Aceptar si identifica HTA y DM2 como las 2 más frecuentes en ese orden."
+  },
+  {
+    "id": "M10",
+    "question": "¿Cuántos pacientes tienen fibrilación auricular?",
+    "expected_answer": "Hay 2 pacientes con fibrilación auricular (código SNOMED 49436004).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 49436004. Hay exactamente 2 pacientes. Aceptar entre 1 y 3."
+  },
+  {
+    "id": "M11",
+    "question": "¿Cuántas observaciones de glucosa en sangre hay registradas?",
+    "expected_answer": "Hay 29 observaciones de glucosa en sangre (LOINC 2345-7).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 2345-7. Exactamente 29. Aceptar entre 25 y 33. Requiere buscar Observation por código LOINC."
+  },
+  {
+    "id": "M12",
+    "question": "¿Cuántas observaciones de hemoglobina hay en el sistema?",
+    "expected_answer": "Hay 28 observaciones de hemoglobina (LOINC 718-7).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 718-7. Exactamente 28. Aceptar entre 24 y 32. Requiere buscar Observation."
+  },
+  {
+    "id": "M13",
+    "question": "¿Hay registros de presión arterial en el sistema?",
+    "expected_answer": "Sí, hay 26 registros de presión arterial sistólica (LOINC 8480-6) y 27 de presión arterial diastólica (LOINC 8462-4).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "PA sistólica 26, PA diastólica 27. Aceptar si confirma existencia y menciona al menos uno de los dos tipos. Requiere buscar Observation."
+  },
+  {
+    "id": "M14",
+    "question": "¿Cuántos pacientes tienen prescripción de metformina?",
+    "expected_answer": "Hay 14 pacientes con prescripción de metformina (ATC A10BA02).",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "ATC A10BA02. Exactamente 14 prescripciones (14 pacientes). Aceptar entre 12 y 16. Requiere buscar MedicationRequest."
+  },
+  {
+    "id": "M15",
+    "question": "¿Cuántas prescripciones de medicamentos hay en total?",
+    "expected_answer": "Hay 116 prescripciones de medicamentos en total.",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Exactamente 116 MedicationRequest. Aceptar entre 110 y 122. Requiere buscar MedicationRequest."
+  },
+  {
+    "id": "M16",
+    "question": "¿Cuántas consultas ambulatorias hay registradas?",
+    "expected_answer": "Hay 72 consultas ambulatorias registradas.",
+    "category": "medium",
+    "subcategory": "encounter_query",
+    "requires_tools": true,
+    "notes": "Clase AMB. Exactamente 72. Aceptar entre 66 y 78. Requiere buscar Encounter por class."
+  },
+  {
+    "id": "M17",
+    "question": "¿Cuántos pacientes tuvieron alguna internación?",
+    "expected_answer": "15 pacientes tuvieron al menos una internación.",
+    "category": "medium",
+    "subcategory": "encounter_query",
+    "requires_tools": true,
+    "notes": "Clase IMP. Hay 16 encounters de internación para 15 pacientes únicos. Aceptar entre 13 y 18."
+  },
+  {
+    "id": "M18",
+    "question": "¿Cuántas observaciones de hemoglobina glicosilada (HbA1c) hay?",
+    "expected_answer": "Hay 30 observaciones de hemoglobina glicosilada (LOINC 4548-4).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 4548-4. Exactamente 30. Aceptar entre 26 y 34. Requiere buscar Observation."
+  },
+  {
+    "id": "M19",
+    "question": "¿Cuántos medicamentos antihipertensivos están prescriptos?",
+    "expected_answer": "Hay 59 prescripciones de antihipertensivos: enalapril (13), losartán (14), atenolol (16), amlodipina (16).",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Antihipertensivos: enalapril 13 + losartán 14 + atenolol 16 + amlodipina 16 = 59. Aceptar si identifica al menos 2 antihipertensivos y da un total entre 50 y 68."
+  },
+  {
+    "id": "M20",
+    "question": "¿Cuántas prescripciones de medicamentos están activas?",
+    "expected_answer": "Hay 102 prescripciones activas y 14 completadas.",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Active: 102, Completed: 14. Aceptar si distingue active de completed. Active: 95-109."
+  },
+  {
+    "id": "C01",
+    "question": "¿Cuántos pacientes mayores de 60 años en Buenos Aires tienen diabetes tipo 2?",
+    "expected_answer": "Hay 5 pacientes mayores de 60 años en Buenos Aires con diabetes tipo 2.",
+    "category": "complex",
+    "subcategory": "multi_filter",
+    "requires_tools": true,
+    "notes": "Exactamente 5 pacientes (garantizados por el seed). Combina edad >60, provincia Buenos Aires, y SNOMED 44054006. Aceptar entre 4 y 7."
+  },
+  {
+    "id": "C02",
+    "question": "¿Cuántos pacientes tienen más de una condición clínica registrada?",
+    "expected_answer": "23 pacientes tienen más de una condición clínica registrada.",
+    "category": "complex",
+    "subcategory": "multi_resource",
+    "requires_tools": true,
+    "notes": "Exactamente 23 pacientes con >1 condición. Aceptar entre 20 y 26."
+  },
+  {
+    "id": "C03",
+    "question": "¿Cuál es la provincia con más pacientes con hipertensión?",
+    "expected_answer": "Buenos Aires es la provincia con más pacientes con hipertensión (9 pacientes).",
+    "category": "complex",
+    "subcategory": "aggregation_geographic",
+    "requires_tools": true,
+    "notes": "Buenos Aires tiene 9 pacientes con HTA. Aceptar si identifica Buenos Aires como la provincia con más casos."
+  },
+  {
+    "id": "C04",
+    "question": "¿Hay pacientes que tengan tanto diabetes tipo 2 como hipertensión arterial?",
+    "expected_answer": "Sí, hay 5 pacientes que tienen tanto diabetes tipo 2 como hipertensión arterial.",
+    "category": "complex",
+    "subcategory": "comorbidity",
+    "requires_tools": true,
+    "notes": "Exactamente 5 pacientes con ambas condiciones (DM2 44054006 + HTA 59621000). Aceptar entre 3 y 7."
+  },
+  {
+    "id": "C05",
+    "question": "¿Cuántos pacientes menores de 18 años tienen condiciones crónicas registradas?",
+    "expected_answer": "Hay pacientes menores de 18 años con condiciones registradas en el sistema.",
+    "category": "complex",
+    "subcategory": "age_condition",
+    "requires_tools": true,
+    "notes": "Hay 10 pacientes <18. Algunos pueden tener condiciones asignadas aleatoriamente. Aceptar respuesta razonable si filtra correctamente por edad y busca condiciones."
+  },
+  {
+    "id": "C06",
+    "question": "¿Cuál es la distribución de condiciones cardíacas (infarto, insuficiencia cardíaca, fibrilación auricular, cardiopatía isquémica) entre los pacientes?",
+    "expected_answer": "Condiciones cardíacas: cardiopatía isquémica (7), insuficiencia cardíaca (4), fibrilación auricular (2), infarto agudo de miocardio (1). Total: 14 condiciones cardíacas.",
+    "category": "complex",
+    "subcategory": "multi_terminology",
+    "requires_tools": true,
+    "notes": "SNOMED: 22298006 (1), 84114007 (4), 49436004 (2), 414545008 (7). Total 14. Aceptar si busca al menos 3 de los 4 códigos y reporta distribución."
+  },
+  {
+    "id": "C07",
+    "question": "¿Cuántos pacientes de sexo femenino mayores de 50 años tienen alguna condición registrada?",
+    "expected_answer": "Hay 12 pacientes femeninas mayores de 50 años con condiciones clínicas registradas.",
+    "category": "complex",
+    "subcategory": "multi_filter",
+    "requires_tools": true,
+    "notes": "Exactamente 12. Combina gender=female, edad >50, y existencia de condición. Aceptar entre 10 y 14."
+  },
+  {
+    "id": "C08",
+    "question": "¿Cuántos pacientes con diabetes tipo 2 tienen prescripción de metformina?",
+    "expected_answer": "14 pacientes con diabetes tipo 2 tienen prescripción de metformina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 44054006) con MedicationRequest (ATC A10BA02). Exactamente 14. Aceptar entre 11 y 17."
+  },
+  {
+    "id": "C09",
+    "question": "¿Cuántos pacientes con hipertensión tienen prescripción de enalapril?",
+    "expected_answer": "13 pacientes con hipertensión tienen prescripción de enalapril.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (59621000) con MedicationRequest (C09AA02). Exactamente 13. Aceptar entre 10 y 16."
+  },
+  {
+    "id": "C10",
+    "question": "¿Cuántos pacientes con diabetes tipo 2 tienen observaciones de glucosa en sangre mayor a 140 mg/dL?",
+    "expected_answer": "5 pacientes con diabetes tipo 2 tienen glucosa en sangre mayor a 140 mg/dL.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (44054006) con Observation (LOINC 2345-7, value >140). Exactamente 5. Aceptar entre 3 y 7."
+  },
+  {
+    "id": "C11",
+    "question": "¿Cuántos pacientes con hipertensión tienen presión arterial sistólica mayor a 140 mmHg?",
+    "expected_answer": "13 pacientes con hipertensión tienen presión arterial sistólica mayor a 140 mmHg.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (59621000) con Observation (LOINC 8480-6, value >140). Exactamente 13. Aceptar entre 10 y 16."
+  },
+  {
+    "id": "C12",
+    "question": "¿Cuántos pacientes tienen diabetes tipo 2 e hipertensión y además al menos un medicamento prescripto?",
+    "expected_answer": "Aproximadamente 5 pacientes tienen DM2, HTA y al menos un medicamento.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "DM2+HTA comorbilidad = 5 pacientes. Casi todos deberían tener medicamentos (probabilidad de 0 meds es ~0.07%). Aceptar entre 3 y 6."
+  },
+  {
+    "id": "C13",
+    "question": "¿Cuál es el valor promedio de glucosa en sangre de los pacientes con diabetes tipo 2?",
+    "expected_answer": "El valor promedio de glucosa en sangre de pacientes con DM2 es aproximadamente 232 mg/dL.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Promedio exacto: 231.7 mg/dL (n=5 observaciones de glucosa en pacientes DM2). Aceptar entre 200 y 270. Requiere cruzar Condition con Observation y calcular promedio."
+  },
+  {
+    "id": "C14",
+    "question": "¿Qué porcentaje de las prescripciones de medicamentos están activas (no completadas)?",
+    "expected_answer": "El 87.9% de las prescripciones están activas (102 de 116).",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "102 active / 116 total = 87.9%. Aceptar entre 83% y 93%. Requiere contar MedicationRequest por status."
+  },
+  {
+    "id": "C15",
+    "question": "¿Cuántos pacientes tienen 3 o más condiciones clínicas diferentes registradas?",
+    "expected_answer": "8 pacientes tienen 3 o más condiciones clínicas diferentes.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Exactamente 8 pacientes con >=3 condiciones únicas. Aceptar entre 6 y 10. Requiere agrupar condiciones por paciente."
+  },
+  {
+    "id": "C16",
+    "question": "¿Cuántos pacientes mayores de 60 años con diabetes tipo 2 tienen observaciones de HbA1c?",
+    "expected_answer": "5 pacientes mayores de 60 años con DM2 tienen observaciones de HbA1c.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (age>60) + Condition (44054006) + Observation (LOINC 4548-4). Exactamente 5. Aceptar entre 3 y 7."
+  },
+  {
+    "id": "C17",
+    "question": "¿Cuántos pacientes con internaciones tienen medicamentos prescriptos?",
+    "expected_answer": "13 pacientes con internaciones tienen al menos un medicamento prescripto.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Encounter (class=IMP) con MedicationRequest. Exactamente 13. Aceptar entre 10 y 16."
+  },
+  {
+    "id": "C18",
+    "question": "¿Qué condiciones tienen los pacientes que toman enalapril?",
+    "expected_answer": "Los pacientes que toman enalapril tienen principalmente hipertensión arterial esencial. Hay 13 pacientes con enalapril.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere buscar MedicationRequest (C09AA02) -> Patient -> Condition. Los 13 pacientes con enalapril deberían tener HTA (59621000). Aceptar si identifica HTA como la condición principal."
+  },
+  {
+    "id": "C19",
+    "question": "¿Cuántos pacientes de Buenos Aires con hipertensión tienen medicamentos prescriptos y registros de presión arterial?",
+    "expected_answer": "Aproximadamente 7 pacientes de Buenos Aires con HTA tienen medicamentos y registros de PA.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (BA) + Condition (59621000) + MedicationRequest + Observation (8480-6). Exactamente 7. Aceptar entre 5 y 9."
+  },
+  {
+    "id": "C20",
+    "question": "¿Cuál es la distribución de encounters por provincia? ¿Qué provincia tiene más encuentros clínicos?",
+    "expected_answer": "Buenos Aires tiene la mayor cantidad de encounters (56), seguida por Córdoba (16) y Ciudad Autónoma de Buenos Aires (11).",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "Requiere contar Encounter por provincia del paciente. BA: 56, Córdoba: 16, CABA: 11. Aceptar si identifica Buenos Aires como la provincia con más encounters."
+  },
+  {
+    "id": "C21",
+    "question": "¿Cuál es el medicamento más prescripto en el sistema?",
+    "expected_answer": "Los medicamentos más prescriptos son atenolol 50mg y amlodipina 5mg, ambos con 16 prescripciones.",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "Atenolol y Amlodipina empatados con 16 cada uno. Aceptar si identifica al menos uno de los dos como el más prescripto."
+  },
+  {
+    "id": "C22",
+    "question": "¿Cuántos pacientes tienen algún medicamento antihipertensivo prescripto (enalapril, losartán, atenolol o amlodipina)?",
+    "expected_answer": "20 pacientes tienen al menos un antihipertensivo prescripto.",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "20 pacientes únicos con al menos uno de: C09AA02, C09CA01, C07AB03, C08CA01. Aceptar entre 17 y 23. Requiere buscar múltiples MedicationRequest y deduplicar por paciente."
+  }
+]
