@@ -15,6 +15,7 @@ import pytest
 from saludai_core.config import FHIRConfig
 from saludai_core.exceptions import FHIRConnectionError, FHIRResourceNotFoundError
 from saludai_core.fhir_client import FHIRClient
+from saludai_core.query_builder import FHIRQueryBuilder
 
 FHIR_BASE = "http://localhost:8080/fhir"
 
@@ -105,6 +106,27 @@ async def test_search_empty_results(client: FHIRClient) -> None:
     assert bundle["resourceType"] == "Bundle"
     assert bundle["total"] == 0
     assert bundle.get("entry") is None or len(bundle["entry"]) == 0
+
+
+async def test_execute_query(client: FHIRClient) -> None:
+    """execute() accepts a FHIRQuery and returns a Bundle."""
+    query = FHIRQueryBuilder("Patient").where("_count", "3").build()
+    bundle = await client.execute(query)
+    assert bundle["resourceType"] == "Bundle"
+    assert len(bundle.get("entry", [])) <= 3
+
+
+async def test_execute_with_includes(client: FHIRClient) -> None:
+    """execute() works with _include parameters."""
+    query = (
+        FHIRQueryBuilder("Condition")
+        .where("code", "44054006")
+        .include("subject")
+        .build()
+    )
+    bundle = await client.execute(query)
+    assert bundle["resourceType"] == "Bundle"
+    assert bundle["total"] >= 1
 
 
 async def test_connection_error() -> None:

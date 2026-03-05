@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from types import TracebackType
 
+    from saludai_core.query_builder import FHIRQuery
+
 import httpx
 import structlog
 
@@ -170,6 +172,23 @@ class FHIRClient:
         self._log.info("fhir.search", resource_type=resource_type, params=params)
         query_params = self._build_query_params(params)
         return await self._request("GET", f"/{resource_type}", params=query_params)
+
+    async def execute(self, query: FHIRQuery) -> dict[str, Any]:
+        """Execute a ``FHIRQuery`` built by ``FHIRQueryBuilder``.
+
+        Convenience wrapper around :meth:`search` that accepts an immutable
+        ``FHIRQuery`` directly::
+
+            query = FHIRQueryBuilder("Patient").where("name", "Garcia").build()
+            bundle = await client.execute(query)
+
+        Args:
+            query: An immutable query produced by ``FHIRQueryBuilder.build()``.
+
+        Returns:
+            The raw FHIR Bundle as a dict.
+        """
+        return await self.search(query.resource_type, query.to_params())
 
     async def close(self) -> None:
         """Close the underlying HTTP client."""

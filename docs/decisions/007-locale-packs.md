@@ -36,7 +36,7 @@ Implementamos un sistema de **locale packs** como frozen dataclasses inmutables:
 - **Testeable**: cada pack es una constante que se puede validar independientemente
 
 ### Negativas
-- Los CSVs ahora están duplicados temporalmente (data/ y locales/ar/) hasta que se limpie data/ (backlog)
+- ~~Los CSVs ahora están duplicados temporalmente (data/ y locales/ar/) hasta que se limpie data/ (backlog)~~ **Resuelto en sesion 4.6:** `data/` eliminado, `locales/ar/` es la unica fuente.
 - Agregar un pack requiere conocimiento de la estructura interna (mitigado con LOCALE_GUIDE.md)
 
 ### Riesgos

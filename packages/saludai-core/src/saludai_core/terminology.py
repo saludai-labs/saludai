@@ -72,11 +72,7 @@ class MatchType(enum.StrEnum):
 # System → CSV file mapping
 # ---------------------------------------------------------------------------
 
-_SYSTEM_CSV_MAP: dict[TerminologySystem, str] = {
-    TerminologySystem.SNOMED_CT: "snomed_ar.csv",
-    TerminologySystem.CIE_10: "cie10_ar.csv",
-    TerminologySystem.LOINC: "loinc.csv",
-}
+_DEFAULT_LOCALE = "ar"
 
 
 # ---------------------------------------------------------------------------
@@ -189,10 +185,11 @@ class TerminologyResolver:
         }
         self._cache = _LRUCache(self._config.cache_size)
 
-        if locale_pack is not None:
-            self._load_from_locale_pack(locale_pack)
-        else:
-            self._load_all_csv()
+        if locale_pack is None:
+            from saludai_core.locales.ar import AR_LOCALE_PACK
+
+            locale_pack = AR_LOCALE_PACK
+        self._load_from_locale_pack(locale_pack)
 
         if extra_concepts:
             for concept in extra_concepts:
@@ -460,16 +457,11 @@ class TerminologyResolver:
                 data_package=sys_def.data_package,
             )
 
-    def _load_all_csv(self) -> None:
-        """Load all bundled CSV files into memory."""
-        for system, filename in _SYSTEM_CSV_MAP.items():
-            self._load_csv(system, filename)
-
     def _load_csv(
         self,
         system: TerminologySystem,
         filename: str,
-        data_package: str = "saludai_core.data",
+        data_package: str,
     ) -> None:
         """Load a single CSV file for a terminology system."""
         try:
