@@ -98,9 +98,7 @@ def load_locale_pack(code: str = "ar") -> LocalePack:
         return pack
 
     all_codes = sorted(_BUILTIN_LOCALES | _discover_entry_point_codes())
-    raise LocaleNotFoundError(
-        f"Locale pack {code!r} not found. Available locales: {all_codes}"
-    )
+    raise LocaleNotFoundError(f"Locale pack {code!r} not found. Available locales: {all_codes}")
 
 
 def available_locales() -> list[str]:

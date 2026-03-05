@@ -26,7 +26,9 @@ def main() -> None:
         print("  version            Show version information")
         print()
         print("Environment variables:")
-        print("  SALUDAI_FHIR_SERVER_URL    FHIR R4 server URL (default: http://localhost:8080/fhir)")
+        print(
+            "  SALUDAI_FHIR_SERVER_URL    FHIR R4 server URL (default: http://localhost:8080/fhir)"
+        )
         print("  SALUDAI_FHIR_AUTH_TYPE     Auth type: none, bearer (default: none)")
         print("  SALUDAI_FHIR_AUTH_TOKEN    Bearer token for FHIR auth")
         print("  SALUDAI_LLM_PROVIDER       LLM provider: anthropic, openai, ollama")
@@ -62,7 +64,7 @@ def main() -> None:
 def _run_query(args: list[str]) -> None:
     """Run a single query through the agent loop."""
     if not args:
-        print("Usage: saludai query \"your question here\"", file=sys.stderr)
+        print('Usage: saludai query "your question here"', file=sys.stderr)
         sys.exit(1)
 
     query = " ".join(args)

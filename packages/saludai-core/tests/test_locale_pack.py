@@ -633,9 +633,7 @@ class TestEntryPointDiscovery:
         with pytest.raises(LocaleNotFoundError, match="zz"):
             load_locale_pack("zz")
 
-    def test_available_locales_includes_entry_points(
-        self, monkeypatch: pytest.MonkeyPatch
-    ) -> None:
+    def test_available_locales_includes_entry_points(self, monkeypatch: pytest.MonkeyPatch) -> None:
         ep = _make_entry_point("br", _FAKE_PACK)
         monkeypatch.setattr(
             "saludai_core.locales.importlib.metadata.entry_points",
@@ -645,9 +643,7 @@ class TestEntryPointDiscovery:
         assert "ar" in locales
         assert "br" in locales
 
-    def test_error_message_lists_all_available(
-        self, monkeypatch: pytest.MonkeyPatch
-    ) -> None:
+    def test_error_message_lists_all_available(self, monkeypatch: pytest.MonkeyPatch) -> None:
         ep = _make_entry_point("br", _FAKE_PACK)
         monkeypatch.setattr(
             "saludai_core.locales.importlib.metadata.entry_points",

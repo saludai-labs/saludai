@@ -118,12 +118,7 @@ async def test_execute_query(client: FHIRClient) -> None:
 
 async def test_execute_with_includes(client: FHIRClient) -> None:
     """execute() works with _include parameters."""
-    query = (
-        FHIRQueryBuilder("Condition")
-        .where("code", "44054006")
-        .include("subject")
-        .build()
-    )
+    query = FHIRQueryBuilder("Condition").where("code", "44054006").include("subject").build()
     bundle = await client.execute(query)
     assert bundle["resourceType"] == "Bundle"
     assert bundle["total"] >= 1
