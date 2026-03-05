@@ -3,29 +3,22 @@
 > Actualizar al inicio de cada sesion con las tareas concretas.
 > Marcar como completadas durante la sesion.
 
-## Sesion: Sprint 4, Sesion 4.3 — PyPI packaging + Docker image
+## Sesion: Sprint 4, Sesion 4.4 — Jupyter notebooks + README final
 
-### Meta-paquete `saludai`
-- [x] Convertir root pyproject.toml en meta-paquete que depende de core + agent + mcp
-- [x] Agregar entry point `saludai` CLI (`saludai mcp`, `saludai version`)
-- [x] Crear `src/saludai/__init__.py` + `src/saludai/cli.py`
+### Notebooks
+- [x] `notebooks/01-getting-started.ipynb` — FHIR client, terminology, query builder
+- [x] `notebooks/02-agent-queries.ipynb` — Agent loop, natural language queries, tracing
+- [x] `notebooks/03-benchmark-eval.ipynb` — Run benchmark, analyze results, visualize
 
-### Metadata PyPI (todos los paquetes)
-- [x] Agregar classifiers, URLs, keywords a cada pyproject.toml
+### README final
+- [x] Agregar badge de benchmark score (98%)
+- [x] Agregar badge de coverage (84.57%)
+- [x] Agregar seccion de notebooks con links
+- [x] Actualizar "Current Status" con Sprint 4 completado
+- [x] Actualizar conteo de tests
 
-### Build verification
-- [x] `uv build` cada paquete — 8 artifacts generados
-- [x] Wheels incluyen CSVs y locale data
-
-### Dockerfile
-- [x] Crear Dockerfile con UV, entrypoint `saludai mcp`
-- [x] `.dockerignore`
-
-### CI: publish workflow
-- [x] `.github/workflows/publish.yml` — PyPI trusted publishers + GHCR Docker
-
-### Decision
-- [x] REST API (4.2) movida a backlog
-
-### Documentacion
-- [x] Protocolo fin de sesion
+### Protocolo fin de sesion
+- [x] `docs/PROGRESS.md` — actualizar estado
+- [x] `docs/CHANGELOG.md` — registrar cambios
+- [x] `docs/ROADMAP.md` — marcar 4.4 como completada
+- [x] `tasks/todo.md` — marcar tareas completadas

@@ -4,6 +4,9 @@
 
 [![CI](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml/badge.svg)](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Benchmark: 98%](https://img.shields.io/badge/FHIR--AgentBench-98%25-brightgreen)](docs/experiments/EXPERIMENTS.md)
+[![Coverage: 84.57%](https://img.shields.io/badge/Coverage-84.57%25-green)](.github/workflows/ci.yml)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://python.org)
 
 ## What is SaludAI?
 
@@ -33,7 +36,7 @@ uv run python -m benchmarks.run_eval --category simple
 
 ## Current Status
 
-**Sprint 4 (Product) — In progress.** The project currently provides:
+The project provides:
 
 - UV monorepo with 4 packages (core, agent, mcp, api)
 - Docker Compose setup with HAPI FHIR R4 + 536 synthetic Argentine clinical resources
@@ -43,11 +46,13 @@ uv run python -m benchmarks.run_eval --category simple
 - Agent loop with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
 - 5 tools: resolve_terminology, search_fhir, get_resource, execute_code (sandboxed Python)
 - **MCP server** (`saludai-mcp`) — connect from Claude Desktop, Claude Code, Cursor, or any MCP client
+- **REST API** (`saludai-api`) — FastAPI server with `/query` endpoint
+- **CLI** — `saludai query`, `saludai serve`, `saludai mcp`
 - Locale packs for multi-country support (Argentina built-in)
 - Full Langfuse tracing integration
 - FHIR-AgentBench evaluation framework (50 questions, hybrid LLM-as-judge)
 - GitHub Actions CI with Ruff linting, Pytest, and coverage (84.57%)
-- 466 passing tests (unit + integration)
+- 473 passing tests (unit + integration)
 
 ## Quick Start
 
@@ -79,6 +84,7 @@ packages/
   saludai-api/      # FastAPI REST interface
 data/seed/          # Synthetic Argentine patient data (Synthea-style)
 benchmarks/         # FHIR-AgentBench evaluation scripts
+notebooks/          # Interactive Jupyter demos
 docs/               # Architecture, roadmap, ADRs
 ```
 
@@ -131,6 +137,37 @@ export SALUDAI_LOCALE=ar  # default
 ```
 
 Creating a new locale pack for your country is straightforward — see [docs/LOCALE_GUIDE.md](docs/LOCALE_GUIDE.md) for the full guide.
+
+## Notebooks
+
+Interactive Jupyter notebooks to explore SaludAI's capabilities:
+
+| Notebook | Description |
+|----------|-------------|
+| [01-getting-started](notebooks/01-getting-started.ipynb) | FHIR client, terminology resolver, query builder |
+| [02-agent-queries](notebooks/02-agent-queries.ipynb) | Natural language queries with the agent loop |
+| [03-benchmark-eval](notebooks/03-benchmark-eval.ipynb) | Run and analyze the FHIR-AgentBench evaluation |
+
+```bash
+# Run notebooks
+uv run jupyter notebook notebooks/
+```
+
+## CLI & REST API
+
+SaludAI provides a unified CLI and a REST API for programmatic access:
+
+```bash
+# Query the agent from the terminal
+uv run saludai query "Pacientes con diabetes tipo 2 mayores de 60"
+
+# Start the REST API server
+uv run saludai serve
+# POST http://localhost:8000/query {"query": "..."}
+
+# Start the MCP server
+uv run saludai mcp
+```
 
 ## Contributing
 

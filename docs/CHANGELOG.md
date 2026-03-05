@@ -4,6 +4,31 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.4] — 2026-03-05
+
+### 3 Jupyter Notebooks
+
+- **`notebooks/01-getting-started.ipynb`** — FHIR client (connect, search, read), Terminology Resolver (resolve, search, lookup), Query Builder (fluent API, factory shortcuts, _summary=count), Locale Packs
+- **`notebooks/02-agent-queries.ipynb`** — Agent loop configuracion, helper `ask()`, consultas simple/media/compleja, consulta personalizable
+- **`notebooks/03-benchmark-eval.ipynb`** — Explorar dataset (50 preguntas, 3 categorias), ejecutar benchmark (filtro por categoria), analizar resultados detallados, evolucion historica del benchmark
+
+### README final con badges
+
+- Badge de benchmark score (98%)
+- Badge de coverage (84.57%)
+- Badge de Python 3.12+
+- Seccion "Notebooks" con tabla y links
+- Seccion "CLI & REST API" con ejemplos de uso
+- Project structure actualizado con notebooks/
+- Conteo de tests actualizado a 473
+- Status actualizado (ya no dice "in progress")
+
+### Config
+
+- Ruff: per-file-ignores para notebooks (E402, F541, T201)
+
+---
+
 ## [Sprint 4, Sesion 4.3] — 2026-03-05
 
 ### Query CLI + REST API

@@ -2,7 +2,7 @@
 
 **Ultima actualizacion:** 2026-03-05
 **Sprint actual:** Sprint 4 — Producto y Lanzamiento
-**Sesion actual:** 4.3 — PyPI packaging + Docker image (completada)
+**Sesion actual:** 4.4 — Jupyter notebooks + README final (completada)
 
 ---
 
@@ -26,26 +26,19 @@
 
 ## Ultima Sesion Completada
 
-**Sprint 4, Sesion 4.3** — PyPI Packaging + Docker Image
+**Sprint 4, Sesion 4.4** — Jupyter Notebooks + README final
 
 ### Lo que se hizo
-- **Meta-paquete `saludai`**: root pyproject.toml ahora es buildable, `src/saludai/` con CLI
-- **`saludai` CLI**: `saludai mcp`, `saludai query`, `saludai serve`, `saludai version`
-- **`saludai query "pregunta"`**: corre el agent loop completo desde terminal
-- **`saludai serve`**: FastAPI server con `POST /query`, `GET /health`, OpenAPI docs
-- **FHIR auth en MCP**: `MCPConfig` propaga `fhir_auth_type` y `fhir_auth_token`
-- **Metadata PyPI**: classifiers, URLs, keywords en todos los paquetes
-- **Build**: 4 paquetes generan .whl + .tar.gz correctamente (CSVs incluidos)
-- **Dockerfile**: imagen con UV, entrypoint `saludai mcp`
-- **CI publish**: `.github/workflows/publish.yml` (PyPI trusted publishers + GHCR Docker)
-- **7 tests nuevos** para API (health, query, error cases, OpenAPI schema)
+- **3 Jupyter notebooks** en `notebooks/`:
+  - `01-getting-started.ipynb` — FHIR client, terminology, query builder, locale packs
+  - `02-agent-queries.ipynb` — Agent loop, consultas simple/media/compleja
+  - `03-benchmark-eval.ipynb` — Dataset exploration, benchmark execution, analisis de resultados
+- **README final** con badges (benchmark 98%, coverage 84.57%, Python 3.12+), seccion notebooks, seccion CLI/API
+- **Ruff config**: per-file-ignores para notebooks
 
 ### Verificacion
-- `uv sync --all-packages` → 5 paquetes buildeados e instalados
-- `uv build` (x4) → 8 artifacts generados
-- `uv run saludai --help` / `saludai version` → funcionan
-- `uv run pytest --no-cov` → 473 passed, 9 skipped
 - `uv run ruff check .` → All checks passed
+- `uv run pytest --no-cov` → 473 passed, 9 skipped
 
 ## Sprint 1 — Completado
 
@@ -80,15 +73,15 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 - ✅ 4.1 — MCP Server (FastMCP, 4 tools, CLI entry point, 17 tests)
 - ✅ 4.2 — REST API `/query` + CLI `saludai query` (agent loop via HTTP y terminal)
 - ✅ 4.3 — PyPI packaging + Docker image (meta-paquete, Dockerfile, CI publish)
-- [ ] 4.4 — 3 Jupyter notebooks + README final con badges
+- ✅ 4.4 — 3 Jupyter notebooks + README final con badges
 - [ ] 4.5 — Blog post + video demo 5 min
 
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.4 — Jupyter notebooks + README final con badges
-**Objetivo:** 3 notebooks ejecutables, README con metricas y badges
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.4
+**Sesion:** 4.5 — Blog post + video demo 5 min
+**Objetivo:** Blog en dev.to, video de 5 min: clone → demo en Claude Desktop
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.5
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
 **Planificado:** FHIR Awareness Level 2 (ejecucion) — Sprint 5 o inicio Etapa 2
 
