@@ -11,18 +11,18 @@
 - [x] ~~Crear ADR-002: No LangChain — custom agent loop~~ (completado sesión 3.4a)
 - [x] ~~Crear ADR-004: Langfuse para observabilidad~~ (completado sesión 3.4a)
 - [x] ~~Crear ADR-005: FHIR R4 only~~ (completado sesión 3.4a)
-- [ ] Definir licencia del repo de datos sintéticos (¿Apache 2.0? ¿CC-BY-4.0?)
-- [ ] Limpiar `saludai_core/data/` — los CSVs ahora están en `locales/ar/`, data/ es redundante
-- [ ] Locale pack discovery via `importlib.metadata.entry_points(group="saludai.locales")`
+- [x] ~~Definir licencia del repo de datos sintéticos~~ → Apache 2.0 (sesión 4.6)
+- [x] ~~Limpiar `saludai_core/data/`~~ — eliminado, `locales/ar/` es la unica fuente (sesión 4.6)
+- [x] ~~Locale pack discovery via `importlib.metadata.entry_points(group="saludai.locales")`~~ (completado sesion 4.7)
 
 ## Query Builder — fuera de scope (posible Sprint 3+)
 
 - [ ] Registro completo de search params válidos por resource type (validación estricta)
-- [ ] Parámetro `_has` (reverse chaining)
+- [ ] Parámetro `_has` (reverse chaining) → **planificado: sesión 4.8**
 - [ ] Composite parameters (e.g. `component-code-value-quantity`)
-- [ ] `FHIRClient.execute(query)` — convenience method que acepta `FHIRQuery` directamente (sesión 2.3)
+- [x] ~~`FHIRClient.execute(query)`~~ — convenience method implementado (sesión 4.6)
 
-## FHIR Awareness Level 2 — Ejecucion (Sprint 5 o Etapa 2)
+## FHIR Awareness Level 2 — Ejecucion → **planificado: sesión 4.9**
 
 > ADR-008. Level 1 (awareness/metadata) implementado en sesion 3.6.
 > Level 2 agrega ejecucion real: validacion, operaciones, parsing de extensions.

@@ -26,19 +26,19 @@
 
 ## Ultima Sesion Completada
 
-**Sprint 4, Sesion 4.4** — Jupyter Notebooks + README final
+**Sprint 4, Sesion 4.7** — Locale pack discovery via `entry_points`
 
 ### Lo que se hizo
-- **3 Jupyter notebooks** en `notebooks/`:
-  - `01-getting-started.ipynb` — FHIR client, terminology, query builder, locale packs
-  - `02-agent-queries.ipynb` — Agent loop, consultas simple/media/compleja
-  - `03-benchmark-eval.ipynb` — Dataset exploration, benchmark execution, analisis de resultados
-- **README final** con badges (benchmark 98%, coverage 84.57%, Python 3.12+), seccion notebooks, seccion CLI/API
-- **Ruff config**: per-file-ignores para notebooks
+- **Entry-point discovery** — `load_locale_pack()` ahora busca packs externos en `importlib.metadata.entry_points(group="saludai.locales")` como fallback despues de los built-in.
+- **`available_locales()` expandido** — retorna built-in + entry points registrados.
+- **Validacion** — entry points que no son `LocalePack` lanzan `LocaleNotFoundError` con mensaje descriptivo.
+- **Built-in priority** — packs built-in (`"ar"`) siempre ganan sobre entry points con el mismo codigo.
+- **6 tests nuevos** — `TestEntryPointDiscovery` cubre: discovery, prioridad, invalidez, not-found, available_locales, error message.
+- **`LOCALE_GUIDE.md` actualizado** — seccion "Registrar via entry points" con instrucciones de `pyproject.toml`.
 
 ### Verificacion
 - `uv run ruff check .` → All checks passed
-- `uv run pytest --no-cov` → 473 passed, 9 skipped
+- `uv run pytest --no-cov` → 479 passed, 11 skipped
 
 ## Sprint 1 — Completado
 
@@ -75,15 +75,19 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 - ✅ 4.3 — PyPI packaging + Docker image (meta-paquete, Dockerfile, CI publish)
 - ✅ 4.4 — 3 Jupyter notebooks + README final con badges
 - [ ] 4.5 — Blog post + video demo 5 min
+- ✅ 4.6 — Quick wins: limpiar data/, licencia datos, `execute(query)` [S]
+- ✅ 4.7 — Locale pack discovery via `entry_points` [M]
+- [ ] 4.8 — Parámetro `_has` (reverse chaining) en Query Builder [M]
+- [ ] 4.9 — FHIR Awareness Level 2: validación y ejecución [L]
 
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.5 — Blog post + video demo 5 min
-**Objetivo:** Blog en dev.to, video de 5 min: clone → demo en Claude Desktop
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.5
+**Sesion:** 4.8 — Parametro `_has` (reverse chaining) en Query Builder
+**Objetivo:** Soporte de `_has` en el query builder para consultas complejas
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.8
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
-**Planificado:** FHIR Awareness Level 2 (ejecucion) — Sprint 5 o inicio Etapa 2
+**Pendiente:** 4.5 (blog/video), 4.8-4.9 (backlog tecnico)
 
 ## Blockers
 
@@ -117,4 +121,4 @@ Ninguno.
 
 ## Decisiones Pendientes
 
-- [ ] Licencia exacta del repo de datos sinteticos (Apache 2.0? CC-BY-4.0?)
+- [x] ~~Licencia datos sinteticos~~ → Apache 2.0 (misma que el proyecto). Datos Synthea son Apache 2.0, CSVs de terminologia son compilaciones de estandares publicos.

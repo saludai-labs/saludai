@@ -120,6 +120,10 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | 4.3 ✅ | PyPI packaging + Docker image | Meta-paquete, Dockerfile, CI publish workflow |
 | 4.4 ✅ | 3 Jupyter notebooks + README final con badges | Notebooks ejecutables con output |
 | 4.5 | Blog post + video demo 5 min + publicar en comunidades | Blog en dev.to, video en YouTube |
+| 4.6 ✅ | Quick wins: limpiar data/, licencia datos, `execute(query)` | CSVs redundantes eliminados, licencia definida, convenience method con tests |
+| 4.7 ✅ | Locale pack discovery via `entry_points` | Paquetes externos pueden registrar locale packs sin tocar core |
+| 4.8 | Parámetro `_has` (reverse chaining) en Query Builder | `_has` funcional con tests, queries complejas habilitadas |
+| 4.9 | FHIR Awareness Level 2 — validación y ejecución | Tool `$validate`, parsing de extensions, query builder aware de SearchParams locales |
 
 ### Definición de Done
 - [ ] `pip install saludai && saludai serve` → MCP server corriendo
@@ -127,6 +131,11 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 - [ ] Blog publicado: "Por qué los FHIR agents genéricos fallan en el 50%"
 - [ ] README con métricas, badges, screenshots
 - [ ] Coverage ≥ 70%, benchmark score publicado
+- [ ] `saludai_core/data/` eliminado, sin imports rotos
+- [ ] `FHIRClient.execute(query)` funcional con tests
+- [ ] Locale packs descubribles via `entry_points`
+- [ ] `_has` en Query Builder con tests
+- [ ] Tool `$validate` funcional contra HAPI FHIR
 
 ---
 

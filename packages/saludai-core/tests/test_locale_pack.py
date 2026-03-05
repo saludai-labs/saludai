@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import MagicMock
+
 import pytest
 
 from saludai_core.exceptions import LocaleNotFoundError
@@ -143,7 +145,7 @@ class TestTerminologyResolverWithLocalePack:
         assert match.concept is not None
         assert match.concept.code == "44054006"
 
-    def test_same_results_as_default(self) -> None:
+    def test_default_uses_ar_pack(self) -> None:
         default_resolver = TerminologyResolver()
         pack_resolver = TerminologyResolver(locale_pack=AR_LOCALE_PACK)
         assert default_resolver.concept_count == pack_resolver.concept_count
@@ -544,3 +546,101 @@ class TestARLocalePackFHIRAwareness:
     def test_identifier_uris_are_valid(self) -> None:
         for i in AR_LOCALE_PACK.identifier_systems:
             assert i.system_uri.startswith("http")
+
+
+# =====================================================================
+# Entry-point discovery
+# =====================================================================
+
+_FAKE_PACK = LocalePack(
+    code="br",
+    name="Brasil",
+    language="pt",
+    terminology_systems=(),
+    system_prompt="test",
+    tool_descriptions={},
+    tool_system_enum=(),
+)
+
+
+def _make_entry_point(name: str, obj: object) -> MagicMock:
+    """Create a fake ``importlib.metadata.EntryPoint``."""
+    ep = MagicMock()
+    ep.name = name
+    ep.load.return_value = obj
+    return ep
+
+
+class TestEntryPointDiscovery:
+    """load_locale_pack discovers packs via entry points."""
+
+    def test_discovers_external_pack(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ep = _make_entry_point("br", _FAKE_PACK)
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [ep],
+        )
+        pack = load_locale_pack("br")
+        assert pack.code == "br"
+        assert pack.language == "pt"
+
+    def test_builtin_takes_precedence(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """Built-in 'ar' is returned even if an entry point also provides 'ar'."""
+        fake_ar = LocalePack(
+            code="ar",
+            name="Fake AR",
+            language="es",
+            terminology_systems=(),
+            system_prompt="fake",
+            tool_descriptions={},
+            tool_system_enum=(),
+        )
+        ep = _make_entry_point("ar", fake_ar)
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [ep],
+        )
+        pack = load_locale_pack("ar")
+        # Should be the real AR pack, not the fake one
+        assert pack.name == "Argentina"
+        assert pack.system_prompt != "fake"
+
+    def test_invalid_entry_point_raises(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        ep = _make_entry_point("xx", "not a LocalePack")
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [ep],
+        )
+        with pytest.raises(LocaleNotFoundError, match="expected LocalePack"):
+            load_locale_pack("xx")
+
+    def test_not_found_with_no_entry_points(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [],
+        )
+        with pytest.raises(LocaleNotFoundError, match="zz"):
+            load_locale_pack("zz")
+
+    def test_available_locales_includes_entry_points(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        ep = _make_entry_point("br", _FAKE_PACK)
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [ep],
+        )
+        locales = available_locales()
+        assert "ar" in locales
+        assert "br" in locales
+
+    def test_error_message_lists_all_available(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        ep = _make_entry_point("br", _FAKE_PACK)
+        monkeypatch.setattr(
+            "saludai_core.locales.importlib.metadata.entry_points",
+            lambda group: [ep],
+        )
+        with pytest.raises(LocaleNotFoundError, match=r"ar.*br"):
+            load_locale_pack("zz")

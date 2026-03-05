@@ -143,9 +143,39 @@ def _build_br_pack() -> LocalePack:
 BR_LOCALE_PACK = _build_br_pack()
 ```
 
-### 4. Registrar en la factory
+### 4. Registrar via entry points
 
-Actualmente, los packs se registran manualmente en `saludai_core/locales/__init__.py`. En el futuro, se podran descubrir via entry points de Python.
+Los packs externos se descubren automaticamente via
+[entry points de Python](https://packaging.python.org/en/latest/specifications/entry-points/).
+Agrega esto al `pyproject.toml` de tu paquete:
+
+```toml
+[project.entry-points."saludai.locales"]
+br = "my_saludai_br:BR_LOCALE_PACK"
+```
+
+Donde:
+
+- `br` es el codigo de locale (el que se usa en `load_locale_pack("br")`)
+- `my_saludai_br:BR_LOCALE_PACK` apunta al objeto `LocalePack` exportado
+
+Una vez instalado tu paquete (`pip install my-saludai-br`), SaludAI lo
+descubre automaticamente:
+
+```python
+from saludai_core.locales import load_locale_pack, available_locales
+
+print(available_locales())  # ["ar", "br"]
+pack = load_locale_pack("br")
+```
+
+**Notas:**
+
+- Los packs built-in (actualmente solo `"ar"`) tienen prioridad sobre
+  entry points con el mismo codigo.
+- El entry point debe resolver a una instancia de `LocalePack`. Si no,
+  se lanza `LocaleNotFoundError`.
+- No necesitas modificar saludai-core para registrar un pack externo.
 
 ### 5. Usar en el agente
 

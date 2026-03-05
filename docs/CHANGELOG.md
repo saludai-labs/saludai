@@ -4,6 +4,37 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.7] — 2026-03-05
+
+### Locale pack discovery via entry points
+- `load_locale_pack()` ahora descubre packs externos via `importlib.metadata.entry_points(group="saludai.locales")`
+- `available_locales()` retorna built-in + packs registrados via entry points
+- Built-in packs (`"ar"`) tienen prioridad sobre entry points con el mismo codigo
+- Entry points invalidos (que no son `LocalePack`) lanzan `LocaleNotFoundError` con mensaje claro
+- Error message al no encontrar locale incluye todos los locales disponibles (built-in + entry points)
+- 6 tests nuevos en `TestEntryPointDiscovery` (479 → 485 total)
+- `LOCALE_GUIDE.md` actualizado con instrucciones de registro via entry points
+
+## [Sprint 4, Sesion 4.6] — 2026-03-05
+
+### Limpieza de `saludai_core/data/`
+- Eliminado directorio `data/` con 3 CSVs redundantes (~15KB)
+- `locales/ar/` es ahora la unica fuente de datos de terminologia
+- `TerminologyResolver()` sin locale_pack usa AR_LOCALE_PACK por defecto (lazy import)
+- Eliminado `_SYSTEM_CSV_MAP` y `_load_all_csv()` — codigo muerto
+- Test `test_same_results_as_default` renombrado a `test_default_uses_ar_pack`
+- ADR-007 actualizado: migracion data/ → locales/ marcada como completa
+
+### `FHIRClient.execute(query)`
+- Nuevo metodo convenience que acepta `FHIRQuery` directamente
+- 2 tests de integracion (`test_execute_query`, `test_execute_with_includes`)
+
+### Licencia datos sinteticos
+- Decidido Apache 2.0 (misma que el proyecto)
+- Datos Synthea son Apache 2.0, CSVs de terminologia son compilaciones de estandares publicos
+
+---
+
 ## [Sprint 4, Sesion 4.4] — 2026-03-05
 
 ### 3 Jupyter Notebooks
