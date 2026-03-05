@@ -34,15 +34,14 @@
 - [ ] Auto-sugerir search params del locale pack en el prompt del agente
 - [ ] Tests e2e con servidor FHIR real que tenga profiles argentinos cargados
 
-## REST API (movido de Sprint 4.2)
+## REST API — extras (implementado base en 4.3)
 
-> Decidimos que el MCP server cubre el caso de uso principal. La REST API agrega valor
-> solo si se expone el agent loop completo (`POST /query`), no los raw tools.
+> Base implementada: `POST /query` + `GET /health` + OpenAPI docs.
+> Extras opcionales para el futuro:
 
-- [ ] FastAPI REST API con endpoint `/query` (agent loop completo)
-- [ ] OpenAPI docs automática
-- [ ] Endpoint de health check
-- [ ] Opcional: exponer los 4 tools como endpoints individuales
+- [ ] Exponer los 4 tools como endpoints individuales (`/resolve`, `/search`, `/resource`)
+- [ ] WebSocket streaming para respuestas incrementales
+- [ ] Rate limiting y API keys
 
 ## Ideas para sprints futuros
 

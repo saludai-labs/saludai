@@ -6,6 +6,19 @@ Registro de cambios por sesión de desarrollo.
 
 ## [Sprint 4, Sesion 4.3] — 2026-03-05
 
+### Query CLI + REST API
+
+- **`saludai query "pregunta"`** — corre el agent loop completo desde terminal
+- **`saludai serve`** — FastAPI server con `POST /query` y `GET /health`
+- OpenAPI docs en `/docs` con schemas de request/response
+- 7 tests nuevos para la API (health, query, error cases, OpenAPI schema)
+- CLI help documenta todas las variables de entorno
+
+### FHIR Auth en MCP
+
+- `MCPConfig` ahora expone `fhir_auth_type` y `fhir_auth_token`
+- Lifespan propaga auth settings a `FHIRConfig`
+
 ### PyPI Packaging + Docker Image
 
 **Meta-paquete `saludai`:**
@@ -33,9 +46,7 @@ Registro de cambios por sesión de desarrollo.
 - PyPI: trusted publishers (OIDC, sin API keys)
 - Docker: build + push a ghcr.io con tag de version + latest
 
-**Decision:** REST API (4.2) movida a backlog — MCP server cubre el caso de uso principal.
-
-**Totales:** 466 passed, 9 skipped. Ruff limpio.
+**Totales:** 473 passed, 9 skipped. Ruff limpio.
 
 ---
 

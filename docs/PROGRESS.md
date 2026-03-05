@@ -30,19 +30,21 @@
 
 ### Lo que se hizo
 - **Meta-paquete `saludai`**: root pyproject.toml ahora es buildable, `src/saludai/` con CLI
-- **`saludai` CLI**: `saludai mcp` (lanza MCP server), `saludai version`
+- **`saludai` CLI**: `saludai mcp`, `saludai query`, `saludai serve`, `saludai version`
+- **`saludai query "pregunta"`**: corre el agent loop completo desde terminal
+- **`saludai serve`**: FastAPI server con `POST /query`, `GET /health`, OpenAPI docs
+- **FHIR auth en MCP**: `MCPConfig` propaga `fhir_auth_type` y `fhir_auth_token`
 - **Metadata PyPI**: classifiers, URLs, keywords en todos los paquetes
 - **Build**: 4 paquetes generan .whl + .tar.gz correctamente (CSVs incluidos)
 - **Dockerfile**: imagen con UV, entrypoint `saludai mcp`
-- **`.dockerignore`**: excluye dev files, docs, benchmarks
 - **CI publish**: `.github/workflows/publish.yml` (PyPI trusted publishers + GHCR Docker)
-- **REST API (4.2)**: movida a backlog — MCP cubre el caso de uso
+- **7 tests nuevos** para API (health, query, error cases, OpenAPI schema)
 
 ### Verificacion
 - `uv sync --all-packages` → 5 paquetes buildeados e instalados
 - `uv build` (x4) → 8 artifacts generados
 - `uv run saludai --help` / `saludai version` → funcionan
-- `uv run pytest --no-cov` → 466 passed, 9 skipped
+- `uv run pytest --no-cov` → 473 passed, 9 skipped
 - `uv run ruff check .` → All checks passed
 
 ## Sprint 1 — Completado
@@ -76,7 +78,7 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 ## Sprint 4 — En progreso
 
 - ✅ 4.1 — MCP Server (FastMCP, 4 tools, CLI entry point, 17 tests)
-- ~~4.2 — FastAPI REST API~~ → movido a backlog (MCP cubre el caso de uso)
+- ✅ 4.2 — REST API `/query` + CLI `saludai query` (agent loop via HTTP y terminal)
 - ✅ 4.3 — PyPI packaging + Docker image (meta-paquete, Dockerfile, CI publish)
 - [ ] 4.4 — 3 Jupyter notebooks + README final con badges
 - [ ] 4.5 — Blog post + video demo 5 min
