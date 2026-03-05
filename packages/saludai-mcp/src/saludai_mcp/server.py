@@ -45,7 +45,12 @@ async def _lifespan(server: Any) -> AsyncIterator[None]:
     global _fhir_client, _terminology_resolver
 
     cfg = MCPConfig()
-    fhir_cfg = FHIRConfig(fhir_server_url=cfg.fhir_server_url, fhir_timeout=cfg.fhir_timeout)
+    fhir_cfg = FHIRConfig(
+        fhir_server_url=cfg.fhir_server_url,
+        fhir_auth_type=cfg.fhir_auth_type,
+        fhir_auth_token=cfg.fhir_auth_token,
+        fhir_timeout=cfg.fhir_timeout,
+    )
     _fhir_client = FHIRClient(config=fhir_cfg)
 
     try:
