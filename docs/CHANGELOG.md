@@ -4,6 +4,41 @@ Registro de cambios por sesión de desarrollo.
 
 ---
 
+## [Sprint 4, Sesion 4.3] — 2026-03-05
+
+### PyPI Packaging + Docker Image
+
+**Meta-paquete `saludai`:**
+- Root pyproject.toml convertido en paquete buildable con hatchling
+- `src/saludai/__init__.py` + `src/saludai/cli.py` — CLI entry point
+- `saludai version` y `saludai mcp` como comandos
+- Depende de saludai-core + saludai-agent + saludai-mcp
+
+**Metadata PyPI (todos los paquetes):**
+- Classifiers (Healthcare, Alpha, Apache 2.0, Python 3.12, Typed)
+- URLs (Homepage, Repository, Issues)
+- Keywords por paquete
+
+**Build verification:**
+- `uv build` exitoso para los 4 paquetes (8 artifacts: .whl + .tar.gz)
+- Wheels incluyen CSVs de terminologia y locale data correctamente
+
+**Docker:**
+- `Dockerfile` multi-stage con UV, instala saludai + deps sin dev
+- `.dockerignore` para builds limpios
+- Entrypoint: `saludai mcp`
+
+**CI: Publish workflow:**
+- `.github/workflows/publish.yml` — triggered on GitHub release
+- PyPI: trusted publishers (OIDC, sin API keys)
+- Docker: build + push a ghcr.io con tag de version + latest
+
+**Decision:** REST API (4.2) movida a backlog — MCP server cubre el caso de uso principal.
+
+**Totales:** 466 passed, 9 skipped. Ruff limpio.
+
+---
+
 ## [Sprint 4, Sesion 4.1] — 2026-03-05
 
 ### MCP Server

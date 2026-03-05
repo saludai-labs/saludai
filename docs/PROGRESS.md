@@ -2,7 +2,7 @@
 
 **Ultima actualizacion:** 2026-03-05
 **Sprint actual:** Sprint 4 — Producto y Lanzamiento
-**Sesion actual:** 4.1 — MCP Server (completada)
+**Sesion actual:** 4.3 — PyPI packaging + Docker image (completada)
 
 ---
 
@@ -26,21 +26,24 @@
 
 ## Ultima Sesion Completada
 
-**Sprint 4, Sesion 4.1** — MCP Server
+**Sprint 4, Sesion 4.3** — PyPI Packaging + Docker Image
 
 ### Lo que se hizo
-- **`config.py`**: MCPConfig con FHIR URL, timeout, locale, server name
-- **`server.py`**: FastMCP server con 4 tools (resolve_terminology, search_fhir, get_resource, run_python)
-- **Lifespan**: inicializa FHIRClient, TerminologyResolver, LocalePack al startup; cleanup al shutdown
-- **CLI**: `saludai-mcp` entry point con stdio transport
-- **Zero duplicacion**: reutiliza ejecutores de `saludai_agent.tools`
-- **17 tests nuevos**: config, tool registration (schemas), tool execution (mocked)
-- **`__init__.py`** actualizado con exports
+- **Meta-paquete `saludai`**: root pyproject.toml ahora es buildable, `src/saludai/` con CLI
+- **`saludai` CLI**: `saludai mcp` (lanza MCP server), `saludai version`
+- **Metadata PyPI**: classifiers, URLs, keywords en todos los paquetes
+- **Build**: 4 paquetes generan .whl + .tar.gz correctamente (CSVs incluidos)
+- **Dockerfile**: imagen con UV, entrypoint `saludai mcp`
+- **`.dockerignore`**: excluye dev files, docs, benchmarks
+- **CI publish**: `.github/workflows/publish.yml` (PyPI trusted publishers + GHCR Docker)
+- **REST API (4.2)**: movida a backlog — MCP cubre el caso de uso
 
 ### Verificacion
+- `uv sync --all-packages` → 5 paquetes buildeados e instalados
+- `uv build` (x4) → 8 artifacts generados
+- `uv run saludai --help` / `saludai version` → funcionan
 - `uv run pytest --no-cov` → 466 passed, 9 skipped
 - `uv run ruff check .` → All checks passed
-- `uv run saludai-mcp` → arranca, inicializa terminology (173 concepts), se detiene limpio
 
 ## Sprint 1 — Completado
 
@@ -73,17 +76,17 @@ Todas las sesiones del Sprint 1 estan finalizadas:
 ## Sprint 4 — En progreso
 
 - ✅ 4.1 — MCP Server (FastMCP, 4 tools, CLI entry point, 17 tests)
-- [ ] 4.2 — FastAPI REST API + OpenAPI docs
-- [ ] 4.3 — PyPI packaging + Docker image publicada
+- ~~4.2 — FastAPI REST API~~ → movido a backlog (MCP cubre el caso de uso)
+- ✅ 4.3 — PyPI packaging + Docker image (meta-paquete, Dockerfile, CI publish)
 - [ ] 4.4 — 3 Jupyter notebooks + README final con badges
 - [ ] 4.5 — Blog post + video demo 5 min
 
 ## Proxima Sesion
 
 **Sprint:** 4 — Producto y Lanzamiento
-**Sesion:** 4.2 — FastAPI REST API
-**Objetivo:** Implementar API REST con OpenAPI docs, misma funcionalidad que MCP
-**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.2
+**Sesion:** 4.4 — Jupyter notebooks + README final con badges
+**Objetivo:** 3 notebooks ejecutables, README con metricas y badges
+**Referencia:** `docs/ROADMAP.md` → Sprint 4 → Sesion 4.4
 **Fallas restantes (Exp 5):** 1 max iterations (C05)
 **Planificado:** FHIR Awareness Level 2 (ejecucion) — Sprint 5 o inicio Etapa 2
 

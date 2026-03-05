@@ -116,8 +116,8 @@ Al cerrar el Sprint 4, este flujo debe funcionar sin fricción:
 | # | Tarea | Output verificable |
 |---|-------|--------------------|
 | 4.1 ✅ | MCP Server: FastMCP + 4 tools + CLI entry point + 17 tests | `uv run saludai-mcp` funcional |
-| 4.2 | FastAPI REST API + OpenAPI docs | `/docs` documentada, misma funcionalidad que MCP |
-| 4.3 | PyPI packaging + Docker image publicada | `pip install saludai` funcional |
+| 4.2 | ~~FastAPI REST API~~ → movido a backlog (MCP cubre el caso) | — |
+| 4.3 ✅ | PyPI packaging + Docker image | Meta-paquete, Dockerfile, CI publish workflow |
 | 4.4 | 3 Jupyter notebooks + README final con badges | Notebooks ejecutables con output |
 | 4.5 | Blog post + video demo 5 min + publicar en comunidades | Blog en dev.to, video en YouTube |
 

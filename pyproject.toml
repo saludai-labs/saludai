@@ -6,6 +6,38 @@ readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.12"
 authors = [{ name = "SaludAI Labs" }]
+keywords = ["fhir", "health", "ai", "agent", "mcp", "snomed", "latin-america"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Typing :: Typed",
+]
+dependencies = [
+    "saludai-core>=0.1.0",
+    "saludai-agent>=0.1.0",
+    "saludai-mcp>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/saludai-labs/saludai"
+Repository = "https://github.com/saludai-labs/saludai"
+Issues = "https://github.com/saludai-labs/saludai/issues"
+Documentation = "https://github.com/saludai-labs/saludai#readme"
+
+[project.scripts]
+saludai = "saludai.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/saludai"]
 
 [tool.uv.workspace]
 members = [
@@ -14,6 +46,11 @@ members = [
     "packages/saludai-mcp",
     "packages/saludai-api",
 ]
+
+[tool.uv.sources]
+saludai-core = { workspace = true }
+saludai-agent = { workspace = true }
+saludai-mcp = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -44,7 +81,7 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["saludai_core", "saludai_agent", "saludai_mcp", "saludai_api", "benchmarks"]
+known-first-party = ["saludai", "saludai_core", "saludai_agent", "saludai_mcp", "saludai_api", "benchmarks"]
 
 [tool.pytest.ini_options]
 testpaths = ["packages", "benchmarks"]
