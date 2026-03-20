@@ -301,13 +301,9 @@ class FHIRClient:
         try:
             response = await self._http.request("GET", url)
         except httpx.ConnectError as exc:
-            raise FHIRConnectionError(
-                f"Cannot connect to FHIR server at {url}"
-            ) from exc
+            raise FHIRConnectionError(f"Cannot connect to FHIR server at {url}") from exc
         except httpx.TimeoutException as exc:
-            raise FHIRConnectionError(
-                f"Timeout connecting to FHIR server at {url}"
-            ) from exc
+            raise FHIRConnectionError(f"Timeout connecting to FHIR server at {url}") from exc
 
         if response.status_code >= 400:
             raise FHIRValidationError(

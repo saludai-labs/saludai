@@ -54,14 +54,19 @@ class TestGetNextLink:
 
     def test_extracts_next_url(self) -> None:
         bundle = _make_bundle([], next_url="http://fhir/Patient?_count=10&_getpagesoffset=10")
-        assert FHIRClient._get_next_link(bundle) == "http://fhir/Patient?_count=10&_getpagesoffset=10"
+        assert (
+            FHIRClient._get_next_link(bundle) == "http://fhir/Patient?_count=10&_getpagesoffset=10"
+        )
 
     def test_returns_none_when_no_links(self) -> None:
         bundle = _make_bundle([])
         assert FHIRClient._get_next_link(bundle) is None
 
     def test_returns_none_when_no_next_relation(self) -> None:
-        bundle = {"resourceType": "Bundle", "link": [{"relation": "self", "url": "http://fhir/Patient"}]}
+        bundle = {
+            "resourceType": "Bundle",
+            "link": [{"relation": "self", "url": "http://fhir/Patient"}],
+        }
         assert FHIRClient._get_next_link(bundle) is None
 
 

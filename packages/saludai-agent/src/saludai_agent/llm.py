@@ -328,12 +328,8 @@ def _anthropic_response_to_llm_response(response: Any) -> LLMResponse:
     usage = TokenUsage(
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
-        cache_creation_input_tokens=getattr(
-            response.usage, "cache_creation_input_tokens", 0
-        ) or 0,
-        cache_read_input_tokens=getattr(
-            response.usage, "cache_read_input_tokens", 0
-        ) or 0,
+        cache_creation_input_tokens=getattr(response.usage, "cache_creation_input_tokens", 0) or 0,
+        cache_read_input_tokens=getattr(response.usage, "cache_read_input_tokens", 0) or 0,
     )
 
     return LLMResponse(

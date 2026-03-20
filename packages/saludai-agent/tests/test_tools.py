@@ -636,8 +636,7 @@ class TestExecuteCode:
             {"subject": {"reference": "Patient/1"}},
         ]
         code = (
-            "refs = set(e.get('subject',{}).get('reference','') for e in entries)\n"
-            "print(len(refs))"
+            "refs = set(e.get('subject',{}).get('reference','') for e in entries)\nprint(len(refs))"
         )
         result = execute_code({"code": code}, extra_globals={"entries": fhir_entries})
         assert "2" in result
@@ -712,8 +711,11 @@ class TestToolRegistry:
         defs = registry.definitions()
         names = {d["name"] for d in defs}
         assert names == {
-            "resolve_terminology", "search_fhir", "count_fhir",
-            "get_resource", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "count_fhir",
+            "get_resource",
+            "execute_code",
         }
 
     def test_definitions_without_resolver(self) -> None:

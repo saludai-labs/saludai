@@ -208,9 +208,7 @@ class TestRunAll:
 
         progress = tmp_path / "progress.jsonl"
         questions = [_make_question("S01"), _make_question("S02")]
-        harness = EvalHarness(
-            agent, judge, _make_config(), progress_path=progress
-        )
+        harness = EvalHarness(agent, judge, _make_config(), progress_path=progress)
         await harness.run_all(questions)
 
         # Should have 2 lines in JSONL

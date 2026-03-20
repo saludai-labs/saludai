@@ -124,9 +124,7 @@ class TestQuestionResultNewFields:
 
     def test_with_plan_and_steps(self) -> None:
         plan = {"strategy": "count_simple", "model": "haiku"}
-        steps = (
-            {"iteration": 1, "llm_output": "searching", "tool_calls": [], "usage": {}},
-        )
+        steps = ({"iteration": 1, "llm_output": "searching", "tool_calls": [], "usage": {}},)
         result = _make_result()
         # Create new instance since frozen
         result = QuestionResult(

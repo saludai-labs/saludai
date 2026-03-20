@@ -119,8 +119,14 @@ class TestLoadDataset:
 
     def test_valid_domains(self) -> None:
         valid = {
-            "demographics", "chronic_disease", "laboratory", "medication",
-            "vaccination", "care_coordination", "surgery", "safety",
+            "demographics",
+            "chronic_disease",
+            "laboratory",
+            "medication",
+            "vaccination",
+            "care_coordination",
+            "surgery",
+            "safety",
             "epidemiology",
         }
         questions = load_dataset()

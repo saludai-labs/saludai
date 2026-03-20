@@ -352,8 +352,11 @@ class TestRecordingTracer:
 
         # Iteration 1
         tracer.log_generation(
-            name="llm_call_1", model="sonnet", input={},
-            output="resolve term", usage=TokenUsage(100, 20),
+            name="llm_call_1",
+            model="sonnet",
+            input={},
+            output="resolve term",
+            usage=TokenUsage(100, 20),
         )
         tracer.log_tool_call(
             name="tool:resolve_terminology",
@@ -363,8 +366,11 @@ class TestRecordingTracer:
 
         # Iteration 2
         tracer.log_generation(
-            name="llm_call_2", model="sonnet", input={},
-            output="now count", usage=TokenUsage(200, 30),
+            name="llm_call_2",
+            model="sonnet",
+            input={},
+            output="now count",
+            usage=TokenUsage(200, 30),
         )
         tracer.log_tool_call(
             name="tool:count_fhir",
@@ -374,8 +380,11 @@ class TestRecordingTracer:
 
         # Iteration 3 (final answer, no tool calls)
         tracer.log_generation(
-            name="llm_call_3", model="sonnet", input={},
-            output="Hay 42 pacientes.", usage=TokenUsage(300, 40),
+            name="llm_call_3",
+            model="sonnet",
+            input={},
+            output="Hay 42 pacientes.",
+            usage=TokenUsage(300, 40),
         )
 
         recording = tracer.get_recording()
@@ -389,8 +398,11 @@ class TestRecordingTracer:
         tracer = RecordingTracer(result_preview_limit=50)
         tracer.start_trace(name="test", input={})
         tracer.log_generation(
-            name="llm_call_1", model="test", input={},
-            output="search", usage=TokenUsage(),
+            name="llm_call_1",
+            model="test",
+            input={},
+            output="search",
+            usage=TokenUsage(),
         )
         long_output = "x" * 200
         tracer.log_tool_call(
@@ -406,8 +418,11 @@ class TestRecordingTracer:
         tracer = RecordingTracer(result_preview_limit=500)
         tracer.start_trace(name="test", input={})
         tracer.log_generation(
-            name="llm_call_1", model="test", input={},
-            output="search", usage=TokenUsage(),
+            name="llm_call_1",
+            model="test",
+            input={},
+            output="search",
+            usage=TokenUsage(),
         )
         tracer.log_tool_call(name="tool:test", input={}, output="short")
         preview = tracer.get_recording()["steps"][0]["tool_calls"][0]["result_preview"]
@@ -417,8 +432,11 @@ class TestRecordingTracer:
         tracer = RecordingTracer()
         tracer.start_trace(name="test", input={})
         tracer.log_generation(
-            name="llm_call_1", model="test", input={},
-            output="call", usage=TokenUsage(),
+            name="llm_call_1",
+            model="test",
+            input={},
+            output="call",
+            usage=TokenUsage(),
         )
         tracer.log_tool_call(name="tool:resolve_terminology", input={}, output="ok")
         tc = tracer.get_recording()["steps"][0]["tool_calls"][0]
@@ -428,8 +446,11 @@ class TestRecordingTracer:
         tracer = RecordingTracer()
         tracer.start_trace(name="run1", input={})
         tracer.log_generation(
-            name="llm_call_1", model="test", input={},
-            output="first", usage=TokenUsage(),
+            name="llm_call_1",
+            model="test",
+            input={},
+            output="first",
+            usage=TokenUsage(),
         )
 
         # New run resets
@@ -476,15 +497,23 @@ class TestCompositeTracer:
 
         composite.start_trace(name="test", input={})
         composite.log_generation(
-            name="planner", model="haiku", input={},
-            output='{"strategy": "count"}', usage=TokenUsage(10, 5),
+            name="planner",
+            model="haiku",
+            input={},
+            output='{"strategy": "count"}',
+            usage=TokenUsage(10, 5),
         )
         composite.log_generation(
-            name="llm_call_1", model="sonnet", input={},
-            output="searching", usage=TokenUsage(100, 30),
+            name="llm_call_1",
+            model="sonnet",
+            input={},
+            output="searching",
+            usage=TokenUsage(100, 30),
         )
         composite.log_tool_call(
-            name="tool:search_fhir", input={"rt": "Patient"}, output="42",
+            name="tool:search_fhir",
+            input={"rt": "Patient"},
+            output="42",
         )
         composite.end_trace(output={"answer": "done"})
 

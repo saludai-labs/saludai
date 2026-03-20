@@ -215,6 +215,7 @@ class TestComputeCoverage:
 
     def test_real_dataset(self) -> None:
         from benchmarks.dataset import load_dataset
+
         questions = load_dataset()
         c = compute_coverage(questions)
         assert c.total_questions >= 100

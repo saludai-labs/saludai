@@ -463,9 +463,7 @@ class TestAnthropicLLMClient:
     async def test_generate_with_tools(self) -> None:
         client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
 
-        tool_block = MagicMock(
-            type="tool_use", id="toolu_1", input={"term": "diabetes"}
-        )
+        tool_block = MagicMock(type="tool_use", id="toolu_1", input={"term": "diabetes"})
         tool_block.name = "resolve_terminology"
         mock_response = MagicMock()
         mock_response.content = [tool_block]
@@ -509,9 +507,7 @@ class TestAnthropicLLMClient:
     @pytest.mark.asyncio
     async def test_generate_unexpected_error_raises(self) -> None:
         client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
-        client._client.messages.create = AsyncMock(
-            side_effect=RuntimeError("unexpected")
-        )
+        client._client.messages.create = AsyncMock(side_effect=RuntimeError("unexpected"))
 
         with pytest.raises(LLMError, match="Unexpected error"):
             await client.generate(
@@ -536,9 +532,7 @@ class TestOpenAILLMClient:
     """Tests for OpenAILLMClient with mocked openai SDK."""
 
     def test_init_creates_client(self) -> None:
-        client = OpenAILLMClient(
-            model="gpt-4o", api_key="sk-test", base_url=None
-        )
+        client = OpenAILLMClient(model="gpt-4o", api_key="sk-test", base_url=None)
         assert client._model == "gpt-4o"
 
     @pytest.mark.asyncio
@@ -554,9 +548,7 @@ class TestOpenAILLMClient:
         mock_response = MagicMock()
         mock_response.choices = [choice]
         mock_response.usage = MagicMock(prompt_tokens=10, completion_tokens=5)
-        client._client.chat.completions.create = AsyncMock(
-            return_value=mock_response
-        )
+        client._client.chat.completions.create = AsyncMock(return_value=mock_response)
 
         result = await client.generate(
             system="system",
@@ -584,9 +576,7 @@ class TestOpenAILLMClient:
         mock_response = MagicMock()
         mock_response.choices = [choice]
         mock_response.usage = MagicMock(prompt_tokens=20, completion_tokens=10)
-        client._client.chat.completions.create = AsyncMock(
-            return_value=mock_response
-        )
+        client._client.chat.completions.create = AsyncMock(return_value=mock_response)
 
         tools = [{"name": "search_fhir", "input_schema": {}}]
         result = await client.generate(

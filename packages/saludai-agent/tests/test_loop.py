@@ -522,22 +522,26 @@ class TestAgentLoopActionSpaceReduction:
         locale_pack = load_locale_pack("ar")
 
         # Planner LLM returns count_simple strategy
-        planner_llm = FakeLLMClient([
-            LLMResponse(
-                content=(
-                    '{"question_type": "count",'
-                    ' "strategy": "count_simple",'
-                    ' "terms_to_resolve": [],'
-                    ' "reasoning": "simple patient count"}'
+        planner_llm = FakeLLMClient(
+            [
+                LLMResponse(
+                    content=(
+                        '{"question_type": "count",'
+                        ' "strategy": "count_simple",'
+                        ' "terms_to_resolve": [],'
+                        ' "reasoning": "simple patient count"}'
+                    ),
+                    stop_reason="end_turn",
                 ),
-                stop_reason="end_turn",
-            ),
-        ])
+            ]
+        )
 
         # Executor LLM produces a direct answer
-        executor_llm = FakeLLMClient([
-            LLMResponse(content="Hay 200 pacientes.", stop_reason="end_turn"),
-        ])
+        executor_llm = FakeLLMClient(
+            [
+                LLMResponse(content="Hay 200 pacientes.", stop_reason="end_turn"),
+            ]
+        )
 
         fhir_client = _make_fhir_client()
         config = AgentConfig(planner_enabled=True)
@@ -566,21 +570,25 @@ class TestAgentLoopActionSpaceReduction:
 
         locale_pack = load_locale_pack("ar")
 
-        planner_llm = FakeLLMClient([
-            LLMResponse(
-                content=(
-                    '{"question_type": "correlation",'
-                    ' "strategy": "multi_search",'
-                    ' "terms_to_resolve": ["diabetes"],'
-                    ' "reasoning": "complex multi-resource query"}'
+        planner_llm = FakeLLMClient(
+            [
+                LLMResponse(
+                    content=(
+                        '{"question_type": "correlation",'
+                        ' "strategy": "multi_search",'
+                        ' "terms_to_resolve": ["diabetes"],'
+                        ' "reasoning": "complex multi-resource query"}'
+                    ),
+                    stop_reason="end_turn",
                 ),
-                stop_reason="end_turn",
-            ),
-        ])
+            ]
+        )
 
-        executor_llm = FakeLLMClient([
-            LLMResponse(content="Result.", stop_reason="end_turn"),
-        ])
+        executor_llm = FakeLLMClient(
+            [
+                LLMResponse(content="Result.", stop_reason="end_turn"),
+            ]
+        )
 
         fhir_client = _make_fhir_client()
         resolver = _make_terminology_resolver()
@@ -609,9 +617,11 @@ class TestAgentLoopActionSpaceReduction:
     @pytest.mark.asyncio
     async def test_planner_disabled_shows_all_tools(self) -> None:
         """When planner is disabled, no tool filtering occurs."""
-        executor_llm = FakeLLMClient([
-            LLMResponse(content="answer", stop_reason="end_turn"),
-        ])
+        executor_llm = FakeLLMClient(
+            [
+                LLMResponse(content="answer", stop_reason="end_turn"),
+            ]
+        )
 
         fhir_client = _make_fhir_client()
         resolver = _make_terminology_resolver()

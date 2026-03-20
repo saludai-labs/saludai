@@ -123,8 +123,11 @@ class TestARLocalePack:
 
     def test_tool_descriptions_has_all_tools(self) -> None:
         expected = {
-            "resolve_terminology", "search_fhir", "count_fhir",
-            "get_resource", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "count_fhir",
+            "get_resource",
+            "execute_code",
         }
         assert set(AR_LOCALE_PACK.tool_descriptions.keys()) == expected
 

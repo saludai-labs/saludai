@@ -1158,11 +1158,15 @@ def generate_bundle(num_patients: int = 200) -> dict:
 
     # --- Stats ---
     num_conditions = sum(1 for e in entries if e["resource"]["resourceType"] == "Condition")
-    print(f"Generated {num_patients} patients, {num_conditions} conditions, "
-          f"{obs_count} observations, {med_count} medication requests, "
-          f"{enc_count} encounters")
-    print(f"  {proc_count} procedures, {allergy_count} allergy intolerances, "
-          f"{imm_count} immunizations, {report_count} diagnostic reports")
+    print(
+        f"Generated {num_patients} patients, {num_conditions} conditions, "
+        f"{obs_count} observations, {med_count} medication requests, "
+        f"{enc_count} encounters"
+    )
+    print(
+        f"  {proc_count} procedures, {allergy_count} allergy intolerances, "
+        f"{imm_count} immunizations, {report_count} diagnostic reports"
+    )
     print(f"  {careplan_count} care plans ({careplan_active_count} active)")
     print(f"Guaranteed diabetes >60y Buenos Aires: {guaranteed_count}")
     print(f"Total bundle entries: {len(entries)}")

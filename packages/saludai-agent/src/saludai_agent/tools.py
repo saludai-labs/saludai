@@ -702,8 +702,11 @@ def _compute_fhir_stats(resources: list[Any]) -> str:
     dates: list[str] = []
     for r in resources:
         date_fields = (
-            "effectiveDateTime", "onsetDateTime", "authoredOn",
-            "performedDateTime", "occurrenceDateTime",
+            "effectiveDateTime",
+            "onsetDateTime",
+            "authoredOn",
+            "performedDateTime",
+            "occurrenceDateTime",
         )
         for field in date_fields:
             val = _get(r, field)

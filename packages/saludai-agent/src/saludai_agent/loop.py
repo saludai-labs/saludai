@@ -122,19 +122,14 @@ class AgentLoop:
                 question_type=query_plan.question_type,
                 strategy=query_plan.strategy,
                 terms=query_plan.terms_to_resolve,
-                allowed_tools=(
-                    sorted(allowed_tools) if allowed_tools is not None else "all"
-                ),
+                allowed_tools=(sorted(allowed_tools) if allowed_tools is not None else "all"),
             )
 
         messages: list[Message] = [Message(role="user", content=query)]
         all_tool_calls: list[ToolCall] = []
         tool_definitions = self._tool_registry.definitions()
         if allowed_tools is not None:
-            tool_definitions = [
-                td for td in tool_definitions
-                if td["name"] in allowed_tools
-            ]
+            tool_definitions = [td for td in tool_definitions if td["name"] in allowed_tools]
         llm_call_count = 0
 
         try:

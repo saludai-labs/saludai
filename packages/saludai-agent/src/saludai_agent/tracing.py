@@ -194,13 +194,9 @@ class LangfuseTracer:
             "output": usage.output_tokens,
         }
         if usage.cache_creation_input_tokens:
-            usage_details["cache_creation_input_tokens"] = (
-                usage.cache_creation_input_tokens
-            )
+            usage_details["cache_creation_input_tokens"] = usage.cache_creation_input_tokens
         if usage.cache_read_input_tokens:
-            usage_details["cache_read_input_tokens"] = (
-                usage.cache_read_input_tokens
-            )
+            usage_details["cache_read_input_tokens"] = usage.cache_read_input_tokens
         gen = self._root_span.start_generation(
             name=name,
             model=model,
@@ -308,12 +304,14 @@ class RecordingTracer:
             usage_dict["cache_creation_input_tokens"] = usage.cache_creation_input_tokens
         if usage.cache_read_input_tokens:
             usage_dict["cache_read_input_tokens"] = usage.cache_read_input_tokens
-        self._steps.append({
-            "iteration": self._iteration,
-            "llm_output": output,
-            "tool_calls": [],
-            "usage": usage_dict,
-        })
+        self._steps.append(
+            {
+                "iteration": self._iteration,
+                "llm_output": output,
+                "tool_calls": [],
+                "usage": usage_dict,
+            }
+        )
 
     def log_tool_call(
         self,
@@ -331,11 +329,13 @@ class RecordingTracer:
 
         tool_name = name.removeprefix("tool:")
 
-        self._steps[-1]["tool_calls"].append({
-            "name": tool_name,
-            "arguments": input,
-            "result_preview": preview,
-        })
+        self._steps[-1]["tool_calls"].append(
+            {
+                "name": tool_name,
+                "arguments": input,
+                "result_preview": preview,
+            }
+        )
 
     def end_trace(self, output: dict[str, Any]) -> tuple[str | None, str | None]:
         """End the recording (no trace ID to return)."""

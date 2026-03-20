@@ -467,34 +467,35 @@ _QUERY_PATTERNS = (
         example_question="Condiciones de diabetes con datos del paciente",
         example_query="Condition?code=http://snomed.info/sct|44054006&_include=Condition:subject",
         allowed_tools=(
-            "resolve_terminology", "search_fhir",
-            "get_resource", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "get_resource",
+            "execute_code",
         ),
     ),
     QueryPattern(
         name="search_aggregate",
         description=(
-            "Buscar datos para calcular promedios, distribuciones "
-            "o rankings con execute_code"
+            "Buscar datos para calcular promedios, distribuciones o rankings con execute_code"
         ),
         template="{resource_type}?{params} -> execute_code para calcular",
         example_question="Cual es el promedio de HbA1c en pacientes con diabetes?",
         example_query="Observation?code=http://loinc.org|4548-4 -> execute_code: statistics.mean()",
         allowed_tools=(
-            "resolve_terminology", "search_fhir", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "execute_code",
         ),
     ),
     QueryPattern(
         name="multi_search",
         description=(
-            "Correlacion o negacion: buscar en 2+ recursos y "
-            "cruzar resultados con execute_code"
+            "Correlacion o negacion: buscar en 2+ recursos y cruzar resultados con execute_code"
         ),
         template="search A + search B -> execute_code intersect/diff",
         example_question="Pacientes con DM2 que NO toman metformina",
         example_query=(
-            "1) Condition?code=DM2 2) MedicationRequest?code=met "
-            "3) execute_code: set_a - set_b"
+            "1) Condition?code=DM2 2) MedicationRequest?code=met 3) execute_code: set_a - set_b"
         ),
         # All tools — complex queries need maximum flexibility
         allowed_tools=(),
@@ -506,8 +507,10 @@ _QUERY_PATTERNS = (
         example_question="Cuantos encuentros hubo en 2024?",
         example_query="Encounter?date=ge2024-01-01&date=le2024-12-31&_summary=count",
         allowed_tools=(
-            "resolve_terminology", "search_fhir",
-            "count_fhir", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "count_fhir",
+            "execute_code",
         ),
     ),
     QueryPattern(
@@ -517,8 +520,10 @@ _QUERY_PATTERNS = (
         example_question="Que medicamentos tiene prescriptos el paciente 1005?",
         example_query="MedicationRequest?subject=Patient/1005",
         allowed_tools=(
-            "resolve_terminology", "search_fhir",
-            "get_resource", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "get_resource",
+            "execute_code",
         ),
     ),
     QueryPattern(
@@ -531,8 +536,10 @@ _QUERY_PATTERNS = (
         example_question="Cuantos planes de cuidado activos hay?",
         example_query="CarePlan?status=active&_summary=count",
         allowed_tools=(
-            "resolve_terminology", "search_fhir",
-            "count_fhir", "execute_code",
+            "resolve_terminology",
+            "search_fhir",
+            "count_fhir",
+            "execute_code",
         ),
     ),
 )

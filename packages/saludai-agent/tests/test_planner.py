@@ -43,11 +43,13 @@ class FakePlannerLLM:
         temperature: float = 0.0,
         max_tokens: int = 4096,
     ) -> LLMResponse:
-        self.calls.append({
-            "system": system,
-            "messages": messages,
-            "tools": tools,
-        })
+        self.calls.append(
+            {
+                "system": system,
+                "messages": messages,
+                "tools": tools,
+            }
+        )
         return LLMResponse(
             content=self._response,
             tool_calls=(),
@@ -269,12 +271,8 @@ class TestResolveToolSet:
         result = resolve_tool_set("count_filtered", ar_pack.query_patterns)
         assert result == frozenset({"resolve_terminology", "count_fhir"})
 
-    def test_count_with_condition_includes_resolve_and_count(
-        self, ar_pack
-    ) -> None:
-        result = resolve_tool_set(
-            "count_with_condition", ar_pack.query_patterns
-        )
+    def test_count_with_condition_includes_resolve_and_count(self, ar_pack) -> None:
+        result = resolve_tool_set("count_with_condition", ar_pack.query_patterns)
         assert result == frozenset({"resolve_terminology", "count_fhir"})
 
     def test_multi_search_returns_none_for_all_tools(self, ar_pack) -> None:
@@ -283,17 +281,17 @@ class TestResolveToolSet:
 
     def test_search_include_has_four_tools(self, ar_pack) -> None:
         result = resolve_tool_set("search_include", ar_pack.query_patterns)
-        assert result == frozenset({
-            "resolve_terminology",
-            "search_fhir",
-            "get_resource",
-            "execute_code",
-        })
+        assert result == frozenset(
+            {
+                "resolve_terminology",
+                "search_fhir",
+                "get_resource",
+                "execute_code",
+            }
+        )
 
     def test_unknown_strategy_returns_none(self, ar_pack) -> None:
-        result = resolve_tool_set(
-            "nonexistent_strategy", ar_pack.query_patterns
-        )
+        result = resolve_tool_set("nonexistent_strategy", ar_pack.query_patterns)
         assert result is None
 
     def test_empty_patterns_returns_none(self) -> None:

@@ -101,9 +101,7 @@ def build_planning_prompt(locale_pack: LocalePack) -> str:
     # Build relationships section
     rel_lines: list[str] = []
     for rel in locale_pack.resource_relationships:
-        rel_lines.append(
-            f"- {rel.source} --{rel.search_param}--> {rel.target}"
-        )
+        rel_lines.append(f"- {rel.source} --{rel.search_param}--> {rel.target}")
     if not rel_lines:
         rel_lines.append("(no hay relaciones definidas)")
     relationships_section = "\n".join(rel_lines)
@@ -115,7 +113,7 @@ def build_planning_prompt(locale_pack: LocalePack) -> str:
             f"### {pat.name}\n"
             f"- Cuando: {pat.description}\n"
             f"- Template: `{pat.template}`\n"
-            f"- Ejemplo: \"{pat.example_question}\" -> `{pat.example_query}`"
+            f'- Ejemplo: "{pat.example_question}" -> `{pat.example_query}`'
         )
     if not pat_lines:
         pat_lines.append("(no hay patrones definidos)")
@@ -205,7 +203,7 @@ def _parse_plan(raw: str) -> QueryPlan:
         # Remove opening fence (```json or ```)
         first_newline = cleaned.find("\n")
         if first_newline != -1:
-            cleaned = cleaned[first_newline + 1:]
+            cleaned = cleaned[first_newline + 1 :]
         # Remove closing fence
         if cleaned.endswith("```"):
             cleaned = cleaned[:-3].strip()
@@ -217,7 +215,7 @@ def _parse_plan(raw: str) -> QueryPlan:
         logger.warning("planner_no_json_found raw=%s", raw[:200])
         return _FALLBACK_PLAN
 
-    json_str = cleaned[start:end + 1]
+    json_str = cleaned[start : end + 1]
 
     try:
         data: dict[str, Any] = json.loads(json_str)
