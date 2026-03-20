@@ -1,0 +1,115 @@
+code,display,display_en,aliases
+44054006,Diabetes mellitus tipo 2,Type 2 diabetes mellitus,diabetes tipo 2|diabetes tipo II|DBT2|diabetes no insulinodependiente|DMNID|diabetes del adulto
+73211009,Diabetes mellitus tipo 1,Type 1 diabetes mellitus,diabetes tipo 1|diabetes tipo I|DBT1|diabetes insulinodependiente|DMID|diabetes juvenil
+46635009,Diabetes mellitus tipo 1 con cetoacidosis,Type 1 DM with ketoacidosis,cetoacidosis diabética|CAD|diabetes con cetoacidosis
+59621000,Hipertensión arterial esencial,Essential hypertension,hipertensión|HTA|presión alta|hipertensión primaria|tensión alta
+77506005,Enfermedad de Chagas,Chagas disease,chagas|tripanosomiasis americana|mal de chagas|vinchuca
+38362002,Dengue,Dengue,dengue hemorrágico|fiebre del dengue|dengue clásico
+195967001,Asma,Asthma,asma bronquial|broncoespasmo|crisis asmática
+13645005,Enfermedad pulmonar obstructiva crónica,COPD,EPOC|enfisema|bronquitis crónica|enfermedad pulmonar crónica
+22298006,Infarto agudo de miocardio,Myocardial infarction,infarto|IAM|ataque cardíaco|infarto de miocardio|ataque al corazón
+84114007,Insuficiencia cardíaca,Heart failure,IC|falla cardíaca|insuficiencia cardíaca congestiva|ICC
+56265001,Enfermedad cardíaca reumática,Rheumatic heart disease,cardiopatía reumática|fiebre reumática cardíaca
+235856003,Hepatitis viral,Viral hepatitis,hepatitis|hepatitis vírica
+56717001,Tuberculosis,Tuberculosis,TB|TBC|tuberculosis pulmonar
+414545008,Cardiopatía isquémica,Ischemic heart disease,enfermedad coronaria|isquemia cardíaca|coronariopatía|enfermedad isquémica del corazón
+267036007,Anemia ferropénica,Iron deficiency anemia,anemia por déficit de hierro|anemia por falta de hierro|ferropenia
+49436004,Fibrilación auricular,Atrial fibrillation,FA|fibrilación|arritmia auricular
+38341003,Hipertensión arterial sistémica,Hypertension,hipertensión arterial sistémica|HTA sistémica
+73430006,Apnea del sueño,Sleep apnea,apnea obstructiva|SAHOS|síndrome de apnea
+399068003,Leucemia linfoblástica aguda,Acute lymphoblastic leukemia,LLA|leucemia aguda
+190331003,Hipotiroidismo,Hypothyroidism,hipotiroidismo primario|tiroides baja|TSH alta
+34713006,Hipoglucemia,Hypoglycemia,baja de azúcar|glucosa baja|hipoglicemia
+267432004,Anemia,Anemia,anemia crónica|palidez|hemoglobina baja
+35489007,Depresión,Depression,depresión mayor|trastorno depresivo|depresión clínica|TDM
+197480006,Ansiedad generalizada,Generalized anxiety disorder,ansiedad|TAG|trastorno de ansiedad|ansiedad crónica
+58150001,Fractura de cadera,Hip fracture,fractura de fémur proximal|cadera rota|fractura femoral
+263102004,Fractura de muñeca,Wrist fracture,fractura de Colles|muñeca rota|fractura distal de radio
+68566005,Infección urinaria,Urinary tract infection,ITU|IU|infección de orina|cistitis
+36971009,Sinusitis,Sinusitis,sinusitis aguda|sinusitis crónica|infección de senos paranasales
+43878008,Leishmaniasis,Leishmaniasis,leishmaniasis cutánea|leishmaniasis visceral|úlcera del chiclero
+61462000,Malaria,Malaria,paludismo|fiebre palúdica
+75570004,Hantavirus,Hantavirus pulmonary syndrome,síndrome pulmonar por hantavirus|SPH|fiebre hemorrágica por hantavirus
+409966000,Leptospirosis,Leptospirosis,enfermedad de Weil|leptospira
+409498004,Fiebre hemorrágica argentina,Argentine hemorrhagic fever,mal de los rastrojos|fiebre hemorrágica|FHA|junín
+398102009,Obesidad,Obesity,obesidad mórbida|IMC alto|sobrepeso severo
+162864005,Dolor de espalda,Back pain,lumbalgia|lumbago|dolor lumbar|dorsalgia
+396275006,Osteoartritis,Osteoarthritis,artrosis|desgaste articular|OA
+69896004,Artritis reumatoide,Rheumatoid arthritis,AR|artritis|artritis autoinmune
+40055000,Enfermedad renal crónica,Chronic kidney disease,ERC|insuficiencia renal crónica|IRC|nefropatía crónica
+90708001,Insuficiencia renal aguda,Acute kidney injury,IRA|falla renal aguda|injuria renal aguda
+698247007,Arritmia cardíaca,Cardiac arrhythmia,arritmia|taquicardia|bradicardia|palpitaciones
+230690007,Accidente cerebrovascular,Stroke,ACV|derrame cerebral|ictus|stroke|infarto cerebral
+53741008,Enfermedad coronaria,Coronary artery disease,EAC|aterosclerosis coronaria|enfermedad de arterias coronarias
+371807002,Trombosis venosa profunda,Deep vein thrombosis,TVP|trombosis|coágulo en pierna
+59282003,Embolia pulmonar,Pulmonary embolism,TEP|tromboembolismo pulmonar|embolia
+49727002,Cirrosis hepática,Hepatic cirrhosis,cirrosis|cirrosis del hígado|enfermedad hepática crónica
+235595009,Esteatosis hepática,Hepatic steatosis,hígado graso|esteatosis|EHGNA|NAFLD
+34000006,Enfermedad de Crohn,Crohn disease,crohn|enfermedad inflamatoria intestinal|EII
+64766004,Colitis ulcerosa,Ulcerative colitis,CU|colitis|enfermedad inflamatoria intestinal
+396331005,Osteoporosis,Osteoporosis,pérdida ósea|huesos frágiles|densidad ósea baja
+76902006,Hiperlipidemia,Hyperlipidemia,colesterol alto|dislipidemia|dislipemia|hipercolesterolemia
+371125006,Hiperglucemia,Hyperglycemia,azúcar alta|glucosa alta|glucemia elevada
+25064002,Cefalea,Headache,dolor de cabeza|jaqueca|cefalea tensional
+37796009,Migraña,Migraine,migraña con aura|migraña sin aura|jaqueca severa
+62914000,Enfermedad cerebrovascular,Cerebrovascular disease,enfermedad vascular cerebral|ECV
+111293003,Neumonía bacteriana,Bacterial pneumonia,neumonía|pulmonía|infección pulmonar
+233604007,Neumonía viral,Viral pneumonia,neumonía por virus|pulmonía viral
+36653000,Rubéola,Rubella,sarampión alemán|rubéola congénita
+14189004,Sarampión,Measles,sarampión común|morbillivirus
+27836007,Tos convulsa,Whooping cough,pertussis|coqueluche|tos ferina
+4834000,Fiebre tifoidea,Typhoid fever,tifoidea|salmonella typhi|fiebre entérica
+840539006,COVID-19,COVID-19,coronavirus|SARS-CoV-2|covid
+186431008,Sífilis,Syphilis,sífilis primaria|sífilis secundaria|lúes
+15628003,Gonorrea,Gonorrhea,gonococia|infección gonocócica|blenorragia
+186150001,Parotiditis,Mumps,paperas|parotiditis epidémica
+128613002,Síndrome metabólico,Metabolic syndrome,síndrome X|resistencia a insulina|SM
+37340000,Gota,Gout,gota articular|artritis gotosa|hiperuricemia sintomática
+39621005,Litiasis biliar,Cholelithiasis,cálculos biliares|piedras en vesícula|colelitiasis
+95417003,Hipoacusia,Hearing loss,sordera|pérdida auditiva|hipoacusia neurosensorial
+193003005,Glaucoma,Glaucoma,glaucoma crónico|presión ocular alta|glaucoma de ángulo abierto
+4855003,Retinopatía diabética,Diabetic retinopathy,daño ocular por diabetes|retinopatía
+399211009,Neuropatía diabética,Diabetic neuropathy,neuropatía periférica|pie diabético neurológico
+230572002,Neuropatía periférica,Peripheral neuropathy,hormigueo|neuropatía|parestesia crónica
+13200003,Gastritis,Peptic ulcer disease,úlcera péptica|úlcera gástrica|gastritis erosiva
+302866003,Hiperbilirrubinemia,Hyperbilirubinemia,ictericia|bilirrubina alta|ictericia neonatal
+35240004,Pie diabético,Diabetic foot,pie diabético infectado|úlcera de pie diabético|pie diabético neuropático
+128462008,Enfermedad vascular periférica,Peripheral vascular disease,EVP|claudicación intermitente|arteriopatía periférica
+254837009,Cáncer de mama,Breast cancer,neoplasia mamaria|tumor de mama|carcinoma mamario
+363406005,Cáncer de pulmón,Lung cancer,neoplasia pulmonar|tumor pulmonar|carcinoma de pulmón
+93761005,Cáncer colorrectal,Colorectal cancer,cáncer de colon|cáncer de recto|neoplasia colorrectal
+91861009,Hemofilia,Hemophilia,hemofilia A|hemofilia B|trastorno de coagulación
+118940003,Trombocitopenia,Thrombocytopenia,plaquetas bajas|trombopenia|plaquetopenia
+85828009,Lupus eritematoso sistémico,Systemic lupus erythematosus,lupus|LES|enfermedad autoinmune sistémica
+24700007,Esclerosis múltiple,Multiple sclerosis,EM|esclerosis en placas
+49049000,Enfermedad de Parkinson,Parkinson disease,parkinson|parkinsonismo|temblor esencial
+26929004,Enfermedad de Alzheimer,Alzheimer disease,alzheimer|demencia de Alzheimer|deterioro cognitivo
+52448006,Demencia,Dementia,demencia senil|deterioro cognitivo mayor|demencia vascular
+86406008,Desnutrición,Malnutrition,desnutrición infantil|desnutrición crónica|malnutrición
+72366004,Diarrea aguda,Acute diarrhea,gastroenteritis aguda|diarrea infecciosa|GEA
+200936003,Preeclampsia,Preeclampsia,toxemia del embarazo|hipertensión gestacional severa
+11687002,Diabetes gestacional,Gestational diabetes,diabetes del embarazo|DMG|diabetes mellitus gestacional
+398254007,Eclampsia,Eclampsia,convulsiones del embarazo|eclampsia puerperal
+86849004,Síndrome de Down,Down syndrome,trisomía 21|mongolismo
+66091009,Hemorroides,Hemorrhoids,almorranas|hemorroides internas|hemorroides externas
+271737000,Disfagia,Dysphagia,dificultad para tragar|trastorno de deglución
+233678006,Bronquiolitis,Bronchiolitis,bronquiolitis aguda|bronquiolitis del lactante|infección respiratoria baja infantil
+36989005,Varicela,Varicella,chicken pox|viruela loca
+80146002,Apendicectomía,Appendectomy,apendicectomía laparoscópica|resección de apéndice
+73761001,Colecistectomía,Cholecystectomy,extirpación de vesícula|cole|colecistectomía laparoscópica
+11466000,Cesárea,Cesarean section,cesárea segmentaria|operación cesárea|parto por cesárea
+108241001,Diálisis,Dialysis,hemodiálisis|diálisis renal|HD|diálisis peritoneal
+86273004,Biopsia,Biopsy,toma de muestra|biopsia de tejido|biopsia por punción
+232717009,Coronariografía,Coronary angiography,cateterismo cardíaco|angiografía coronaria|cinecoronariografía
+397956004,Endoscopía digestiva alta,Upper GI endoscopy,endoscopía|VEDA|gastroscopía|esofagogastroduodenoscopía
+274025005,Colocación de stent coronario,Coronary stent placement,stent|angioplastia con stent|stent coronario
+422073006,Cirugía de cataratas,Cataract surgery,facoemulsificación|operación de cataratas
+65546002,Extracción dental,Tooth extraction,exodoncia|extracción de muela|extracción dentaria
+91936005,Alergia a penicilina,Penicillin allergy,alergia penicilina|hipersensibilidad a penicilina
+294505008,Alergia a antiinflamatorios no esteroideos,NSAID allergy,alergia a AINEs|intolerancia a AINEs|alergia a ibuprofeno
+300913006,Alergia al látex,Latex allergy,alergia látex|hipersensibilidad al látex
+91935009,Alergia al maní,Peanut allergy,alergia a cacahuete|alergia maní|alergia al cacahuate
+414285001,Alergia a alimentos,Food allergy,alergia alimentaria|hipersensibilidad a alimentos
+418689008,Alergia al huevo,Egg allergy,alergia huevo|intolerancia al huevo
+294183002,Alergia a la aspirina,Aspirin allergy,alergia aspirina|hipersensibilidad a aspirina|intolerancia a AAS
+419474003,Alergia al polen,Pollen allergy,rinitis alérgica|fiebre del heno|alergia estacional|polinosis

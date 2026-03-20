@@ -1,0 +1,2354 @@
+[
+  {
+    "id": "S01",
+    "question": "ВїCuГЎntos pacientes hay registrados en el sistema?",
+    "expected_answer": "Hay 200 pacientes registrados en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 200. Aceptar si dice 200.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S02",
+    "question": "ВїCuГЎntos pacientes son de sexo masculino?",
+    "expected_answer": "Hay 97 pacientes de sexo masculino.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 97. Aceptar entre 90 y 104.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S03",
+    "question": "ВїCuГЎntos pacientes son de sexo femenino?",
+    "expected_answer": "Hay 103 pacientes de sexo femenino.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 103. Aceptar entre 96 y 110.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S04",
+    "question": "ВїCuГЎntas condiciones clГ­nicas hay registradas en total?",
+    "expected_answer": "Hay 302 condiciones clГ­nicas registradas.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 302. Aceptar entre 280 y 325.",
+    "resource_types": [
+      "Condition"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "S05",
+    "question": "ВїCuГЎntos pacientes viven en la provincia de Buenos Aires?",
+    "expected_answer": "Hay 81 pacientes en la provincia de Buenos Aires.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 81. Aceptar entre 74 y 88.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S06",
+    "question": "ВїCuГЎntos pacientes viven en CГіrdoba?",
+    "expected_answer": "Hay 19 pacientes en CГіrdoba.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 19. Aceptar entre 16 y 22.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S07",
+    "question": "ВїHay pacientes registrados en la provincia de Salta?",
+    "expected_answer": "SГ­, hay 5 pacientes registrados en la provincia de Salta.",
+    "category": "simple",
+    "subcategory": "existence",
+    "requires_tools": true,
+    "notes": "Hay exactamente 5 pacientes en Salta. Aceptar si confirma que sГ­ hay pacientes en Salta.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S08",
+    "question": "ВїCuГЎntos pacientes son mayores de 60 aГ±os?",
+    "expected_answer": "Hay 58 pacientes mayores de 60 aГ±os.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 58 (fecha de referencia 2025-01-01). Aceptar entre 52 y 64.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S09",
+    "question": "ВїCuГЎntos procedimientos hay registrados en el sistema?",
+    "expected_answer": "Hay 58 procedimientos registrados en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 58. Aceptar entre 52 y 64. Requiere buscar Procedure.",
+    "resource_types": [
+      "Procedure"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "S10",
+    "question": "ВїCuГЎntas vacunaciones hay registradas en el sistema?",
+    "expected_answer": "Hay 687 vacunaciones registradas en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 687. Aceptar entre 630 y 740. Requiere buscar Immunization.",
+    "resource_types": [
+      "Immunization"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "S11",
+    "question": "ВїCuГЎntos informes diagnГіsticos hay en el sistema?",
+    "expected_answer": "Hay 184 informes diagnГіsticos registrados.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 184. Aceptar entre 170 y 200. Requiere buscar DiagnosticReport.",
+    "resource_types": [
+      "DiagnosticReport"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "S12",
+    "question": "ВїCuГЎntos pacientes viven en Ciudad AutГіnoma de Buenos Aires?",
+    "expected_answer": "Hay 20 pacientes en Ciudad AutГіnoma de Buenos Aires.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 20. Aceptar entre 17 y 23.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S13",
+    "question": "ВїCuГЎntos pacientes viven en Mendoza?",
+    "expected_answer": "Hay 13 pacientes en Mendoza.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 13. Aceptar entre 10 y 16.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S14",
+    "question": "ВїCuГЎntos pacientes son menores de 18 aГ±os?",
+    "expected_answer": "Hay 39 pacientes menores de 18 aГ±os.",
+    "category": "simple",
+    "subcategory": "demographics",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 39 (fecha de referencia 2025-01-01). Aceptar entre 34 y 44.",
+    "resource_types": [
+      "Patient"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "demographics"
+  },
+  {
+    "id": "S15",
+    "question": "ВїCuГЎntas alergias hay registradas en el sistema?",
+    "expected_answer": "Hay 58 registros de alergias en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El nГєmero exacto es 58 registros (43 pacientes). Aceptar entre 52 y 64 si cuenta registros, o 38 y 48 si cuenta pacientes. Requiere buscar AllergyIntolerance.",
+    "resource_types": [
+      "AllergyIntolerance"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "safety"
+  },
+  {
+    "id": "M01",
+    "question": "ВїCuГЎntos pacientes tienen diabetes mellitus tipo 2?",
+    "expected_answer": "Hay 49 pacientes con diabetes mellitus tipo 2 (cГіdigo SNOMED 44054006).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 44054006. Hay 49 pacientes Гєnicos con DM2 (52 condiciones, algunas duplicadas por paciente). Aceptar entre 44 y 56 si cuenta pacientes o condiciones.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M02",
+    "question": "ВїCuГЎntos pacientes tienen hipertensiГіn arterial?",
+    "expected_answer": "Hay 53 pacientes con hipertensiГіn arterial esencial (cГіdigo SNOMED 59621000).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 59621000. Hay 53 pacientes Гєnicos (59 condiciones). Aceptar entre 48 y 62.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M03",
+    "question": "ВїHay pacientes con enfermedad de Chagas?",
+    "expected_answer": "SГ­, hay 13 pacientes con enfermedad de Chagas (cГіdigo SNOMED 77506005).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 77506005. Hay 13 pacientes (13 condiciones). Aceptar entre 10 y 16.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M04",
+    "question": "Buscar pacientes con asma en el sistema",
+    "expected_answer": "Hay 17 pacientes con asma (cГіdigo SNOMED 195967001) en el sistema.",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 195967001. Hay 17 pacientes (18 condiciones). Aceptar entre 14 y 20.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M05",
+    "question": "ВїCuГЎntos pacientes de Buenos Aires tienen hipertensiГіn?",
+    "expected_answer": "Hay 24 pacientes en Buenos Aires con hipertensiГіn arterial.",
+    "category": "medium",
+    "subcategory": "filter_combined",
+    "requires_tools": true,
+    "notes": "Combina filtro geogrГЎfico (Buenos Aires) con terminology (SNOMED 59621000). El nГєmero exacto es 24. Aceptar entre 20 y 28.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting",
+      "filtering"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M06",
+    "question": "ВїHay pacientes con tuberculosis?",
+    "expected_answer": "SГ­, hay 8 pacientes con tuberculosis (cГіdigo SNOMED 56717001).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 56717001. Hay 8 pacientes (8 condiciones). Aceptar entre 6 y 10.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M07",
+    "question": "ВїCuГЎntas condiciones activas hay vs resueltas?",
+    "expected_answer": "Hay 239 condiciones activas y 63 condiciones resueltas.",
+    "category": "medium",
+    "subcategory": "status_filter",
+    "requires_tools": true,
+    "notes": "Activas: 239, Resueltas: 63. Aceptar si distingue entre active y resolved. Activas: 220-260, Resueltas: 55-71.",
+    "resource_types": [
+      "Condition"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M08",
+    "question": "ВїCuГЎntos pacientes tienen diabetes tipo 1?",
+    "expected_answer": "Hay 6 pacientes con diabetes mellitus tipo 1 (cГіdigo SNOMED 73211009).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 73211009. Hay 6 pacientes (6 condiciones). Aceptar entre 4 y 8. Debe distinguir tipo 1 de tipo 2.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M09",
+    "question": "Listar las condiciones mГЎs frecuentes en el sistema",
+    "expected_answer": "Las condiciones mГЎs frecuentes son: hipertensiГіn arterial esencial (59), diabetes mellitus tipo 2 (52), anemia ferropГ©nica (19), y asma (18).",
+    "category": "medium",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "Top 4: HTA 59, DM2 52, Anemia 19, Asma 18. Aceptar si identifica HTA y DM2 como las 2 mГЎs frecuentes en ese orden.",
+    "resource_types": [
+      "Condition"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M10",
+    "question": "ВїCuГЎntos pacientes tienen fibrilaciГіn auricular?",
+    "expected_answer": "Hay 7 pacientes con fibrilaciГіn auricular (cГіdigo SNOMED 49436004).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 49436004. Hay 7 pacientes (8 condiciones). Aceptar entre 5 y 10.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M11",
+    "question": "ВїCuГЎntas observaciones de glucosa en sangre hay registradas?",
+    "expected_answer": "Hay 98 observaciones de glucosa en sangre (LOINC 2345-7).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 2345-7. Exactamente 98. Aceptar entre 90 y 106. Requiere buscar Observation por cГіdigo LOINC.",
+    "resource_types": [
+      "Observation"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M12",
+    "question": "ВїCuГЎntas observaciones de hemoglobina hay en el sistema?",
+    "expected_answer": "Hay 89 observaciones de hemoglobina (LOINC 718-7).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 718-7. Exactamente 89. Aceptar entre 82 y 96. Requiere buscar Observation.",
+    "resource_types": [
+      "Observation"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M13",
+    "question": "ВїHay registros de presiГіn arterial en el sistema?",
+    "expected_answer": "SГ­, hay 89 registros de presiГіn arterial sistГіlica (LOINC 8480-6) y 84 de presiГіn arterial diastГіlica (LOINC 8462-4).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "PA sistГіlica 89, PA diastГіlica 84. Aceptar si confirma existencia y menciona al menos uno de los dos tipos con valor razonable.",
+    "resource_types": [
+      "Observation"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M14",
+    "question": "ВїCuГЎntos pacientes tienen prescripciГіn de metformina?",
+    "expected_answer": "Hay 32 pacientes con prescripciГіn de metformina (ATC A10BA02).",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "ATC A10BA02. Exactamente 32 prescripciones (32 pacientes). Aceptar entre 28 y 36. Requiere buscar MedicationRequest.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "M15",
+    "question": "ВїCuГЎntas prescripciones de medicamentos hay en total?",
+    "expected_answer": "Hay 361 prescripciones de medicamentos en total.",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Exactamente 361 MedicationRequest. Aceptar entre 330 y 392. Requiere buscar MedicationRequest.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "M16",
+    "question": "ВїCuГЎntas consultas ambulatorias hay registradas?",
+    "expected_answer": "Hay 238 consultas ambulatorias registradas.",
+    "category": "medium",
+    "subcategory": "encounter_query",
+    "requires_tools": true,
+    "notes": "Clase AMB. Exactamente 238. Aceptar entre 218 y 258. Requiere buscar Encounter por class.",
+    "resource_types": [
+      "Encounter"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M17",
+    "question": "ВїCuГЎntos pacientes tuvieron alguna internaciГіn?",
+    "expected_answer": "67 pacientes tuvieron al menos una internaciГіn.",
+    "category": "medium",
+    "subcategory": "encounter_query",
+    "requires_tools": true,
+    "notes": "Clase IMP. Hay 76 encounters de internaciГіn para 67 pacientes Гєnicos. Aceptar entre 60 y 80 si cuenta pacientes o encounters.",
+    "resource_types": [
+      "Patient",
+      "Encounter"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M18",
+    "question": "ВїCuГЎntas observaciones de hemoglobina glicosilada (HbA1c) hay?",
+    "expected_answer": "Hay 90 observaciones de hemoglobina glicosilada (LOINC 4548-4).",
+    "category": "medium",
+    "subcategory": "observation_query",
+    "requires_tools": true,
+    "notes": "LOINC 4548-4. Exactamente 90. Aceptar entre 82 y 98. Requiere buscar Observation.",
+    "resource_types": [
+      "Observation"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M19",
+    "question": "ВїCuГЎntos medicamentos antihipertensivos estГЎn prescriptos?",
+    "expected_answer": "Hay 157 prescripciones de antihipertensivos: enalapril (37), losartГЎn (44), atenolol (36), amlodipina (40).",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Antihipertensivos: enalapril 37 + losartГЎn 44 + atenolol 36 + amlodipina 40 = 157. Aceptar si identifica al menos 2 antihipertensivos y da un total entre 140 y 174.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting",
+      "aggregation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "M20",
+    "question": "ВїCuГЎntas prescripciones de medicamentos estГЎn activas?",
+    "expected_answer": "Hay 314 prescripciones activas y 47 completadas.",
+    "category": "medium",
+    "subcategory": "medication_query",
+    "requires_tools": true,
+    "notes": "Active: 314, Completed: 47. Aceptar si distingue active de completed. Active: 290-340.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "M21",
+    "question": "ВїCuГЎl es el procedimiento mГЎs frecuente en el sistema?",
+    "expected_answer": "El procedimiento mГЎs frecuente es la endoscopГ­a digestiva alta con 17 registros.",
+    "category": "medium",
+    "subcategory": "procedure_query",
+    "requires_tools": true,
+    "notes": "EndoscopГ­a digestiva alta: 17, ExtracciГіn dental: 15, ApendicectomГ­a: 12. Aceptar si identifica endoscopГ­a como el mГЎs frecuente.",
+    "resource_types": [
+      "Procedure"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "aggregation"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "M22",
+    "question": "ВїCuГЎntos pacientes tienen alergias registradas?",
+    "expected_answer": "43 pacientes tienen al menos una alergia registrada.",
+    "category": "medium",
+    "subcategory": "allergy_query",
+    "requires_tools": true,
+    "notes": "43 pacientes con 58 registros de alergia. Aceptar entre 38 y 48 si cuenta pacientes, o 52-64 si cuenta registros.",
+    "resource_types": [
+      "Patient",
+      "AllergyIntolerance"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting"
+    ],
+    "domain": "safety"
+  },
+  {
+    "id": "M23",
+    "question": "ВїCuГЎntos pacientes recibieron la vacuna contra COVID-19?",
+    "expected_answer": "83 pacientes recibieron la vacuna contra COVID-19.",
+    "category": "medium",
+    "subcategory": "immunization_query",
+    "requires_tools": true,
+    "notes": "CVX 213. Exactamente 83 pacientes (83 dosis). Aceptar entre 76 y 90. Requiere buscar Immunization.",
+    "enabled": false,
+    "resource_types": [
+      "Patient",
+      "Immunization"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "M24",
+    "question": "ВїCuГЎntos pacientes recibieron la vacuna antigripal?",
+    "expected_answer": "90 pacientes recibieron la vacuna antigripal.",
+    "category": "medium",
+    "subcategory": "immunization_query",
+    "requires_tools": true,
+    "notes": "CVX 15. Exactamente 90 pacientes. Aceptar entre 82 y 98. Requiere buscar Immunization.",
+    "resource_types": [
+      "Patient",
+      "Immunization"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "M25",
+    "question": "ВїCuГЎl es la vacuna mГЎs administrada en el sistema?",
+    "expected_answer": "La vacuna mГЎs administrada es IPV (Salk) con 93 dosis.",
+    "category": "medium",
+    "subcategory": "immunization_query",
+    "requires_tools": true,
+    "notes": "IPV (Salk) CVX 10: 93 dosis. Seguida por BCG (90) y Antigripal (90). Aceptar si identifica IPV/Salk, BCG, o Antigripal como la mГЎs administrada (estГЎn muy cerca).",
+    "resource_types": [
+      "Immunization"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "aggregation"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "M26",
+    "question": "ВїCuГЎntos hemogramas completos se realizaron?",
+    "expected_answer": "Se realizaron 31 hemogramas completos.",
+    "category": "medium",
+    "subcategory": "diagnostic_query",
+    "requires_tools": true,
+    "notes": "LOINC 58410-2. Exactamente 31. Aceptar entre 27 y 35. Requiere buscar DiagnosticReport.",
+    "resource_types": [
+      "DiagnosticReport"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M27",
+    "question": "ВїCuГЎntos paneles metabГіlicos hay registrados?",
+    "expected_answer": "Hay 50 paneles metabГіlicos registrados.",
+    "category": "medium",
+    "subcategory": "diagnostic_query",
+    "requires_tools": true,
+    "notes": "LOINC 24323-8. Exactamente 50. Aceptar entre 44 y 56. Requiere buscar DiagnosticReport.",
+    "resource_types": [
+      "DiagnosticReport"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M28",
+    "question": "ВїCuГЎntos pacientes tienen hipotiroidismo?",
+    "expected_answer": "Hay 14 pacientes con hipotiroidismo (cГіdigo SNOMED 190331003).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 190331003. Hay 14 pacientes (14 condiciones). Aceptar entre 11 y 17.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M29",
+    "question": "ВїCuГЎntos pacientes tienen depresiГіn?",
+    "expected_answer": "Hay 14 pacientes con depresiГіn (cГіdigo SNOMED 35489007).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 35489007. Hay 14 pacientes (15 condiciones). Aceptar entre 11 y 17.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M30",
+    "question": "ВїCuГЎntos pacientes tienen enfermedad renal crГіnica?",
+    "expected_answer": "Hay 8 pacientes con enfermedad renal crГіnica (cГіdigo SNOMED 40055000).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 40055000. Hay 8 pacientes (8 condiciones). Aceptar entre 6 y 10.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M31",
+    "question": "ВїCuГЎntos procedimientos se realizaron en 2024?",
+    "expected_answer": "Se realizaron 21 procedimientos en 2024.",
+    "category": "medium",
+    "subcategory": "procedure_query",
+    "requires_tools": true,
+    "notes": "Procedimientos con performedDateTime en 2024. Exactamente 21. Aceptar entre 17 y 25.",
+    "resource_types": [
+      "Procedure"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "temporal"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "M32",
+    "question": "ВїCuГЎntos pacientes son alГ©rgicos a la penicilina?",
+    "expected_answer": "Hay 3 pacientes alГ©rgicos a la penicilina.",
+    "category": "medium",
+    "subcategory": "allergy_query",
+    "requires_tools": true,
+    "notes": "SNOMED 91936005. Exactamente 3 pacientes. Aceptar entre 1 y 5.",
+    "resource_types": [
+      "AllergyIntolerance"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "safety"
+  },
+  {
+    "id": "M33",
+    "question": "ВїCuГЎntos pacientes tienen obesidad registrada?",
+    "expected_answer": "Hay 8 pacientes con obesidad (cГіdigo SNOMED 398102009).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 398102009. Hay 8 pacientes (8 condiciones). Aceptar entre 6 y 10.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M34",
+    "question": "ВїCuГЎntos pacientes tuvieron un accidente cerebrovascular?",
+    "expected_answer": "Hay 6 pacientes con accidente cerebrovascular (cГіdigo SNOMED 230690007).",
+    "category": "medium",
+    "subcategory": "terminology",
+    "requires_tools": true,
+    "notes": "SNOMED 230690007. Hay 6 pacientes (6 condiciones). Aceptar entre 4 y 8.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "M35",
+    "question": "ВїCuГЎntos perfiles tiroideos se realizaron?",
+    "expected_answer": "Se realizaron 39 perfiles tiroideos.",
+    "category": "medium",
+    "subcategory": "diagnostic_query",
+    "requires_tools": true,
+    "notes": "LOINC 30954-2. Exactamente 39. Aceptar entre 34 y 44. Requiere buscar DiagnosticReport.",
+    "resource_types": [
+      "DiagnosticReport"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C01",
+    "question": "ВїCuГЎntos pacientes mayores de 60 aГ±os en Buenos Aires tienen diabetes tipo 2?",
+    "expected_answer": "Hay 11 pacientes mayores de 60 aГ±os en Buenos Aires con diabetes tipo 2.",
+    "category": "complex",
+    "subcategory": "multi_filter",
+    "requires_tools": true,
+    "notes": "Combina edad >60, provincia Buenos Aires, y SNOMED 44054006. Exactamente 11. Aceptar entre 9 y 13.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting",
+      "filtering"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C02",
+    "question": "ВїCuГЎntos pacientes tienen mГЎs de una condiciГіn clГ­nica registrada?",
+    "expected_answer": "95 pacientes tienen mГЎs de una condiciГіn clГ­nica registrada.",
+    "category": "complex",
+    "subcategory": "multi_resource",
+    "requires_tools": true,
+    "notes": "Exactamente 95 pacientes con >1 condiciГіn. Aceptar entre 85 y 105.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C03",
+    "question": "ВїCuГЎl es la provincia con mГЎs pacientes con hipertensiГіn?",
+    "expected_answer": "Buenos Aires es la provincia con mГЎs pacientes con hipertensiГіn (24 pacientes).",
+    "category": "complex",
+    "subcategory": "aggregation_geographic",
+    "requires_tools": true,
+    "notes": "Buenos Aires tiene 24 pacientes con HTA. Aceptar si identifica Buenos Aires como la provincia con mГЎs casos.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "epidemiology"
+  },
+  {
+    "id": "C04",
+    "question": "ВїHay pacientes que tengan tanto diabetes tipo 2 como hipertensiГіn arterial?",
+    "expected_answer": "SГ­, hay 9 pacientes que tienen tanto diabetes tipo 2 como hipertensiГіn arterial.",
+    "category": "complex",
+    "subcategory": "comorbidity",
+    "requires_tools": true,
+    "notes": "Exactamente 9 pacientes con ambas condiciones (DM2 44054006 + HTA 59621000). Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C05",
+    "question": "ВїCuГЎntos pacientes menores de 18 aГ±os tienen condiciones clГ­nicas registradas?",
+    "expected_answer": "Hay 33 pacientes menores de 18 aГ±os con condiciones clГ­nicas registradas.",
+    "category": "complex",
+    "subcategory": "age_condition",
+    "requires_tools": true,
+    "notes": "Hay 39 pacientes <18, de los cuales 33 tienen condiciones. Aceptar entre 28 y 38.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "filtering",
+      "cross_resource"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C06",
+    "question": "ВїCuГЎl es la distribuciГіn de condiciones cardГ­acas (infarto, insuficiencia cardГ­aca, fibrilaciГіn auricular, cardiopatГ­a isquГ©mica) entre los pacientes?",
+    "expected_answer": "Condiciones cardГ­acas: insuficiencia cardГ­aca (10), cardiopatГ­a isquГ©mica (8), fibrilaciГіn auricular (8), infarto agudo de miocardio (6), accidente cerebrovascular (6). Total: 30 pacientes con condiciones cardГ­acas.",
+    "category": "complex",
+    "subcategory": "multi_terminology",
+    "requires_tools": true,
+    "notes": "SNOMED: 22298006 infarto (6), 84114007 IC (10), 49436004 FA (8 conds/7 pts), 414545008 cardiopatГ­a (8). Total ~30 pacientes Гєnicos. Aceptar si busca al menos 3 de los 4 cГіdigos y reporta distribuciГіn.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C07",
+    "question": "ВїCuГЎntos pacientes de sexo femenino mayores de 50 aГ±os tienen alguna condiciГіn registrada?",
+    "expected_answer": "Hay 38 pacientes femeninas mayores de 50 aГ±os con condiciones clГ­nicas registradas.",
+    "category": "complex",
+    "subcategory": "multi_filter",
+    "requires_tools": true,
+    "notes": "Combina gender=female, edad >50, y existencia de condiciГіn. Exactamente 38. Aceptar entre 33 y 43.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "filtering",
+      "cross_resource"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C08",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 tienen prescripciГіn de metformina?",
+    "expected_answer": "32 pacientes con diabetes tipo 2 tienen prescripciГіn de metformina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 44054006) con MedicationRequest (ATC A10BA02). Exactamente 32. Aceptar entre 28 y 36.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C09",
+    "question": "ВїCuГЎntos pacientes con hipertensiГіn tienen prescripciГіn de enalapril?",
+    "expected_answer": "37 pacientes con hipertensiГіn tienen prescripciГіn de enalapril.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (59621000) con MedicationRequest (C09AA02). Exactamente 37. Aceptar entre 33 y 41.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C10",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 tienen observaciones de glucosa en sangre mayor a 140 mg/dL?",
+    "expected_answer": "23 pacientes con diabetes tipo 2 tienen glucosa en sangre mayor a 140 mg/dL.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (44054006) con Observation (LOINC 2345-7, value >140). Exactamente 23. Aceptar entre 19 y 27.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C11",
+    "question": "ВїCuГЎntos pacientes con hipertensiГіn tienen presiГіn arterial sistГіlica mayor a 140 mmHg?",
+    "expected_answer": "24 pacientes con hipertensiГіn tienen presiГіn arterial sistГіlica mayor a 140 mmHg.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (59621000) con Observation (LOINC 8480-6, value >140). Exactamente 24. Aceptar entre 20 y 28.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C12",
+    "question": "ВїCuГЎntos pacientes tienen diabetes tipo 2 e hipertensiГіn y ademГЎs al menos un medicamento prescripto?",
+    "expected_answer": "9 pacientes tienen DM2, HTA y al menos un medicamento prescripto.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "DM2+HTA = 9 pacientes, todos con medicamentos. Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C13",
+    "question": "ВїCuГЎl es el valor promedio de glucosa en sangre de los pacientes con diabetes tipo 2?",
+    "expected_answer": "El valor promedio de glucosa en sangre de pacientes con DM2 es aproximadamente 204 mg/dL.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Promedio exacto: 204.4 mg/dL (n=23 observaciones de glucosa en pacientes DM2). Aceptar entre 175 y 235. Requiere cruzar Condition con Observation y calcular promedio.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "calculation",
+      "code_execution"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C14",
+    "question": "ВїQuГ© porcentaje de las prescripciones de medicamentos estГЎn activas (no completadas)?",
+    "expected_answer": "El 87% de las prescripciones estГЎn activas (314 de 361).",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "314 active / 361 total = 86.98%. Aceptar entre 82% y 92%. Requiere contar MedicationRequest por status.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "calculation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C15",
+    "question": "ВїCuГЎntos pacientes tienen 3 o mГЎs condiciones clГ­nicas diferentes registradas?",
+    "expected_answer": "36 pacientes tienen 3 o mГЎs condiciones clГ­nicas diferentes.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Exactamente 36 pacientes con >=3 condiciones. Aceptar entre 31 y 41. Requiere agrupar condiciones por paciente.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C16",
+    "question": "ВїCuГЎntos pacientes mayores de 60 aГ±os con diabetes tipo 2 tienen observaciones de HbA1c?",
+    "expected_answer": "7 pacientes mayores de 60 aГ±os con DM2 tienen observaciones de HbA1c.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (age>60) + Condition (44054006) + Observation (LOINC 4548-4). Exactamente 7. Aceptar entre 5 y 9.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C17",
+    "question": "ВїCuГЎntos pacientes con internaciones tienen medicamentos prescriptos?",
+    "expected_answer": "53 pacientes con internaciones tienen al menos un medicamento prescripto.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Encounter (class=IMP) con MedicationRequest. Exactamente 53. Aceptar entre 47 y 59.",
+    "resource_types": [
+      "Patient",
+      "Encounter",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "cross_resource"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C18",
+    "question": "ВїQuГ© condiciones tienen los pacientes que toman enalapril?",
+    "expected_answer": "Los pacientes que toman enalapril tienen principalmente hipertensiГіn arterial esencial. Hay 37 pacientes con enalapril.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere buscar MedicationRequest (C09AA02) -> Patient -> Condition. Los 37 pacientes con enalapril tienen HTA (59621000). Aceptar si identifica HTA como la condiciГіn principal.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "reference_navigation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C19",
+    "question": "ВїCuГЎntos pacientes de Buenos Aires con hipertensiГіn tienen medicamentos prescriptos y registros de presiГіn arterial?",
+    "expected_answer": "9 pacientes de Buenos Aires con HTA tienen medicamentos y registros de presiГіn arterial.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (BA) + Condition (59621000) + MedicationRequest + Observation (8480-6). Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C20",
+    "question": "ВїCuГЎl es la distribuciГіn de encounters por provincia? ВїQuГ© provincia tiene mГЎs encuentros clГ­nicos?",
+    "expected_answer": "Buenos Aires tiene la mayor cantidad de encounters (177), seguida por Ciudad AutГіnoma de Buenos Aires (42) y CГіrdoba (41).",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "Requiere contar Encounter por provincia del paciente. BA: 177, CABA: 42, CГіrdoba: 41. Aceptar si identifica Buenos Aires como la provincia con mГЎs encounters.",
+    "resource_types": [
+      "Patient",
+      "Encounter"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "epidemiology"
+  },
+  {
+    "id": "C21",
+    "question": "ВїCuГЎl es el medicamento mГЎs prescripto en el sistema?",
+    "expected_answer": "El medicamento mГЎs prescripto es losartГЎn 50mg con 44 prescripciones, seguido por amlodipina 5mg con 40.",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "LosartГЎn 44, Amlodipina 40, Enalapril 37, Atenolol 36. Aceptar si identifica losartГЎn o amlodipina como el mГЎs prescripto.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C22",
+    "question": "ВїCuГЎntos pacientes tienen algГєn medicamento antihipertensivo prescripto (enalapril, losartГЎn, atenolol o amlodipina)?",
+    "expected_answer": "53 pacientes tienen al menos un antihipertensivo prescripto.",
+    "category": "complex",
+    "subcategory": "advanced_aggregation",
+    "requires_tools": true,
+    "notes": "53 pacientes Гєnicos con al menos uno de: C09AA02, C09CA01, C07AB03, C08CA01. Aceptar entre 47 y 59. Requiere buscar mГєltiples MedicationRequest y deduplicar por paciente.",
+    "enabled": false,
+    "resource_types": [
+      "Patient",
+      "MedicationRequest"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "code_execution"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C23",
+    "question": "ВїCuГЎntas condiciones clГ­nicas tienen fecha de inicio en 2024?",
+    "expected_answer": "Hay 20 condiciones clГ­nicas con fecha de inicio en 2024.",
+    "category": "complex",
+    "subcategory": "temporal",
+    "requires_tools": true,
+    "notes": "Condiciones con onsetDateTime en 2024. Exactamente 20. Aceptar entre 16 y 24.",
+    "resource_types": [
+      "Condition"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "temporal"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C24",
+    "question": "ВїCuГЎntos encuentros clГ­nicos se registraron en 2024?",
+    "expected_answer": "Se registraron 207 encuentros clГ­nicos en 2024.",
+    "category": "complex",
+    "subcategory": "temporal",
+    "requires_tools": true,
+    "notes": "Encounters con period.start en 2024. Exactamente 207. Aceptar entre 190 y 225.",
+    "resource_types": [
+      "Encounter"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "temporal"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C25",
+    "question": "ВїCuГЎntas vacunaciones se administraron en 2024?",
+    "expected_answer": "Se administraron 136 vacunaciones en 2024.",
+    "category": "complex",
+    "subcategory": "temporal",
+    "requires_tools": true,
+    "notes": "Immunizations con occurrenceDateTime en 2024. Exactamente 136. Aceptar entre 122 y 150.",
+    "resource_types": [
+      "Immunization"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "temporal"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "C26",
+    "question": "ВїCuГЎntos medicamentos se prescribieron en 2024?",
+    "expected_answer": "Se prescribieron 181 medicamentos en 2024.",
+    "category": "complex",
+    "subcategory": "temporal",
+    "requires_tools": true,
+    "notes": "MedicationRequest con authoredOn en 2024. Exactamente 181. Aceptar entre 165 y 200.",
+    "resource_types": [
+      "MedicationRequest"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "temporal"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C27",
+    "question": "ВїCuГЎntos pacientes no tienen ninguna condiciГіn clГ­nica registrada?",
+    "expected_answer": "30 pacientes no tienen ninguna condiciГіn clГ­nica registrada.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "200 pacientes totales - 170 con condiciones = 30 sin condiciones. Exactamente 30. Aceptar entre 25 y 35.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "negation"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C28",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 NO tienen prescripciГіn de metformina?",
+    "expected_answer": "17 pacientes con diabetes tipo 2 no tienen prescripciГіn de metformina.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "49 DM2 pacientes - 32 con metformina = 17 sin metformina. Exactamente 17. Aceptar entre 13 y 21.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "negation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C29",
+    "question": "ВїCuГЎntos pacientes no tienen ningГєn medicamento prescripto?",
+    "expected_answer": "49 pacientes no tienen ningГєn medicamento prescripto.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "200 pacientes totales - 151 con medicamentos = 49 sin medicamentos. Exactamente 49. Aceptar entre 43 y 55.",
+    "resource_types": [
+      "Patient",
+      "MedicationRequest"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "negation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C30",
+    "question": "ВїHay pacientes con diabetes tipo 2 que no tengan observaciones de hemoglobina glicosilada (HbA1c)?",
+    "expected_answer": "SГ­, 30 pacientes con diabetes tipo 2 no tienen observaciones de HbA1c.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "49 DM2 pacientes - 19 con HbA1c obs = 30 sin HbA1c. Exactamente 30. Aceptar entre 25 y 35.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "negation"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C31",
+    "question": "ВїCuГЎntos pacientes con depresiГіn no toman sertralina?",
+    "expected_answer": "3 pacientes con depresiГіn no tienen prescripciГіn de sertralina.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "14 pacientes con depresiГіn - 11 con sertralina = 3 sin sertralina. Exactamente 3. Aceptar entre 1 y 5.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "negation"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C32",
+    "question": "ВїCuГЎntos pacientes tienen tanto diabetes tipo 2 como enfermedad renal crГіnica?",
+    "expected_answer": "2 pacientes tienen tanto diabetes tipo 2 como enfermedad renal crГіnica.",
+    "category": "complex",
+    "subcategory": "comorbidity",
+    "requires_tools": true,
+    "notes": "DM2 (44054006) + IRC (40055000). Exactamente 2 pacientes. Aceptar entre 0 y 4.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C33",
+    "question": "ВїCuГЎntos pacientes con depresiГіn tienen prescripciГіn de sertralina?",
+    "expected_answer": "11 pacientes con depresiГіn tienen prescripciГіn de sertralina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (35489007) con MedicationRequest (N06AB06). Exactamente 11. Aceptar entre 9 y 13.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C34",
+    "question": "ВїCuГЎntos pacientes con hipotiroidismo tienen TSH elevada (mayor a 4 mIU/L)?",
+    "expected_answer": "9 pacientes con hipotiroidismo tienen TSH mayor a 4 mIU/L.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (190331003) con Observation (LOINC 3016-3, value >4). Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C35",
+    "question": "ВїCuГЎntos pacientes con hipotiroidismo tienen prescripciГіn de levotiroxina?",
+    "expected_answer": "12 pacientes con hipotiroidismo tienen prescripciГіn de levotiroxina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (190331003) con MedicationRequest (H03AA01). Exactamente 12. Aceptar entre 10 y 14.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C36",
+    "question": "ВїCuГЎntos pacientes con enfermedad renal crГіnica tienen creatinina mayor a 2.5 mg/dL?",
+    "expected_answer": "6 pacientes con enfermedad renal crГіnica tienen creatinina mayor a 2.5 mg/dL.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (40055000) con Observation (LOINC 2160-0, value >2.5). Exactamente 6. Aceptar entre 4 y 8.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C37",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 tienen HbA1c mayor al 7%?",
+    "expected_answer": "19 pacientes con diabetes tipo 2 tienen HbA1c mayor al 7%.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (44054006) con Observation (LOINC 4548-4, value >7). Exactamente 19. Aceptar entre 15 y 23.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C38",
+    "question": "ВїHay pacientes alГ©rgicos a la aspirina que tengan aspirina prescripta?",
+    "expected_answer": "SГ­, hay 2 pacientes alГ©rgicos a la aspirina que tienen aspirina prescripta.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar AllergyIntolerance (294183002) con MedicationRequest (B01AC06). Exactamente 2. Aceptar entre 1 y 3.",
+    "resource_types": [
+      "Patient",
+      "AllergyIntolerance",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "safety"
+  },
+  {
+    "id": "C39",
+    "question": "ВїCuГЎntos pacientes mayores de 65 aГ±os recibieron la vacuna contra COVID-19?",
+    "expected_answer": "19 pacientes mayores de 65 aГ±os recibieron la vacuna contra COVID-19.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (age>65) con Immunization (CVX 213). Exactamente 19. Aceptar entre 15 y 23.",
+    "resource_types": [
+      "Patient",
+      "Immunization"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "C40",
+    "question": "ВїCuГЎl es la distribuciГіn de encuentros clГ­nicos por tipo?",
+    "expected_answer": "DistribuciГіn: consultas ambulatorias 238, guardia/urgencias 87, internaciones 76, visitas domiciliarias 36. Total: 437 encuentros.",
+    "category": "complex",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "AMB 238, EMER 87, IMP 76, HH 36. Total 437. Aceptar si identifica al menos 3 tipos con valores razonables.",
+    "resource_types": [
+      "Encounter"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "aggregation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C41",
+    "question": "ВїCuГЎl es el valor promedio de HbA1c de los pacientes con diabetes tipo 2?",
+    "expected_answer": "El valor promedio de HbA1c de pacientes con DM2 es 9.4%.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Promedio exacto: 9.4% (n=19 observaciones). Aceptar entre 8% y 11%. Requiere cruzar Condition con Observation y calcular promedio.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "calculation",
+      "code_execution"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C42",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 hay en la provincia de Buenos Aires?",
+    "expected_answer": "Hay 21 pacientes con diabetes tipo 2 en Buenos Aires.",
+    "category": "complex",
+    "subcategory": "aggregation_geographic",
+    "requires_tools": true,
+    "notes": "DM2 en Buenos Aires. Exactamente 21. Aceptar entre 17 y 25.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "counting",
+      "filtering"
+    ],
+    "domain": "epidemiology"
+  },
+  {
+    "id": "C43",
+    "question": "ВїCuГЎl es la edad promedio de los pacientes con diabetes tipo 2?",
+    "expected_answer": "La edad promedio de los pacientes con diabetes tipo 2 es 49 aГ±os.",
+    "category": "complex",
+    "subcategory": "calculation",
+    "requires_tools": true,
+    "notes": "Promedio exacto: 49.4 aГ±os. Aceptar entre 43 y 55. Requiere calcular edad de cada paciente con DM2.",
+    "resource_types": [
+      "Patient",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "calculation",
+      "code_execution"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C44",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 tienen glucosa mayor a 140 mg/dL y prescripciГіn de metformina?",
+    "expected_answer": "17 pacientes con DM2 tienen glucosa >140 mg/dL y prescripciГіn de metformina.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (44054006) + Observation (2345-7, >140) + MedicationRequest (A10BA02). Exactamente 17. Aceptar entre 13 y 21.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C45",
+    "question": "ВїCuГЎntos pacientes con hipertensiГіn en Buenos Aires tienen presiГіn arterial sistГіlica mayor a 140 mmHg?",
+    "expected_answer": "9 pacientes con hipertensiГіn en Buenos Aires tienen presiГіn arterial sistГіlica mayor a 140 mmHg.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (BA) + Condition (59621000) + Observation (8480-6, >140). Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C46",
+    "question": "ВїCuГЎntos pacientes mayores de 65 aГ±os recibieron tanto la vacuna contra COVID-19 como la antigripal?",
+    "expected_answer": "7 pacientes mayores de 65 aГ±os recibieron tanto la vacuna COVID-19 como la antigripal.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Patient (age>65) + Immunization (CVX 213) + Immunization (CVX 15). Exactamente 7. Aceptar entre 5 y 9.",
+    "enabled": false,
+    "resource_types": [
+      "Patient",
+      "Immunization"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "vaccination"
+  },
+  {
+    "id": "C47",
+    "question": "ВїCuГЎntos pacientes con condiciones cardГ­acas (infarto, insuficiencia cardГ­aca, fibrilaciГіn auricular o cardiopatГ­a isquГ©mica) tuvieron internaciones?",
+    "expected_answer": "9 pacientes con condiciones cardГ­acas tuvieron al menos una internaciГіn.",
+    "category": "complex",
+    "subcategory": "reference_traversal",
+    "requires_tools": true,
+    "notes": "CardГ­acos (22298006, 84114007, 49436004, 414545008) con Encounter IMP. Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Encounter"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "chronic_disease"
+  },
+  {
+    "id": "C48",
+    "question": "ВїCuГЎntos pacientes con anemia ferropГ©nica tienen hemoglobina menor a 10 g/dL?",
+    "expected_answer": "9 pacientes con anemia ferropГ©nica tienen hemoglobina menor a 10 g/dL.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (267036007) con Observation (LOINC 718-7, value <10). Exactamente 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "Observation"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C49",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 2 tienen prescripciГіn de insulina?",
+    "expected_answer": "30 pacientes con diabetes tipo 2 tienen prescripciГіn de insulina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (44054006) con MedicationRequest (A10AC01). Exactamente 30. Aceptar entre 26 y 34.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C50",
+    "question": "ВїCuГЎntos pacientes con diabetes tipo 1 tienen prescripciГіn de insulina?",
+    "expected_answer": "5 pacientes con diabetes tipo 1 tienen prescripciГіn de insulina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (73211009) con MedicationRequest (A10AC01). Exactamente 5. Aceptar entre 3 y 7.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "S16",
+    "question": "¿Cuántos planes de cuidado hay registrados en el sistema?",
+    "expected_answer": "Hay 91 planes de cuidado registrados en el sistema.",
+    "category": "simple",
+    "subcategory": "count",
+    "requires_tools": true,
+    "notes": "El número exacto es 91. Aceptar entre 82 y 100. Requiere buscar CarePlan.",
+    "resource_types": [
+      "CarePlan"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M36",
+    "question": "¿Cuántos planes de cuidado están activos actualmente?",
+    "expected_answer": "Hay 62 planes de cuidado activos.",
+    "category": "medium",
+    "subcategory": "filtered_query",
+    "requires_tools": true,
+    "notes": "El número exacto es 62. Aceptar entre 56 y 68. Requiere buscar CarePlan con status=active.",
+    "resource_types": [
+      "CarePlan"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M37",
+    "question": "¿Cuántos pacientes tienen al menos un plan de cuidado?",
+    "expected_answer": "91 pacientes tienen al menos un plan de cuidado.",
+    "category": "medium",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "El número exacto es 91 (cada paciente con CarePlan tiene exactamente 1). Aceptar entre 82 y 100. Puede usar Patient?_has:CarePlan:subject:_id o contar CarePlans y deducir sujetos únicos.",
+    "resource_types": [
+      "Patient",
+      "CarePlan"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "cross_resource"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C51",
+    "question": "¿Cuántos pacientes con diabetes tipo 2 tienen un plan de cuidado activo?",
+    "expected_answer": "13 pacientes con diabetes tipo 2 tienen un plan de cuidado activo.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 44054006) con CarePlan (status=active). Exactamente 13. Aceptar entre 10 y 16. Multi-hop: Patient ← Condition (DM2) ∩ Patient ← CarePlan (active).",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C52",
+    "question": "¿Cuántos pacientes con hipertensión arterial tienen un plan de cuidado activo?",
+    "expected_answer": "21 pacientes con hipertensión arterial tienen un plan de cuidado activo.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 59621000) con CarePlan (status=active). Exactamente 21. Aceptar entre 18 y 24. Multi-hop: Patient ← Condition (HTA) ∩ Patient ← CarePlan (active).",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C53",
+    "question": "¿Qué porcentaje de pacientes con condiciones crónicas tiene un plan de cuidado?",
+    "expected_answer": "Aproximadamente 54% de los pacientes con condiciones tiene un plan de cuidado (91 de 170 pacientes con al menos una condición).",
+    "category": "complex",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "Pacientes con al menos 1 Condition: 170. Pacientes con CarePlan: 91. Porcentaje: 91/170 = 53.5%. Aceptar entre 48% y 59%. Requiere contar pacientes con condiciones y pacientes con care plans.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "cross_resource",
+      "calculation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M38",
+    "question": "¿Cuántos informes diagnósticos tienen observaciones vinculadas en el campo result?",
+    "expected_answer": "102 informes diagnósticos tienen al menos una observación vinculada.",
+    "category": "medium",
+    "subcategory": "diagnostic_query",
+    "requires_tools": true,
+    "notes": "DiagnosticReport con result no vacío. Exactamente 102 de 184 totales. Aceptar entre 92 y 112.",
+    "resource_types": [
+      "DiagnosticReport",
+      "Observation"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "reference_navigation"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "M39",
+    "question": "¿Cuántas apendicectomías se realizaron?",
+    "expected_answer": "Se realizaron 12 apendicectomías.",
+    "category": "medium",
+    "subcategory": "procedure_query",
+    "requires_tools": true,
+    "notes": "SNOMED 80146002. Exactamente 12 procedimientos (12 pacientes). Aceptar entre 9 y 15.",
+    "resource_types": [
+      "Procedure"
+    ],
+    "graph_hops": 0,
+    "skills": [
+      "terminology",
+      "counting"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "M40",
+    "question": "¿Cuántos pacientes tienen alergias alimentarias?",
+    "expected_answer": "21 pacientes tienen alergias alimentarias.",
+    "category": "medium",
+    "subcategory": "allergy_query",
+    "requires_tools": true,
+    "notes": "AllergyIntolerance con category=food. 23 registros para 21 pacientes. Aceptar entre 18 y 24 si cuenta pacientes, o 20-26 si cuenta registros.",
+    "resource_types": [
+      "Patient",
+      "AllergyIntolerance"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "filtering"
+    ],
+    "domain": "safety"
+  },
+  {
+    "id": "C54",
+    "question": "¿Cuántos pacientes con diabetes tipo 2 tienen un informe de panel metabólico?",
+    "expected_answer": "12 pacientes con diabetes tipo 2 tienen un informe de panel metabólico.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 44054006) con DiagnosticReport (LOINC 24323-8) vía Patient. Exactamente 12. Aceptar entre 9 y 15.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "DiagnosticReport"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C55",
+    "question": "¿Cuántos pacientes que tuvieron algún procedimiento tienen al menos una condición crónica registrada?",
+    "expected_answer": "47 pacientes con procedimientos tienen al menos una condición crónica.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Pacientes con Procedure ∩ Pacientes con Condition. Exactamente 47. Aceptar entre 42 y 52.",
+    "resource_types": [
+      "Patient",
+      "Procedure",
+      "Condition"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "cross_resource",
+      "counting",
+      "code_execution"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "M41",
+    "question": "¿Qué porcentaje de pacientes con hipertensión tiene plan de cuidado?",
+    "expected_answer": "El 56.6% de los pacientes con hipertensión tiene plan de cuidado (30 de 53).",
+    "category": "medium",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Pacientes HTA (SNOMED 59621000): 53. Con CarePlan: 30. Porcentaje: 56.6%. Aceptar entre 50% y 63%.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "calculation"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "M42",
+    "question": "¿Cuántos paneles lipídicos incluyen observaciones de colesterol total?",
+    "expected_answer": "14 paneles lipídicos incluyen observaciones de colesterol total.",
+    "category": "medium",
+    "subcategory": "diagnostic_query",
+    "requires_tools": true,
+    "notes": "DiagnosticReport LOINC 24331-1 con result referenciando Observation LOINC 2093-3. 14 de 32 paneles lipídicos. Aceptar entre 11 y 17.",
+    "resource_types": [
+      "DiagnosticReport",
+      "Observation"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "terminology",
+      "reference_navigation",
+      "counting"
+    ],
+    "domain": "laboratory"
+  },
+  {
+    "id": "C56",
+    "question": "¿Cuántos pacientes con plan de cuidado activo para diabetes tipo 2 toman metformina?",
+    "expected_answer": "9 pacientes con plan de cuidado activo para diabetes tipo 2 toman metformina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Multi-hop: CarePlan(active, addresses Condition DM2) → Patient ∩ MedicationRequest(metformina A10BA02) → Patient. CarePlan DM2 activo: 10 pacientes. Con metformina: 9. Aceptar entre 7 y 11.",
+    "resource_types": [
+      "Patient",
+      "CarePlan",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "reference_navigation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C57",
+    "question": "¿Cuántos pacientes con asma tienen prescripción de salbutamol?",
+    "expected_answer": "15 pacientes con asma tienen prescripción de salbutamol.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Requiere cruzar Condition (SNOMED 195967001) con MedicationRequest (ATC R03AC02). Asma: 17, Salbutamol: 15. Intersección: 15. Aceptar entre 12 y 18.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C58",
+    "question": "¿Cuántos pacientes tuvieron al menos un encuentro de emergencia en 2024?",
+    "expected_answer": "36 pacientes tuvieron al menos un encuentro de emergencia en 2024.",
+    "category": "complex",
+    "subcategory": "temporal",
+    "requires_tools": true,
+    "notes": "Encounter class=EMER con period.start en 2024. 39 encounters para 36 pacientes únicos. Aceptar entre 31 y 41 si cuenta pacientes, o 34-44 si cuenta encounters.",
+    "resource_types": [
+      "Patient",
+      "Encounter"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "counting",
+      "filtering",
+      "temporal"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C59",
+    "question": "¿Cuál es la condición más frecuente entre los planes de cuidado activos?",
+    "expected_answer": "La condición más frecuente en planes de cuidado activos es hipertensión arterial esencial con 17 planes.",
+    "category": "complex",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "Requiere navegar CarePlan(active).addresses → Condition → extraer código. Top: HTA(17), DM2(11), Asma(7). Aceptar si identifica HTA como la más frecuente.",
+    "resource_types": [
+      "CarePlan",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "aggregation",
+      "reference_navigation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C60",
+    "question": "¿Cuántos pacientes que tuvieron un procedimiento también tuvieron una hospitalización?",
+    "expected_answer": "23 pacientes tuvieron tanto un procedimiento como una hospitalización.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Pacientes con Procedure ∩ Pacientes con Encounter(class=IMP). Exactamente 23. Aceptar entre 19 y 27.",
+    "resource_types": [
+      "Patient",
+      "Procedure",
+      "Encounter"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "cross_resource",
+      "counting",
+      "code_execution"
+    ],
+    "domain": "surgery"
+  },
+  {
+    "id": "C61",
+    "question": "¿Cuántos pacientes con glucosa elevada (mayor a 140 mg/dL) toman metformina?",
+    "expected_answer": "17 pacientes con glucosa mayor a 140 mg/dL toman metformina.",
+    "category": "complex",
+    "subcategory": "cross_resource",
+    "requires_tools": true,
+    "notes": "Observation (LOINC 2345-7, value >140) ∩ MedicationRequest (ATC A10BA02) vía Patient. Glucosa >140: 23, Metformina: 32, Intersección: 17. Aceptar entre 13 y 21.",
+    "resource_types": [
+      "Patient",
+      "Observation",
+      "MedicationRequest"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "filtering",
+      "code_execution"
+    ],
+    "domain": "medication"
+  },
+  {
+    "id": "C62",
+    "question": "¿Cuántos pacientes con diabetes tipo 2 NO tienen plan de cuidado?",
+    "expected_answer": "27 pacientes con diabetes tipo 2 no tienen plan de cuidado.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "Pacientes DM2 (SNOMED 44054006): 49. Con CarePlan: 22. Sin CarePlan: 27. Aceptar entre 22 y 32.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "terminology",
+      "cross_resource",
+      "negation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C63",
+    "question": "¿Cuáles son las 3 condiciones con más planes de cuidado asociados?",
+    "expected_answer": "Las 3 condiciones con más planes de cuidado son: hipertensión arterial esencial (25), diabetes mellitus tipo 2 (17), y asma (8).",
+    "category": "complex",
+    "subcategory": "aggregation",
+    "requires_tools": true,
+    "notes": "Requiere navegar CarePlan.addresses → Condition → agrupar por código. Top 3: HTA 59621000 (25), DM2 44054006 (17), Asma 195967001 (8). Aceptar si identifica HTA y DM2 como top 2.",
+    "resource_types": [
+      "CarePlan",
+      "Condition"
+    ],
+    "graph_hops": 1,
+    "skills": [
+      "aggregation",
+      "reference_navigation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  },
+  {
+    "id": "C64",
+    "question": "¿Cuántos pacientes con 3 o más condiciones crónicas no tienen plan de cuidado?",
+    "expected_answer": "17 pacientes con 3 o más condiciones crónicas no tienen plan de cuidado.",
+    "category": "complex",
+    "subcategory": "negative",
+    "requires_tools": true,
+    "notes": "Pacientes con ≥3 condiciones: 36. Sin CarePlan: 17. Aceptar entre 13 y 21. Requiere contar condiciones por paciente, filtrar ≥3, luego excluir los que tienen CarePlan.",
+    "resource_types": [
+      "Patient",
+      "Condition",
+      "CarePlan"
+    ],
+    "graph_hops": 2,
+    "skills": [
+      "cross_resource",
+      "negation",
+      "code_execution"
+    ],
+    "domain": "care_coordination"
+  }
+]

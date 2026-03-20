@@ -1,0 +1,19 @@
+services:
+  hapi-fhir:
+    image: hapiproject/hapi:latest
+    container_name: saludai-hapi-fhir
+    ports:
+      - "8090:8080"
+    environment:
+      hapi.fhir.fhir_version: R4
+      hapi.fhir.allow_multiple_delete: "true"
+
+  fhir-seed:
+    build: ./data/seed
+    container_name: saludai-fhir-seed
+    depends_on:
+      - hapi-fhir
+    environment:
+      FHIR_SERVER_URL: http://hapi-fhir:8080/fhir
+    volumes:
+      - ./data/seed:/seed:ro

@@ -1,0 +1,38 @@
+[project]
+name = "saludai-core"
+version = "0.1.0"
+description = "FHIR client, terminology resolver, and shared types for SaludAI"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+authors = [{ name = "SaludAI Labs" }]
+keywords = ["fhir", "health", "terminology", "snomed", "loinc"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx>=0.28",
+    "fhir.resources>=8",
+    "pydantic>=2",
+    "pydantic-settings>=2",
+    "structlog>=24",
+    "rapidfuzz>=3",
+]
+
+[project.urls]
+Homepage = "https://github.com/saludai-labs/saludai"
+Repository = "https://github.com/saludai-labs/saludai"
+Issues = "https://github.com/saludai-labs/saludai/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/saludai_core"]
