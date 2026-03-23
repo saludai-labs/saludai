@@ -319,6 +319,7 @@ class TestRecordingTracer:
         assert recording["plan"] == {
             "model": "haiku",
             "output": '{"strategy": "count_simple"}',
+            "usage": {"input_tokens": 50, "output_tokens": 20},
         }
         assert recording["steps"] == []
 

@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
+import os
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -66,6 +67,24 @@ def _parse_args() -> argparse.Namespace:
         default=None,
         help="Path to a JSONL progress file to resume from (skips completed questions)",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Run only the first N questions (after filtering)",
+    )
+    parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=None,
+        help="Override max agent iterations (default: from SALUDAI_AGENT_MAX_ITERATIONS)",
+    )
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=0.0,
+        help="Seconds to wait between questions (helps avoid rate limits)",
+    )
     return parser.parse_args()
 
 
@@ -104,12 +123,21 @@ async def _run(args: argparse.Namespace) -> None:
         timestamp = datetime.now(tz=UTC).strftime("%Y%m%d_%H%M%S")
         progress_path = bench_config.output_dir / f"progress_{timestamp}.jsonl"
 
+    # Limit number of questions
+    if args.limit and args.limit < len(questions):
+        questions = questions[: args.limit]
+
     if not questions:
         print("No questions match the given filters.")
         sys.exit(1)
 
+    # Override max iterations if specified
+    if args.max_iterations is not None:
+        agent_config = AgentConfig(agent_max_iterations=args.max_iterations)
+
     print(f"Running {len(questions)} questions...")
     print(f"Agent:  {agent_config.llm_provider}/{agent_config.llm_model}")
+    print(f"Max iterations: {agent_config.agent_max_iterations}")
     print(f"Judge:  {bench_config.judge_provider}/{bench_config.judge_model}")
     print(f"Progress: {progress_path}")
     print("-" * 60)
@@ -124,26 +152,44 @@ async def _run(args: argparse.Namespace) -> None:
     recorder = RecordingTracer()
     tracer = CompositeTracer(base_tracer, recorder)
 
-    # Create planner LLM (cheaper model for classification)
+    # Planner and judge always use Anthropic Haiku, independent of agent provider.
+    # Read ANTHROPIC_API_KEY directly — SALUDAI_LLM_API_KEY may hold a
+    # Together/OpenAI key when benchmarking non-Anthropic models.
+    anthropic_api_key = os.environ.get("ANTHROPIC_API_KEY")
+
     planner_config = AgentConfig(
-        llm_provider=agent_config.llm_provider,
+        llm_provider="anthropic",
         llm_model=agent_config.planner_model,
-        llm_api_key=agent_config.llm_api_key,
-        llm_base_url=agent_config.llm_base_url,
+        llm_api_key=anthropic_api_key,
     )
     planner_llm = create_llm_client(planner_config)
 
-    # Create judge LLM (may differ from agent LLM)
     judge_config = AgentConfig(
         llm_provider=bench_config.judge_provider,
         llm_model=bench_config.judge_model,
-        llm_api_key=bench_config.judge_api_key or agent_config.llm_api_key,
+        llm_api_key=bench_config.judge_api_key or anthropic_api_key,
     )
     judge_llm = create_llm_client(judge_config)
 
     print(f"Planner: {planner_config.llm_provider}/{planner_config.llm_model}")
 
     async with FHIRClient() as fhir_client:
+        # Preflight: verify we're talking to the right FHIR server
+        try:
+            bundle = await fhir_client.search("Patient", {"_summary": "count"})
+            patient_count = bundle.get("total", 0) if isinstance(bundle, dict) else 0
+            fhir_url = fhir_client._config.fhir_server_url
+            print(f"FHIR server: {fhir_url}  (Patient count: {patient_count})")
+            if patient_count != 200:
+                print(
+                    f"WARNING: Expected 200 patients, got {patient_count}. "
+                    "Is this the correct FHIR server?"
+                )
+                sys.exit(1)
+        except Exception as exc:
+            print(f"ERROR: Cannot reach FHIR server: {exc}")
+            sys.exit(1)
+
         loop = AgentLoop(
             llm=agent_llm,
             fhir_client=fhir_client,
@@ -161,6 +207,7 @@ async def _run(args: argparse.Namespace) -> None:
             config=bench_config,
             recorder=recorder,
             progress_path=progress_path,
+            delay_seconds=args.delay,
         )
 
         results = await harness.run_all(questions)
@@ -177,6 +224,7 @@ async def _run(args: argparse.Namespace) -> None:
     config_summary = {
         "agent_provider": agent_config.llm_provider,
         "agent_model": agent_config.llm_model,
+        "max_iterations": agent_config.agent_max_iterations,
         "planner_model": agent_config.planner_model,
         "planner_enabled": agent_config.planner_enabled,
         "judge_provider": bench_config.judge_provider,

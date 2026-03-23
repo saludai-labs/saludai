@@ -2,12 +2,89 @@
 
 from __future__ import annotations
 
+import statistics
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from benchmarks.dataset import EvalQuestion
     from benchmarks.results import QuestionResult
+
+
+# ---------------------------------------------------------------------------
+# Distribution statistics
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True, slots=True)
+class DistributionStats:
+    """Descriptive statistics for a numeric distribution.
+
+    Attributes:
+        count: Number of data points.
+        mean: Arithmetic mean.
+        median: 50th percentile.
+        p75: 75th percentile.
+        p90: 90th percentile.
+        p95: 95th percentile.
+        stdev: Sample standard deviation (0.0 if count < 2).
+        min: Minimum value.
+        max: Maximum value.
+    """
+
+    count: int
+    mean: float
+    median: float
+    p75: float
+    p90: float
+    p95: float
+    stdev: float
+    min: float
+    max: float
+
+
+def _percentile(sorted_values: list[float], p: float) -> float:
+    """Compute percentile using linear interpolation (same as numpy default)."""
+    n = len(sorted_values)
+    k = (n - 1) * p / 100.0
+    f = int(k)
+    c = f + 1
+    if c >= n:
+        return sorted_values[-1]
+    return sorted_values[f] + (k - f) * (sorted_values[c] - sorted_values[f])
+
+
+def compute_distribution(values: list[float]) -> DistributionStats:
+    """Compute distribution statistics from a list of values.
+
+    Args:
+        values: Numeric values to analyze.
+
+    Returns:
+        ``DistributionStats`` with mean, median, percentiles, and spread.
+    """
+    if not values:
+        return DistributionStats(
+            count=0, mean=0.0, median=0.0, p75=0.0, p90=0.0,
+            p95=0.0, stdev=0.0, min=0.0, max=0.0,
+        )
+    sorted_vals = sorted(values)
+    return DistributionStats(
+        count=len(values),
+        mean=statistics.mean(values),
+        median=statistics.median(values),
+        p75=_percentile(sorted_vals, 75),
+        p90=_percentile(sorted_vals, 90),
+        p95=_percentile(sorted_vals, 95),
+        stdev=statistics.stdev(values) if len(values) > 1 else 0.0,
+        min=sorted_vals[0],
+        max=sorted_vals[-1],
+    )
+
+
+# ---------------------------------------------------------------------------
+# Category metrics
+# ---------------------------------------------------------------------------
 
 
 @dataclass(frozen=True, slots=True)
@@ -29,6 +106,11 @@ class CategoryMetrics:
     accuracy: float
 
 
+# ---------------------------------------------------------------------------
+# Benchmark metrics
+# ---------------------------------------------------------------------------
+
+
 @dataclass(frozen=True, slots=True)
 class BenchmarkMetrics:
     """Aggregated metrics for a full benchmark run.
@@ -43,6 +125,13 @@ class BenchmarkMetrics:
         avg_duration_seconds: Mean wall-clock time per question.
         avg_iterations: Mean agent loop iterations per question.
         category_breakdown: Per-category metrics.
+        duration_stats: Distribution of wall-clock time per question.
+        iteration_stats: Distribution of agent loop iterations per question.
+        tool_calls_stats: Distribution of tool calls per question.
+        total_input_tokens: Sum of input tokens across all questions.
+        total_output_tokens: Sum of output tokens across all questions.
+        input_token_stats: Distribution of input tokens per question.
+        output_token_stats: Distribution of output tokens per question.
     """
 
     total: int
@@ -54,6 +143,13 @@ class BenchmarkMetrics:
     avg_duration_seconds: float
     avg_iterations: float
     category_breakdown: dict[str, CategoryMetrics] = field(default_factory=dict)
+    duration_stats: DistributionStats | None = None
+    iteration_stats: DistributionStats | None = None
+    tool_calls_stats: DistributionStats | None = None
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+    input_token_stats: DistributionStats | None = None
+    output_token_stats: DistributionStats | None = None
 
 
 def compute_metrics(results: list[QuestionResult]) -> BenchmarkMetrics:
@@ -89,6 +185,13 @@ def compute_metrics(results: list[QuestionResult]) -> BenchmarkMetrics:
     avg_duration = sum(r.duration_seconds for r in results) / total
     avg_iterations = sum(r.iterations for r in results) / total
 
+    # Distribution stats
+    durations = [r.duration_seconds for r in results]
+    iterations = [float(r.iterations) for r in results]
+    tool_calls = [float(r.tool_calls_count) for r in results]
+    input_tokens = [float(r.total_input_tokens) for r in results]
+    output_tokens = [float(r.total_output_tokens) for r in results]
+
     # Category breakdown
     categories: dict[str, list[QuestionResult]] = {}
     for r in results:
@@ -118,6 +221,13 @@ def compute_metrics(results: list[QuestionResult]) -> BenchmarkMetrics:
         avg_duration_seconds=avg_duration,
         avg_iterations=avg_iterations,
         category_breakdown=breakdown,
+        duration_stats=compute_distribution(durations),
+        iteration_stats=compute_distribution(iterations),
+        tool_calls_stats=compute_distribution(tool_calls),
+        total_input_tokens=sum(r.total_input_tokens for r in results),
+        total_output_tokens=sum(r.total_output_tokens for r in results),
+        input_token_stats=compute_distribution(input_tokens),
+        output_token_stats=compute_distribution(output_tokens),
     )
 
 

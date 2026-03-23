@@ -1045,7 +1045,8 @@
       "filtering",
       "cross_resource"
     ],
-    "domain": "chronic_disease"
+    "domain": "chronic_disease",
+    "enabled": false
   },
   {
     "id": "C08",
@@ -1085,7 +1086,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C10",
@@ -1127,7 +1129,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C12",
@@ -1206,7 +1209,8 @@
       "counting",
       "code_execution"
     ],
-    "domain": "chronic_disease"
+    "domain": "chronic_disease",
+    "enabled": false
   },
   {
     "id": "C16",
@@ -1227,7 +1231,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C17",
@@ -1520,7 +1525,8 @@
       "cross_resource",
       "negation"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C32",
@@ -1559,7 +1565,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C34",
@@ -1580,7 +1587,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C35",
@@ -1600,7 +1608,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C36",
@@ -1621,7 +1630,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C37",
@@ -1642,7 +1652,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C38",
@@ -1722,7 +1733,8 @@
       "calculation",
       "code_execution"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C42",
@@ -1805,7 +1817,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C46",
@@ -1867,7 +1880,8 @@
       "cross_resource",
       "filtering"
     ],
-    "domain": "laboratory"
+    "domain": "laboratory",
+    "enabled": false
   },
   {
     "id": "C49",
@@ -1887,7 +1901,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C50",
@@ -1907,7 +1922,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "S16",
@@ -2001,7 +2017,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "care_coordination"
+    "domain": "care_coordination",
+    "enabled": false
   },
   {
     "id": "C53",
@@ -2203,7 +2220,8 @@
       "terminology",
       "cross_resource"
     ],
-    "domain": "medication"
+    "domain": "medication",
+    "enabled": false
   },
   {
     "id": "C58",
@@ -2328,7 +2346,8 @@
       "reference_navigation",
       "code_execution"
     ],
-    "domain": "care_coordination"
+    "domain": "care_coordination",
+    "enabled": false
   },
   {
     "id": "C64",

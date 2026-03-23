@@ -391,6 +391,37 @@ def execute_resolve_terminology(
 
 _DEFAULT_COUNT = "200"
 
+# Keys that are explicit tool arguments, not FHIR search params.
+_TOOL_ARG_KEYS = frozenset({"resource_type", "params", "additionalProperties"})
+
+
+def _merge_params(arguments: dict[str, Any]) -> dict[str, str]:
+    """Extract FHIR search params from tool arguments.
+
+    Normalizes three LLM behaviors into a single dict:
+
+    1. **Anthropic/Llama/Qwen (normal):** params inside ``params`` key.
+    2. **GPT-4o (schema flattening):** params as top-level keys.
+    3. **Qwen (schema leak):** params nested inside an ``additionalProperties``
+       key — the model treats the JSON Schema keyword as a literal field name.
+    """
+    params: dict[str, str] = dict(arguments.get("params") or {})
+
+    # Qwen gotcha: unwrap additionalProperties if the model sent it as a field
+    additional = arguments.get("additionalProperties")
+    if isinstance(additional, dict):
+        for k, v in additional.items():
+            params.setdefault(k, str(v))
+    elif isinstance(additional, str) and "=" in additional:
+        # Some models send it as a flat string like "birthdate-le=1964-01-01"
+        k, _, v = additional.partition("=")
+        params.setdefault(k.strip(), v.strip())
+
+    for key, value in arguments.items():
+        if key not in _TOOL_ARG_KEYS:
+            params.setdefault(key, str(value))
+    return params
+
 
 async def execute_search_fhir(
     fhir_client: FHIRClient,
@@ -413,7 +444,7 @@ async def execute_search_fhir(
         A token-efficient text summary of the search results.
     """
     resource_type = arguments.get("resource_type", "")
-    params = arguments.get("params") or {}
+    params = _merge_params(arguments)
 
     # _summary queries don't need pagination — single page with count only
     if "_summary" in params:
@@ -446,7 +477,7 @@ async def execute_count_fhir(
         A string with the count result (e.g. ``"Total: 42"``).
     """
     resource_type = arguments.get("resource_type", "")
-    params = arguments.get("params") or {}
+    params = _merge_params(arguments)
     # Always force _summary=count
     params = {**params, "_summary": "count"}
     bundle = await fhir_client.search(resource_type, params)

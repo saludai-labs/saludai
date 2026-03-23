@@ -9,10 +9,10 @@ All implementations convert between the provider-agnostic ``Message`` /
 
 from __future__ import annotations
 
+import asyncio
 import json
+import logging
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
-
-import structlog
 
 from saludai_agent.exceptions import LLMError, LLMResponseError
 from saludai_agent.types import LLMResponse, Message, TokenUsage, ToolCall
@@ -20,7 +20,16 @@ from saludai_agent.types import LLMResponse, Message, TokenUsage, ToolCall
 if TYPE_CHECKING:
     from saludai_agent.config import AgentConfig
 
-logger: structlog.stdlib.BoundLogger = structlog.get_logger(__name__)
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Retry configuration
+# ---------------------------------------------------------------------------
+
+_MAX_RETRIES: int = 4
+_INITIAL_BACKOFF_S: float = 1.0
+_BACKOFF_MULTIPLIER: float = 2.0
+_RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 503, 529})
 
 
 # ---------------------------------------------------------------------------
@@ -97,8 +106,11 @@ class AnthropicLLMClient:
         """Generate a response via Anthropic API.
 
         Uses prompt caching on the system prompt and tool definitions to reduce
-        input token costs on repeated calls with the same prompt.
+        input token costs on repeated calls with the same prompt.  Retries on
+        transient errors (429, 503, 529) with exponential backoff.
         """
+        import anthropic
+
         anthropic_messages = _messages_to_anthropic(messages)
 
         # Prompt caching: wrap system as content block with cache_control
@@ -122,16 +134,33 @@ class AnthropicLLMClient:
             cached_tools = _add_cache_control_to_tools(tools)
             kwargs["tools"] = cached_tools
 
-        try:
-            import anthropic
+        last_exc: Exception | None = None
+        backoff = _INITIAL_BACKOFF_S
+        for attempt in range(_MAX_RETRIES + 1):
+            try:
+                response = await self._client.messages.create(**kwargs)
+                return _anthropic_response_to_llm_response(response)
+            except anthropic.APIStatusError as exc:
+                last_exc = exc
+                if exc.status_code in _RETRYABLE_STATUS_CODES and attempt < _MAX_RETRIES:
+                    logger.warning(
+                        "Anthropic %s (attempt %d/%d), retrying in %.1fs",
+                        exc.status_code,
+                        attempt + 1,
+                        _MAX_RETRIES + 1,
+                        backoff,
+                    )
+                    await asyncio.sleep(backoff)
+                    backoff *= _BACKOFF_MULTIPLIER
+                    continue
+                raise LLMError(f"Anthropic API error: {exc}") from exc
+            except anthropic.APIError as exc:
+                raise LLMError(f"Anthropic API error: {exc}") from exc
+            except Exception as exc:
+                raise LLMError(f"Unexpected error calling Anthropic API: {exc}") from exc
 
-            response = await self._client.messages.create(**kwargs)
-        except anthropic.APIError as exc:
-            raise LLMError(f"Anthropic API error: {exc}") from exc
-        except Exception as exc:
-            raise LLMError(f"Unexpected error calling Anthropic API: {exc}") from exc
-
-        return _anthropic_response_to_llm_response(response)
+        msg = f"Anthropic API error after {_MAX_RETRIES + 1} attempts: {last_exc}"
+        raise LLMError(msg) from last_exc
 
     async def close(self) -> None:
         """Close the underlying HTTP client."""
@@ -167,6 +196,7 @@ class OpenAILLMClient:
             ) from exc
 
         self._model = model
+        self._base_url = base_url
         self._client = openai.AsyncOpenAI(api_key=api_key, base_url=base_url)
 
     async def generate(
@@ -178,7 +208,12 @@ class OpenAILLMClient:
         temperature: float = 0.0,
         max_tokens: int = 4096,
     ) -> LLMResponse:
-        """Generate a response via OpenAI-compatible API."""
+        """Generate a response via OpenAI-compatible API.
+
+        Retries on transient errors (429, 503, 529) with exponential backoff.
+        """
+        import openai
+
         openai_messages = _messages_to_openai(system, messages)
 
         kwargs: dict[str, Any] = {
@@ -188,18 +223,39 @@ class OpenAILLMClient:
             "max_tokens": max_tokens,
         }
         if tools:
-            kwargs["tools"] = _tools_to_openai(tools)
+            # Schema flattening only for native OpenAI (GPT-4o).
+            # Third-party providers (Together, Ollama) use base_url and their
+            # models handle nested params correctly but break with flattening.
+            flatten = self._base_url is None
+            kwargs["tools"] = _tools_to_openai(tools, flatten=flatten)
 
-        try:
-            import openai
+        last_exc: Exception | None = None
+        backoff = _INITIAL_BACKOFF_S
+        for attempt in range(_MAX_RETRIES + 1):
+            try:
+                response = await self._client.chat.completions.create(**kwargs)
+                return _openai_response_to_llm_response(response)
+            except openai.APIStatusError as exc:
+                last_exc = exc
+                if exc.status_code in _RETRYABLE_STATUS_CODES and attempt < _MAX_RETRIES:
+                    logger.warning(
+                        "OpenAI %s (attempt %d/%d), retrying in %.1fs",
+                        exc.status_code,
+                        attempt + 1,
+                        _MAX_RETRIES + 1,
+                        backoff,
+                    )
+                    await asyncio.sleep(backoff)
+                    backoff *= _BACKOFF_MULTIPLIER
+                    continue
+                raise LLMError(f"OpenAI API error: {exc}") from exc
+            except openai.APIError as exc:
+                raise LLMError(f"OpenAI API error: {exc}") from exc
+            except Exception as exc:
+                raise LLMError(f"Unexpected error calling OpenAI API: {exc}") from exc
 
-            response = await self._client.chat.completions.create(**kwargs)
-        except openai.APIError as exc:
-            raise LLMError(f"OpenAI API error: {exc}") from exc
-        except Exception as exc:
-            raise LLMError(f"Unexpected error calling OpenAI API: {exc}") from exc
-
-        return _openai_response_to_llm_response(response)
+        msg = f"OpenAI API error after {_MAX_RETRIES + 1} attempts: {last_exc}"
+        raise LLMError(msg) from last_exc
 
     async def close(self) -> None:
         """Close the underlying HTTP client."""
@@ -386,21 +442,63 @@ def _messages_to_openai(system: str, messages: list[Message]) -> list[dict[str, 
     return result
 
 
-def _tools_to_openai(tools: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Convert Anthropic-style tool definitions to OpenAI function calling format."""
+def _tools_to_openai(
+    tools: list[dict[str, Any]],
+    *,
+    flatten: bool = True,
+) -> list[dict[str, Any]]:
+    """Convert Anthropic-style tool definitions to OpenAI function calling format.
+
+    Args:
+        tools: Tool definitions in Anthropic format.
+        flatten: If True, apply schema flattening for native OpenAI models
+            (GPT-4o). Set to False for third-party providers (Together AI,
+            Ollama) whose models handle nested ``params`` correctly but break
+            with ``additionalProperties`` promoted to the top level.
+    """
     result: list[dict[str, Any]] = []
     for tool in tools:
+        schema = tool.get("input_schema", {})
+        if flatten:
+            schema = _flatten_params_for_openai(schema)
         result.append(
             {
                 "type": "function",
                 "function": {
                     "name": tool["name"],
                     "description": tool.get("description", ""),
-                    "parameters": tool.get("input_schema", {}),
+                    "parameters": schema,
                 },
             }
         )
     return result
+
+
+def _flatten_params_for_openai(schema: dict[str, Any]) -> dict[str, Any]:
+    """Flatten a nested ``params`` object into top-level additionalProperties.
+
+    If the schema has a ``params`` property with ``additionalProperties``,
+    remove it and set ``additionalProperties`` on the top-level object instead.
+    This lets models pass FHIR search params as top-level keys (e.g.
+    ``{"resource_type": "Patient", "gender": "male"}``) rather than nesting
+    them inside a ``params`` object.
+
+    Safe because ``_merge_params()`` on the executor side already collects
+    any top-level keys that aren't explicit tool arguments.
+    """
+    props = schema.get("properties", {})
+    if "params" not in props:
+        return schema
+
+    params_prop = props["params"]
+    if "additionalProperties" not in params_prop:
+        return schema
+
+    new_schema = dict(schema)
+    new_props = {k: v for k, v in props.items() if k != "params"}
+    new_schema["properties"] = new_props
+    new_schema["additionalProperties"] = params_prop["additionalProperties"]
+    return new_schema
 
 
 def _openai_response_to_llm_response(response: Any) -> LLMResponse:
@@ -427,9 +525,15 @@ def _openai_response_to_llm_response(response: Any) -> LLMResponse:
 
     usage = TokenUsage()
     if response.usage:
+        # OpenAI reports cached tokens under prompt_tokens_details.
+        cached_tokens = 0
+        details = getattr(response.usage, "prompt_tokens_details", None)
+        if details is not None:
+            cached_tokens = getattr(details, "cached_tokens", 0) or 0
         usage = TokenUsage(
             input_tokens=response.usage.prompt_tokens or 0,
             output_tokens=response.usage.completion_tokens or 0,
+            cache_read_input_tokens=cached_tokens,
         )
 
     return LLMResponse(

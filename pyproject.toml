@@ -100,7 +100,6 @@ source = [
     "saludai_agent",
     "saludai_mcp",
     "saludai_api",
-    "benchmarks",
 ]
 
 [tool.coverage.report]

@@ -219,10 +219,12 @@ class TestPlanQuery:
             '"terms_to_resolve": ["diabetes tipo 2"], '
             '"reasoning": "Count patients with DM2"}'
         )
-        plan = await plan_query(fake_llm, "Cuantos pacientes con diabetes?", ar_pack)
+        plan, usage = await plan_query(fake_llm, "Cuantos pacientes con diabetes?", ar_pack)
         assert plan.question_type == "count"
         assert plan.strategy == "count_with_condition"
         assert plan.terms_to_resolve == ("diabetes tipo 2",)
+        assert usage.input_tokens == 100
+        assert usage.output_tokens == 50
         assert len(fake_llm.calls) == 1
 
     @pytest.mark.asyncio
@@ -232,13 +234,13 @@ class TestPlanQuery:
             ' "list_resources", "terms_to_resolve": [],'
             ' "reasoning": "x"}'
         )
-        await plan_query(fake_llm, "test", ar_pack)
+        _plan, _usage = await plan_query(fake_llm, "test", ar_pack)
         assert fake_llm.calls[0]["tools"] is None
 
     @pytest.mark.asyncio
     async def test_fallback_on_bad_response(self, ar_pack) -> None:
         fake_llm = FakePlannerLLM("I don't understand the question")
-        plan = await plan_query(fake_llm, "test", ar_pack)
+        plan, _usage = await plan_query(fake_llm, "test", ar_pack)
         assert plan.question_type == "unknown"
         assert plan.strategy == "search_include"
 
@@ -249,7 +251,7 @@ class TestPlanQuery:
             ' "count_simple", "terms_to_resolve": [],'
             ' "reasoning": "x"}'
         )
-        await plan_query(fake_llm, "test", ar_pack)
+        _plan, _usage = await plan_query(fake_llm, "test", ar_pack)
         system = fake_llm.calls[0]["system"]
         assert "Condition --subject--> Patient" in system
         assert "count_with_condition" in system

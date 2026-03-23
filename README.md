@@ -1,58 +1,90 @@
 # SaludAI
 
-**A FHIR agent for Latin America** — with full observability, designed for public health systems.
+**A benchmarked, traceable FHIR agent for Latin America** — measurable precision across 5 LLMs, every reasoning step auditable, designed for public health systems.
 
 [![CI](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml/badge.svg)](https://github.com/saludai-labs/saludai/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Benchmark: 98%](https://img.shields.io/badge/FHIR_Benchmark-98%25_(50q)-brightgreen)](docs/experiments/EXPERIMENTS.md)
-[![Coverage: 84.57%](https://img.shields.io/badge/Coverage-84.57%25-green)](.github/workflows/ci.yml)
+[![Benchmark: 84%](https://img.shields.io/badge/FHIR_Benchmark-84%25_(100q)-brightgreen)](docs/experiments/EXPERIMENTS.md)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://python.org)
+[![Tests: 696](https://img.shields.io/badge/Tests-696-blue)](.github/workflows/ci.yml)
+[![Coverage: 95%](https://img.shields.io/badge/Coverage-95%25-brightgreen)](.github/workflows/ci.yml)
 
-## What is SaludAI?
+---
 
-SaludAI is an AI agent that understands clinical queries in natural language, translates them into FHIR R4 API calls, and returns accurate, traceable answers. Built specifically for Latin American health systems, it handles SNOMED CT (Argentine edition), CIE-10, and LOINC terminology out of the box.
+**Ask:** *"Pacientes con diabetes tipo 2 mayores de 60 en Buenos Aires"*
 
-Ask: *"Pacientes con diabetes tipo 2 mayores de 60 en Buenos Aires"*
-Get: A structured, sourced answer with full Langfuse tracing of every step.
+**Get:** A structured, sourced answer — with every reasoning step traced in Langfuse.
 
-## Benchmark
+SaludAI translates clinical questions in natural language into FHIR R4 API calls, resolves medical terminology (SNOMED CT, CIE-10, LOINC, ATC), navigates multi-resource references, and returns traceable answers. Built and tested against Argentine synthetic data on HAPI FHIR. Designed to extend to other FHIR-compliant systems via locale packs.
 
-SaludAI is evaluated on a 50-question FHIR benchmark inspired by [FHIR-AgentBench](https://arxiv.org/abs/2509.19319) (Verily/KAIST/MIT, [repo](https://github.com/glee4810/FHIR-AgentBench)), adapted for Argentine clinical data. The benchmark is smaller in scope (50 questions, 5 resource types) but covers terminology resolution, multi-resource queries, and aggregation — with a hybrid judge (programmatic + LLM) for reproducible scoring.
+## Multi-LLM Benchmark
 
-| Model | Accuracy | Simple (8) | Medium (20) | Complex (22) | Avg Duration |
-|-------|----------|------------|-------------|--------------|-------------|
-| Claude Sonnet 4.5 | **98.0%** | 8/8 (100%) | 20/20 (100%) | 21/22 (95%) | 34.6s |
+Evaluated on **100 questions** across **200 synthetic Argentine patients** (3,182 FHIR resources, 10 resource types). Inspired by [FHIR-AgentBench](https://arxiv.org/abs/2509.19319) (Verily/KAIST/MIT).
 
-*Evaluated on 50 questions against 536 synthetic Argentine clinical resources (5 FHIR types: Patient, Condition, Observation, MedicationRequest, Encounter). LLM-as-judge scoring with hybrid programmatic + Claude Haiku. See [docs/experiments/EXPERIMENTS.md](docs/experiments/EXPERIMENTS.md) for full methodology.*
+| Model | Accuracy | Simple (16) | Medium (41) | Complex (43) | Errors* | P50 Latency |
+|-------|----------|-------------|-------------|--------------|---------|-------------|
+| **Claude Sonnet 4.5** | **84.0%** | 94% | 93% | 72% | 8 | 12.7s |
+| Claude Haiku 4.5 | 77.0% | 100% | 80% | 65% | 7 | 6.6s |
+| GPT-4o | 63.0% | 100% | 73% | 40% | 3 | 14.4s |
+| Llama 3.3 70B | 48.0% | 94% | 63% | 16% | 9 | 6.5s |
+| Qwen 3.5 9B | 25.0% | 50% | 29% | 12% | 1 | 11.8s |
 
-```bash
-# Run the benchmark
-docker compose up -d
-uv run python -m benchmarks.run_eval
+*\*Errors = agent exceeded iteration budget (8 steps) and could not produce an answer. These count as incorrect in the accuracy score.*
 
-# Run a specific category
-uv run python -m benchmarks.run_eval --category simple
+*All models use the same agent loop, tools, and system prompt. Differences reflect reasoning ability, tool calling reliability, and schema handling. Questions cover terminology resolution, multi-hop reference traversal, server-side counting, aggregation, and temporal filtering across 10 FHIR resource types. Evaluated on synthetic data — not validated in clinical environments. See [experiment log](docs/experiments/EXPERIMENTS.md) for detailed methodology and per-question analysis.*
+
+## Architecture
+
+```mermaid
+graph TB
+    User["User (NL query)"]
+
+    subgraph Agent["saludai-agent"]
+        Planner["Query Planner<br/>(FHIR knowledge graph)"]
+        Loop["Agent Loop<br/>(plan → execute → evaluate)"]
+        Tools["Tools"]
+    end
+
+    subgraph ToolSet["Tool Registry"]
+        T1["resolve_terminology<br/>SNOMED CT · CIE-10 · LOINC · ATC"]
+        T2["search_fhir<br/>with auto-pagination"]
+        T3["count_fhir<br/>server-side _summary=count"]
+        T4["get_resource<br/>direct reference lookup"]
+        T5["execute_code<br/>sandboxed Python"]
+    end
+
+    subgraph Core["saludai-core"]
+        FHIR["FHIR Client (httpx)"]
+        Term["Terminology Resolver<br/>(rapidfuzz)"]
+        QB["Query Builder"]
+        Locale["Locale Pack (AR)"]
+    end
+
+    HAPI["HAPI FHIR R4<br/>200 patients · 3,182 resources"]
+    LLM["LLM Provider<br/>(Anthropic · OpenAI · Ollama)"]
+    Langfuse["Langfuse<br/>(observability)"]
+
+    User --> Loop
+    Loop --> Planner
+    Planner --> Loop
+    Loop --> Tools
+    Tools --> T1 & T2 & T3 & T4 & T5
+    T1 --> Term
+    T2 & T3 & T4 --> FHIR
+    T5 --> Loop
+    FHIR --> HAPI
+    Loop --> LLM
+    Loop --> Langfuse
+    Term --> Locale
+    QB --> Locale
 ```
 
-## Current Status
+**Key design decisions:**
 
-The project provides:
-
-- UV monorepo with 4 packages (core, agent, mcp, api)
-- Docker Compose setup with HAPI FHIR R4 + 536 synthetic Argentine clinical resources
-- Async FHIR client (`saludai-core`) with connection, search, and read operations
-- Terminology resolver (SNOMED CT AR, CIE-10, LOINC) with fuzzy matching
-- FHIR query builder with fluent API
-- Agent loop with LLM tool calling (provider-agnostic: Anthropic/OpenAI/Ollama)
-- 5 tools: resolve_terminology, search_fhir, get_resource, execute_code (sandboxed Python)
-- **MCP server** (`saludai-mcp`) — connect from Claude Desktop, Claude Code, Cursor, or any MCP client
-- **REST API** (`saludai-api`) — FastAPI server with `/query` endpoint
-- **CLI** — `saludai query`, `saludai serve`, `saludai mcp`
-- Locale packs for multi-country support (Argentina built-in)
-- Full Langfuse tracing integration
-- FHIR-AgentBench evaluation framework (50 questions, hybrid LLM-as-judge)
-- GitHub Actions CI with Ruff linting, Pytest, and coverage (84.57%)
-- 473 passing tests (unit + integration)
+- **No LangChain.** The agent loop is ~300 lines of Python. Every step is auditable and traceable. We chose simplicity over framework magic — see [ADR-002](docs/decisions/).
+- **Hybrid Query Planner.** A plan-and-execute pattern with a FHIR knowledge graph (resource relationships + query pattern catalog). The planner classifies the question and selects a strategy *before* the agent starts calling tools — see [ADR-009](docs/decisions/009-hybrid-query-planner.md).
+- **Action Space Reduction.** Instead of suggesting tools via prompt, we *remove* irrelevant tools from the LLM's context based on the query plan. The model can't misuse what it can't see.
+- **Provider-agnostic.** Same agent loop works with Claude, GPT-4o, Llama, or Qwen. Swap the model, keep everything else.
 
 ## Quick Start
 
@@ -62,45 +94,36 @@ git clone https://github.com/saludai-labs/saludai.git
 cd saludai
 uv sync
 
-# Start HAPI FHIR with synthetic Argentine data
+# Start HAPI FHIR with 200 synthetic Argentine patients
 docker compose up -d
 
-# Verify FHIR server is running (wait ~30s for seeding)
-curl http://localhost:8080/fhir/Patient?_count=5
+# Wait ~30s for seeding, then verify
+curl http://localhost:8890/fhir/Patient?_summary=count
 
-# Run tests
+# Run the agent
+uv run saludai query "¿Cuántos pacientes tienen diabetes tipo 2?"
+
+# Run the benchmark
+uv run python -m benchmarks.run_eval
+
+# Run tests (696 tests, 95% coverage)
 uv run pytest
 ```
 
-**Prerequisites:** Python 3.12+, [UV](https://docs.astral.sh/uv/), Docker
+**Prerequisites:** [Python 3.12+](https://python.org), [UV](https://docs.astral.sh/uv/), [Docker](https://docs.docker.com/get-docker/)
 
-## Project Structure
+## Usage
 
-```
-packages/
-  saludai-core/     # FHIR client, terminology resolver, shared types
-  saludai-agent/    # Self-reasoning loop + tools
-  saludai-mcp/      # MCP server for Claude Desktop / agents
-  saludai-api/      # FastAPI REST interface
-data/seed/          # Synthetic Argentine patient data (Synthea-style)
-benchmarks/         # FHIR-AgentBench evaluation scripts
-notebooks/          # Interactive Jupyter demos
-docs/               # Architecture, roadmap, ADRs
-```
+### MCP Server (Claude Desktop / Claude Code / Cursor)
 
-## MCP Server
-
-SaludAI exposes its tools via the [Model Context Protocol](https://modelcontextprotocol.io), compatible with Claude Desktop, Claude Code, Cursor, and any MCP client.
+SaludAI exposes its tools via the [Model Context Protocol](https://modelcontextprotocol.io):
 
 ```bash
-# Start FHIR server first
-docker compose up -d
-
-# Run the MCP server (stdio transport)
+# Start MCP server (stdio transport)
 uv run saludai-mcp
 ```
 
-**Claude Desktop / Claude Code config** (`claude_desktop_config.json`):
+Add to your MCP client config (`claude_desktop_config.json`):
 
 ```json
 {
@@ -109,65 +132,81 @@ uv run saludai-mcp
       "command": "uv",
       "args": ["run", "--directory", "/path/to/saludai", "saludai-mcp"],
       "env": {
-        "SALUDAI_FHIR_SERVER_URL": "http://localhost:8080/fhir"
+        "SALUDAI_FHIR_SERVER_URL": "http://localhost:8890/fhir"
       }
     }
   }
 }
 ```
 
-**Available tools:** `resolve_terminology`, `search_fhir`, `get_resource`, `run_python`
+### REST API
 
-## Locale Packs — Multi-Country Support
+```bash
+uv run saludai serve
+# POST http://localhost:8000/query {"query": "Pacientes con hipertensión en Córdoba"}
+```
 
-SaludAI supports country/region-specific configuration through **locale packs**. A locale pack bundles terminology data, system prompts, and tool descriptions for a specific health system.
+### CLI
 
-Argentina (`ar`) comes built-in as the default:
+```bash
+uv run saludai query "Medicaciones más frecuentes en pacientes mayores de 70"
+```
+
+## Project Structure
+
+```
+saludai/
+├── packages/
+│   ├── saludai-core/       # FHIR client, terminology resolver, query builder, locale packs
+│   ├── saludai-agent/      # Agent loop, planner, tools, LLM abstraction
+│   ├── saludai-mcp/        # MCP server (Claude Desktop, Cursor, etc.)
+│   └── saludai-api/        # FastAPI REST interface
+├── benchmarks/             # 100-question eval framework + results
+├── data/seed/              # Deterministic synthetic data generator (200 AR patients)
+├── notebooks/              # Interactive Jupyter demos (3 notebooks)
+└── docs/                   # Architecture, ADRs, experiments, roadmap
+```
+
+## Built for Latin America
+
+SaludAI is not a generic FHIR wrapper with Spanish translations bolted on. It's built for Argentina's health system, with an architecture designed to scale across Latin America:
+
+- **Argentine terminology:** SNOMED CT Argentine edition, CIE-10 (Argentine adaptation), LOINC, ATC — with fuzzy matching via rapidfuzz
+- **Locale packs:** Country-specific bundles of terminology, system prompts, and FHIR metadata. Argentina ships built-in; add your country by implementing a locale pack
+- **openRSD-aware:** Locale pack references Argentina's national FHIR profiles
+- **Synthetic data that looks real:** 200 patients with Argentine names, DNI, 18 provinces weighted by population
+- **Spanish-first prompts:** The agent reasons in the language of the data
 
 ```python
 from saludai_core.locales import load_locale_pack
 
-pack = load_locale_pack("ar")  # SNOMED CT AR, CIE-10 AR, LOINC
+pack = load_locale_pack("ar")  # SNOMED CT AR + CIE-10 AR + LOINC + ATC
 ```
 
-To switch locale via environment variable:
+## Observability
+
+Every agent run is fully traced in [Langfuse](https://langfuse.com):
+
+- Query plan generation (planner output)
+- Each iteration: LLM call, tool selection, tool execution, result
+- Token usage and cost per step
+- Final answer with evaluation score
+
+Set up Langfuse Cloud (free tier) or self-hosted:
 
 ```bash
-export SALUDAI_LOCALE=ar  # default
+export LANGFUSE_PUBLIC_KEY=pk-...
+export LANGFUSE_SECRET_KEY=sk-...
+export LANGFUSE_HOST=https://cloud.langfuse.com
 ```
 
-Creating a new locale pack for your country is straightforward — see [docs/LOCALE_GUIDE.md](docs/LOCALE_GUIDE.md) for the full guide.
-
 ## Notebooks
-
-Interactive Jupyter notebooks to explore SaludAI's capabilities:
 
 | Notebook | Description |
 |----------|-------------|
 | [01-getting-started](notebooks/01-getting-started.ipynb) | FHIR client, terminology resolver, query builder |
 | [02-agent-queries](notebooks/02-agent-queries.ipynb) | Natural language queries with the agent loop |
 | [03-benchmark-eval](notebooks/03-benchmark-eval.ipynb) | Run and analyze the FHIR-AgentBench evaluation |
-
-```bash
-# Run notebooks
-uv run jupyter notebook notebooks/
-```
-
-## CLI & REST API
-
-SaludAI provides a unified CLI and a REST API for programmatic access:
-
-```bash
-# Query the agent from the terminal
-uv run saludai query "Pacientes con diabetes tipo 2 mayores de 60"
-
-# Start the REST API server
-uv run saludai serve
-# POST http://localhost:8000/query {"query": "..."}
-
-# Start the MCP server
-uv run saludai mcp
-```
 
 ## Contributing
 

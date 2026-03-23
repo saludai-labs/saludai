@@ -289,9 +289,18 @@ class RecordingTracer:
         start a new iteration step.
         """
         if name == "planner":
+            plan_usage: dict[str, int] = {
+                "input_tokens": usage.input_tokens,
+                "output_tokens": usage.output_tokens,
+            }
+            if usage.cache_creation_input_tokens:
+                plan_usage["cache_creation_input_tokens"] = usage.cache_creation_input_tokens
+            if usage.cache_read_input_tokens:
+                plan_usage["cache_read_input_tokens"] = usage.cache_read_input_tokens
             self._plan = {
                 "model": model,
                 "output": output,
+                "usage": plan_usage,
             }
             return
 

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from benchmarks.metrics import BenchmarkMetrics
+    from benchmarks.metrics import BenchmarkMetrics, DistributionStats
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +50,8 @@ class QuestionResult:
     success: bool
     error: str | None = None
     trace_id: str | None = None
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
     plan: dict[str, Any] | None = None
     steps: tuple[dict[str, Any], ...] | None = None
 
@@ -82,28 +84,90 @@ def write_results_json(
     )
 
 
+def _fmt_dist(label: str, stats: DistributionStats, unit: str = "") -> str:
+    """Format a distribution stats line."""
+    u = unit
+    return (
+        f"    {label:18s}  "
+        f"avg={stats.mean:6.1f}{u}  "
+        f"p50={stats.median:6.1f}{u}  "
+        f"p75={stats.p75:6.1f}{u}  "
+        f"p90={stats.p90:6.1f}{u}  "
+        f"p95={stats.p95:6.1f}{u}"
+    )
+
+
+def _fmt_dist_int(label: str, stats: DistributionStats) -> str:
+    """Format a distribution stats line for integer values."""
+    return (
+        f"    {label:18s}  "
+        f"avg={stats.mean:5.1f}  "
+        f"p50={stats.median:5.0f}  "
+        f"p75={stats.p75:5.0f}  "
+        f"p90={stats.p90:5.0f}  "
+        f"p95={stats.p95:5.0f}"
+    )
+
+
+def _fmt_token_dist(label: str, stats: DistributionStats) -> str:
+    """Format a distribution stats line for token counts (in K)."""
+    return (
+        f"    {label:18s}  "
+        f"avg={stats.mean / 1000:5.1f}K  "
+        f"p50={stats.median / 1000:5.1f}K  "
+        f"p75={stats.p75 / 1000:5.1f}K  "
+        f"p90={stats.p90 / 1000:5.1f}K  "
+        f"p95={stats.p95 / 1000:5.1f}K"
+    )
+
+
 def print_summary(metrics: BenchmarkMetrics) -> None:
     """Print a human-readable summary of benchmark metrics to stdout."""
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 70)
     print("  FHIR-AgentBench — SaludAI Evaluation Results")
-    print("=" * 60)
+    print("=" * 70)
     print(f"  Total questions:         {metrics.total}")
     print(f"  Correct:                 {metrics.correct}")
     print(f"  Incorrect:               {metrics.incorrect}")
     print(f"  Errors:                  {metrics.errors}")
     print(f"  Accuracy:                {metrics.accuracy:.1%}")
     print(f"  Accuracy (excl. errors): {metrics.accuracy_excluding_errors:.1%}")
-    print(f"  Avg duration:            {metrics.avg_duration_seconds:.1f}s")
-    print(f"  Avg iterations:          {metrics.avg_iterations:.1f}")
-    print("-" * 60)
+    print("-" * 70)
 
     if metrics.category_breakdown:
         print("  Category Breakdown:")
         for cat, cat_metrics in sorted(metrics.category_breakdown.items()):
             acc = f"{cat_metrics.accuracy:.0%}"
-            print(f"    {cat:10s}  {cat_metrics.correct}/{cat_metrics.total}  ({acc})")
+            err = f"  ({cat_metrics.errors} err)" if cat_metrics.errors else ""
+            print(f"    {cat:10s}  {cat_metrics.correct}/{cat_metrics.total}  ({acc}){err}")
+        print("-" * 70)
 
-    print("=" * 60 + "\n")
+    # Distribution tables
+    print("  Distribution Stats:          avg    p50    p75    p90    p95")
+    if metrics.duration_stats:
+        print(_fmt_dist("Duration (s)", metrics.duration_stats, "s"))
+    if metrics.iteration_stats:
+        print(_fmt_dist_int("Iterations", metrics.iteration_stats))
+    if metrics.tool_calls_stats:
+        print(_fmt_dist_int("Tool calls", metrics.tool_calls_stats))
+    print("-" * 70)
+
+    # Token usage
+    total_tokens = metrics.total_input_tokens + metrics.total_output_tokens
+    if total_tokens > 0:
+        in_tok = metrics.total_input_tokens
+        out_tok = metrics.total_output_tokens
+        n = metrics.total
+        print("  Token Usage:")
+        print(f"    Total:     {total_tokens:,} ({in_tok:,} in + {out_tok:,} out)")
+        avg_in, avg_out = in_tok // n, out_tok // n
+        print(f"    Per query: {avg_in + avg_out:,} avg ({avg_in:,} in + {avg_out:,} out)")
+        if metrics.input_token_stats:
+            print(_fmt_token_dist("Input tokens", metrics.input_token_stats))
+        if metrics.output_token_stats:
+            print(_fmt_token_dist("Output tokens", metrics.output_token_stats))
+
+    print("=" * 70 + "\n")
 
 
 def append_result_jsonl(path: Path, result: QuestionResult) -> None:

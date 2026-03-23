@@ -39,12 +39,14 @@ class EvalHarness:
         config: BenchmarkConfig,
         recorder: RecordingTracer | None = None,
         progress_path: Path | None = None,
+        delay_seconds: float = 0.0,
     ) -> None:
         self._agent = agent_loop
         self._judge = judge
         self._config = config
         self._recorder = recorder
         self._progress_path = progress_path
+        self._delay = delay_seconds
 
     async def run_all(self, questions: list[EvalQuestion]) -> list[QuestionResult]:
         """Run the evaluation on all questions sequentially.
@@ -61,6 +63,8 @@ class EvalHarness:
         results: list[QuestionResult] = []
 
         for i, question in enumerate(questions, 1):
+            if i > 1 and self._delay > 0:
+                await asyncio.sleep(self._delay)
             logger.info(
                 "Evaluating question %d/%d: %s",
                 i,
@@ -170,12 +174,18 @@ class EvalHarness:
         # Extract debug recording if available
         plan = None
         steps = None
+        total_input_tokens = 0
+        total_output_tokens = 0
         if self._recorder is not None:
             recording = self._recorder.get_recording()
             plan = recording.get("plan")
             raw_steps = recording.get("steps")
             if raw_steps:
                 steps = tuple(raw_steps)
+                for step in raw_steps:
+                    usage = step.get("usage", {})
+                    total_input_tokens += usage.get("input_tokens", 0)
+                    total_output_tokens += usage.get("output_tokens", 0)
 
         return QuestionResult(
             question_id=question.id,
@@ -190,6 +200,8 @@ class EvalHarness:
             duration_seconds=duration,
             success=True,
             trace_id=agent_result.trace_id,
+            total_input_tokens=total_input_tokens,
+            total_output_tokens=total_output_tokens,
             plan=plan,
             steps=steps,
         )

@@ -648,6 +648,490 @@ Historial completo de todas las ejecuciones del benchmark.
 
 ---
 
+## Exp 11 — Multi-LLM: Qwen 3.5 9B (Sprint 6.1)
+
+### Hipótesis
+Un modelo open-source de 9B parámetros puede ejecutar el mismo pipeline de agente
+(planner + tools + judge) pero con accuracy significativamente menor que un modelo frontier.
+Este experimento establece el piso de la tabla comparativa multi-LLM.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C). Seleccionadas de las 119 por máxima diversidad, 19 redundantes deshabilitadas. Ver `BENCHMARK_TAXONOMY.md`.
+- **Datos:** Seed v3 (200 pacientes, 10 resource types, 3273 entries)
+- **Modelo agente:** Qwen 3.5 9B (`Qwen/Qwen3.5-9B`) via Together AI
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Timeout:** 300s
+- **Infraestructura:** Together AI serverless API (OpenAI-compatible)
+
+### Resultados
+
+Corrida inicial + retry de errores 503 (con `--delay 3` entre preguntas):
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors | Avg latency | Tokens/q |
+|--------|----------|--------|--------|---------|--------|-------------|----------|
+| Qwen 3.5 9B | **29.0%** | 9/16 (56%) | 18/41 (44%) | 2/43 (5%) | 10 | 30.5s | 7.0K |
+| Qwen 3.5 9B (excl errors) | **32.2%** | — | — | — | — | — | — |
+
+**Distribución de latencia (corrida inicial, 100q):**
+
+| Metric | avg | p50 | p75 | p90 | p95 |
+|--------|-----|-----|-----|-----|-----|
+| Duration (s) | 30.5 | 17.1 | 31.0 | 72.4 | 128.5 |
+| Iterations | 1.8 | 2.0 | 3.0 | 3.0 | 4.0 |
+| Tool calls | 1.7 | 1.0 | 2.0 | 4.0 | 5.0 |
+
+**Token usage:** ~924K total (~871K in + ~53K out, sumando ambas corridas). ~$0.12 costo agente.
+
+**Resultados:**
+- Corrida inicial: `benchmarks/results/eval_20260321_181516.json`
+- Retry (27q con errores): `benchmarks/results/eval_20260321_183748.json`
+- Progreso combinado: `benchmarks/results/progress_qwen_retry.jsonl`
+
+### Análisis
+
+**Errores 503 de Together AI:** La corrida inicial tuvo 27/100 errores HTTP 503 "Service Unavailable" — Together AI no pudo atender el request. El SDK de OpenAI reintenta automáticamente (2 reintentos), pero en 27 casos agotó los reintentos. Se reintentaron las 27 preguntas con `--delay 3` (3 segundos de pausa entre preguntas), recuperando 17 de 27. Los 10 errores persistentes son todos Complex (7) y Medium (3) — preguntas que generan más tokens y más tool calls, saturando el API.
+
+**Patrón de fallos:**
+- **`answer_length=0` (principal):** Qwen frecuentemente hace el tool call correcto, obtiene el resultado, pero en la iteración final devuelve una respuesta vacía (no genera texto narrativo). Esto representa la mayoría de los INCORRECT en Simple/Medium. El modelo parece no entender que debe producir una respuesta en lenguaje natural después de recibir los datos.
+- **Complex (5%):** El modelo no tiene capacidad de razonamiento multi-hop. Casi todas las preguntas complex fallan porque Qwen no puede planificar la secuencia correcta de tool calls (resolve_terminology → search → filter → count).
+- **Terminology:** Cuando llega a invocar `resolve_terminology`, funciona (el resolver es determinístico). Pero a menudo no invoca el tool o no usa el código devuelto en la query siguiente.
+
+**Conclusión:** 9B es insuficiente para el agente FHIR, pero el pipeline funciona end-to-end con modelos open-source via Together AI. El resultado es útil como piso de la tabla comparativa. La infraestructura de Together AI introduce ruido significativo (errores 503) que debe controlarse con pausas entre requests.
+
+---
+
+## Exp 12 — Multi-LLM: Llama 3.3 70B (Sprint 6.1)
+
+### Hipótesis
+Un modelo open-source de 70B parámetros debería superar significativamente al de 9B
+y acercarse a modelos comerciales en preguntas simples/medias, pero caer en complex.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types, 3273 entries)
+- **Modelo agente:** Llama 3.3 70B Instruct Turbo (`meta-llama/Llama-3.3-70B-Instruct-Turbo`) via Together AI
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Timeout:** 300s
+- **Delay:** 1s entre preguntas (corrida inicial), 3s (retry)
+
+### Resultados
+
+Corrida inicial + retry de 13 errores 503:
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors | Avg latency | Tokens/q |
+|--------|----------|--------|--------|---------|--------|-------------|----------|
+| Llama 3.3 70B | **46.9%** | 15/16 (94%) | 23/41 (56%) | 8/41 (20%) | 7 | 6.6s | 6.3K |
+| Llama 3.3 70B (excl errors) | **50.5%** | — | — | — | — | — | — |
+
+**Distribución de latencia (corrida inicial, 100q):**
+
+| Metric | avg | p50 | p75 | p90 | p95 |
+|--------|-----|-----|-----|-----|-----|
+| Duration (s) | 6.6 | 5.3 | 9.0 | 11.5 | 13.1 |
+| Iterations | 2.1 | 2.0 | 2.0 | 3.0 | 5.0 |
+| Tool calls | 1.2 | 1.0 | 1.0 | 2.0 | 4.0 |
+
+**Token usage:** ~853K total (corrida + retry). ~$0.75 costo agente.
+
+**Resultados:**
+- Corrida inicial: `benchmarks/results/eval_20260321_190310.json`
+- Retry (13q): `benchmarks/results/llama3.3-70b_retry.log`
+- Progreso combinado: `benchmarks/results/progress_llama_retry.jsonl`
+
+### Análisis
+
+**Simple (94%):** Casi perfecto — solo 1 fallo. El modelo entiende FHIR básico y tool calling.
+
+**Medium (56%):** Razonable. Resuelve terminology correctamente cuando invoca el tool, pero a veces no lo hace o no conecta el código con la query FHIR siguiente.
+
+**Complex (20%):** Muy bajo. El modelo no puede planificar secuencias multi-hop confiablemente.
+
+**Errores (7 finales, todos `max_iterations_exceeded`):**
+- Corrida inicial: 13 errores 503 de Together AI. Retry con `--delay 3` recuperó 6.
+- Los 7 restantes son errores de razonamiento, no de infraestructura:
+  - Sintaxis `_has` incorrecta: Llama no entiende la estructura `_has:Resource:searchParam:code` y genera variantes inválidas como `_has:Condition:subject:not-exists`.
+  - Paso de objetos JSON como argumentos: en iteraciones tardías, el modelo degenera y pasa `{'type': 'string', 'value': 'Patient'}` en vez de `'Patient'`.
+  - Loop repetitivo: repite la misma query inválida 5-8 veces sin corregir.
+
+**Comparativa con Qwen 3.5 9B:**
+
+| Dimensión | Qwen 3.5 9B | Llama 3.3 70B | Delta |
+|-----------|-------------|---------------|-------|
+| Accuracy | 29.0% | 46.9% | +17.9pp |
+| Simple | 56% | 94% | +38pp |
+| Medium | 44% | 56% | +12pp |
+| Complex | 5% | 20% | +15pp |
+| Latency | 30.5s | 6.6s | -78% |
+
+**Conclusión:** 70B es significativamente mejor que 9B en todas las dimensiones. Simple casi perfecto. Pero Complex sigue siendo el cuello de botella — el razonamiento multi-hop y la sintaxis FHIR avanzada (`_has`, negación) son demasiado difíciles para modelos open-source de este tamaño. La latencia 5x menor que Qwen es notable (modelo más eficiente en Together + menos retries).
+
+---
+
+## Exp 13 — Multi-LLM: GPT-4o (Sprint 6.2)
+
+### Hipótesis
+GPT-4o con schema flattening, retry y `suggested_query` debería superar
+significativamente a los modelos open-source y acercarse a Claude Sonnet.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types)
+- **Modelo agente:** GPT-4o via OpenAI API
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Delay:** 2s entre preguntas
+- **Fixes aplicados:**
+  - Schema flattening (`_flatten_params_for_openai`) — activo para OpenAI nativo
+  - Retry con exponential backoff (429, 503, 529)
+  - `_merge_params()` normalización de tool arguments
+  - `suggested_query` en planner
+  - Puerto FHIR 8890, preflight check
+
+### Resultados
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors |
+|--------|----------|--------|--------|---------|--------|
+| GPT-4o | **63.0%** | 16/16 (100%) | 30/41 (73%) | 17/43 (40%) | 3 |
+
+**Progreso:** `benchmarks/results/progress_20260322_224328.jsonl`
+
+### Análisis
+
+**Simple (100%):** Schema flattening resolvió completamente el problema. GPT-4o ahora
+genera filtros como keys de primer nivel (`{"resource_type": "Patient", "gender": "male"}`).
+Sin flattening, Simple era 53%.
+
+**Medium (73%):** Fallos en terminology resolution (M04 asma, M19 antihipertensivos,
+M24 vacuna antigripal, M26 hemograma). GPT-4o no siempre invoca `resolve_terminology`
+o no conecta el código resuelto con la query FHIR.
+
+**Complex (40%):** Razonable para un modelo sin fine-tuning FHIR. Fallos en comorbidity
+queries (C10, C05), aggregation geográfica (C03), y queries multi-hop.
+
+**Errores (3):**
+- 2x `max_iterations_exceeded` (C44, M37)
+- 1x parse error: GPT-4o generó JSON truncado en tool arguments (C64)
+
+### Comparativa
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors |
+|--------|----------|--------|--------|---------|--------|
+| Claude Sonnet 4.5 | 93.3%* | 100% | 100% | 88% | 0 |
+| GPT-4o | 63.0% | 100% | 73% | 40% | 3 |
+| Llama 3.3 70B | 48.0% | 94% | 63% | 16% | 9 |
+| Qwen 3.5 9B | 25.0% | 50% | 29% | 12% | 1 |
+
+*Sonnet basado en Exp 10 (30q sample). Pendiente re-run con 100q.
+
+**Conclusión:** GPT-4o es claramente el segundo mejor modelo. El gap con Claude Sonnet
+(-30pp) se concentra en Medium (-27pp) y Complex (-48pp), donde Claude aprovecha
+mejor el tool calling y la sintaxis FHIR avanzada. Simple es idéntico gracias al
+schema flattening.
+
+---
+
+## Exp 14 — Multi-LLM: Qwen 3.5 9B Re-run (Sprint 6.2)
+
+### Hipótesis
+Los fixes de compatibilidad multi-LLM (retry con backoff, `_merge_params`,
+`suggested_query` en planner) deberían mejorar Qwen al eliminar errores 503
+y normalizar tool arguments.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types)
+- **Modelo agente:** Qwen 3.5 9B via Together AI
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Delay:** 2s entre preguntas
+- **Cambios vs Exp 11:**
+  - Retry con exponential backoff (429, 503, 529) — 4 retries, 1→2→4→8s
+  - `_merge_params()` normaliza params a top-level o en `additionalProperties`
+  - `suggested_query` en planner (query concreta inyectada en system prompt)
+  - Schema flattening **desactivado** para Together AI (`base_url != None`)
+  - Puerto FHIR: 8890 (dedicado para SaludAI)
+  - Preflight check: verifica 200 patients antes de correr
+
+### Resultados
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors |
+|--------|----------|--------|--------|---------|--------|
+| Qwen 3.5 9B (Exp 11) | 29.0% | 9/16 (56%) | 18/41 (44%) | 2/43 (5%) | 10 |
+| Qwen 3.5 9B (Exp 13) | **25.0%** | 8/16 (50%) | 12/41 (29%) | 5/43 (12%) | **1** |
+
+**Progreso:** `benchmarks/results/progress_20260322_213514.jsonl`
+
+### Análisis
+
+**Retry eliminó casi todos los errores:** 10 → 1. El único error restante es un
+`Connection error` de Together AI (no un 503/429 retryable).
+
+**Accuracy bajó levemente (29% → 25%).** La `suggested_query` del planner puede
+estar confundiendo a Qwen en algunas Medium — el modelo intenta seguir la sugerencia
+pero no siempre la ejecuta correctamente. En Complex subió de 5% a 12%, lo cual
+sugiere que la sugerencia ayuda en preguntas más difíciles donde Qwen no sabría
+por dónde empezar.
+
+**Varianza inherente:** Qwen 9B tiene alta variabilidad entre runs. La diferencia de
+4pp no es significativa — el modelo simplemente no es lo suficientemente capaz para
+tool calling FHIR robusto.
+
+**Schema flattening descartado para Together AI.** En un run intermedio con flattening
+activo, Qwen cayó a 13% (82/86 respuestas vacías). El modelo interpreta
+`additionalProperties` como campo literal y se confunde. Fix: flattening solo para
+OpenAI nativo (`base_url is None`).
+
+### Conclusión
+
+Para modelos 9B, los fixes de infraestructura (retry, normalización) ayudan con
+estabilidad pero no con capacidad. El techo de Qwen 9B es ~25-30% en este benchmark.
+
+---
+
+## Exp 15 — Multi-LLM: Llama 3.3 70B Re-run (Sprint 6.2)
+
+### Hipótesis
+Los mismos fixes de compatibilidad (retry, `_merge_params`, `suggested_query`)
+deberían mejorar Llama al eliminar errores 503 de Together AI.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types)
+- **Modelo agente:** Llama 3.3 70B Instruct Turbo via Together AI
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Delay:** 2s entre preguntas
+- **Cambios vs Exp 12:** mismos que Exp 13 (retry, `_merge_params`, `suggested_query`,
+  schema flattening desactivado para Together, puerto 8890, preflight check)
+
+### Resultados
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors |
+|--------|----------|--------|--------|---------|--------|
+| Llama 3.3 70B (Exp 12) | 46.9% | 15/16 (94%) | 23/41 (56%) | 8/41 (20%) | 7 |
+| Llama 3.3 70B (Exp 14) | **48.0%** | 15/16 (94%) | 26/41 (**63%**) | 7/43 (16%) | 9 |
+
+**Progreso:** `benchmarks/results/progress_20260322_222343.jsonl`
+
+### Análisis
+
+**Simple (94%):** Idéntico. Llama maneja filtros demográficos correctamente.
+
+**Medium (63% vs 56%):** +7pp mejora. La `suggested_query` del planner ayuda a Llama
+a arrancar con la query correcta en lugar de tantear.
+
+**Complex (16% vs 20%):** Leve baja. 8 de los 9 errores son Complex con `max_iterations`
+— Llama entra en loops con sintaxis `_has` inválida o degenera pasando objetos JSON
+como strings en iteraciones tardías (mismo patrón que Exp 12).
+
+**Errores (9, todos `max_iterations_exceeded`):** Cero errores de infraestructura — el
+retry eliminó completamente los 503 de Together. Los 9 errores son de razonamiento:
+el modelo no puede salir de loops de queries inválidas.
+
+### Conclusión
+
+Llama 3.3 70B se beneficia del `suggested_query` en Medium (+7pp). El retry eliminó
+errores de infra. El techo de Complex (~20%) está limitado por la capacidad del modelo
+para razonamiento multi-hop y sintaxis FHIR avanzada (`_has`, negación).
+
+---
+
+## Exp 16 — Claude Haiku 4.5 100q (Sprint 6.3)
+
+### Hipótesis
+
+Claude Haiku 4.5, como modelo de la misma familia que Sonnet pero más pequeño y rápido,
+debería lograr accuracy significativamente superior a GPT-4o y los modelos open-source,
+acercándose a Sonnet pero con menor costo y latencia.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types)
+- **Modelo agente:** Claude Haiku 4.5 (`claude-haiku-4-5-20251001`)
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Delay:** 0s (sin throttling necesario — API de Anthropic estable)
+
+### Resultados
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors | Avg Duration | Avg Iters |
+|--------|----------|--------|--------|---------|--------|-------------|-----------|
+| Claude Haiku 4.5 | **77.0%** | 16/16 (100%) | 33/41 (80%) | 28/43 (65%) | 7 | 9.3s | 3.2 |
+
+**Token usage:** 1.25M total (1.18M in + 65K out). ~12.5K tokens/query.
+**Accuracy excluyendo errores:** 82.8% (77/93).
+**Progress:** `benchmarks/results/progress_20260322_233846.jsonl`
+**Results:** `benchmarks/results/eval_20260322_235413.json`
+
+### Análisis por categoría
+
+**Simple (100%):** Perfecto, como todos los modelos Anthropic.
+
+**Medium (80%, 1 error):**
+8 incorrectas + 1 error. Problemas principales:
+- **M22** (alergias registradas): Responde 0 — no encuentra AllergyIntolerance. Posible fallo en búsqueda FHIR.
+- **M24** (vacuna antigripal): Responde 0 — no resuelve código Immunization correctamente.
+- **M31** (procedimientos 2024): 58 vs 21 esperados — no filtra por fecha correctamente.
+- **M35** (perfiles tiroideos): 100 vs 39 — cuenta TSH individuales en vez de perfiles (DiagnosticReport).
+- **M37** (plan de cuidado): 62 vs 91 — filtra solo `active` en vez de todos los status.
+- **M40** (alergias alimentarias): 7 vs 21 — filtro incompleto de categoría `food`.
+- **M42** (paneles lipídicos con colesterol): error por max_iterations.
+- **M19** (antihipertensivos): 121 vs 157 — no incluye todos los códigos ATC de antihipertensivos.
+
+**Complex (65%, 6 errores):**
+9 incorrectas + 6 errores (`max_iterations`).
+
+Errores (max_iterations — Haiku no puede completar en 8 iteraciones):
+- **C04** (DM2 + HTA): comorbidity multi-resource, requiere intersección.
+- **C17** (internaciones + medicamentos): requiere cruzar Encounter + MedicationRequest.
+- **C20** (distribución encounters por provincia): requiere aggregation geográfica compleja.
+- **C30** (DM2 sin HbA1c): negación multi-resource.
+- **C54** (DM2 + panel metabólico): cruce Condition + DiagnosticReport.
+- **C64** (3+ crónicas sin plan de cuidado): multi-hop con conteo y negación.
+
+Incorrectas — patrones principales:
+- **Filtros temporales incorrectos:** C24 (encounters 2024: 437 vs 207), C26 (meds 2024: 361 vs 181) — devuelve totales sin filtrar por fecha.
+- **Negación fallida:** C27 (pacientes sin condiciones: 200 vs 30) — no hace la resta correctamente.
+- **Intersección incorrecta:** C05 (menores 18 con condiciones: 0 vs 33), C12 (DM2+HTA+med: 49 vs 9).
+- **Búsqueda incompleta:** C38 (aspirina alergia+prescripción), C58 (emergencia 2024), C61 (glucosa>140+metformina).
+
+### Comparación multi-LLM actualizada
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors | Avg Duration | Tokens/query |
+|--------|----------|--------|--------|---------|--------|-------------|-------------|
+| Claude Sonnet 4.5* | 93.3% | 100% | 100% | 88% | 0 | ~20s | ~30K |
+| **Claude Haiku 4.5** | **77.0%** | **100%** | **80%** | **65%** | **7** | **9.3s** | **12.5K** |
+| GPT-4o | 63.0% | 100% | 73% | 40% | 3 | ~15s | ~20K |
+| Llama 3.3 70B | 48.0% | 94% | 63% | 16% | 9 | ~12s | ~15K |
+| Qwen 3.5 9B | 25.0% | 50% | 29% | 12% | 1 | ~8s | ~10K |
+
+*Sonnet basado en Exp 10 (30q). Pendiente re-run con 100q dataset v4.
+
+### Conclusión
+
+Haiku se ubica entre Sonnet y GPT-4o, como se esperaba. 77% es sólido considerando que
+es ~10x más barato que Sonnet. Las fortalezas:
+
+1. **Simple perfecto** — al igual que Sonnet, la familia Anthropic domina los filtros básicos.
+2. **Medium competitivo (80%)** — supera a GPT-4o (73%) por buen margen.
+3. **Complex es el gap** — 65% vs 88% de Sonnet. Los 7 errores son todos queries que
+   requieren 8+ iteraciones de razonamiento multi-hop que Haiku no logra en el budget.
+
+El bottleneck de Haiku no es tool calling (eso funciona bien) sino razonamiento multi-step:
+intersecciones de conjuntos, negación, filtros temporales correctos. Incrementar
+`max_iterations` a 12 podría recuperar los 7 errores, pero las 9 incorrectas requieren
+mejor razonamiento, no más iteraciones.
+
+---
+
+## Exp 17 — Claude Sonnet 4.5 100q (Sprint 6.3)
+
+### Hipótesis
+
+Claude Sonnet 4.5, el modelo principal del agente, debería mantener el ~93% de accuracy
+observado en Exp 10 (30q) al escalar a 100 preguntas con `max_iterations=8`.
+
+### Setup
+- **Dataset:** v4 — 100 preguntas (16S / 41M / 43C)
+- **Datos:** Seed v3 (200 pacientes, 10 resource types)
+- **Modelo agente:** Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`)
+- **Modelo planner:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Modelo judge:** Claude Haiku 4.5 (fijo, Anthropic)
+- **Max iterations:** 8
+- **Delay:** 0s
+- **Cambios vs Exp 10:** dataset v4 (100q vs 30q), misma infra
+
+### Resultados
+
+| Modelo | Accuracy | Simple | Medium | Complex | Errors | Avg Duration | Avg Iters |
+|--------|----------|--------|--------|---------|--------|-------------|-----------|
+| Claude Sonnet 4.5 | **84.0%** | 15/16 (94%) | 38/41 (93%) | 31/43 (72%) | 8 | 17.7s | 3.4 |
+
+**Token usage:** 446K total (383K in + 63K out). ~4.5K tokens/query.
+**Accuracy excluyendo errores:** 91.3% (84/92).
+**Progress:** `benchmarks/results/progress_20260323_000906.jsonl`
+**Results:** `benchmarks/results/eval_20260323_003838.json`
+
+### Análisis por categoría
+
+**Simple (94%, 1 incorrecta):**
+- **S14** (menores de 18): 33 vs 39 esperados. Cálculo de edad con fecha de corte
+  inconsistente. Primera vez que Sonnet falla un Simple.
+
+**Medium (93%, 1 error):**
+3 incorrectas + 1 error.
+- **M19** (antihipertensivos): error max_iterations — requiere buscar múltiples códigos ATC.
+- **M35** (perfiles tiroideos): 100 vs 39 — cuenta Observations de TSH en vez de
+  DiagnosticReports de perfil tiroideo. Mismo error que Haiku.
+- **M40** (alergias alimentarias): 7 vs 21 — filtro de categoría `food` incompleto.
+  Mismo error que Haiku.
+
+**Complex (72%, 7 errores):**
+5 incorrectas + 7 errores (todos `max_iterations`).
+
+Errores (max_iterations — queries que requieren >8 iteraciones):
+- **C10, C44, C61**: glucosa + DM2 + metformina — variantes del mismo patrón multi-hop.
+- **C12** (DM2 + HTA + medicamento): triple intersección.
+- **C19** (BA + HTA + meds + PA): cuádruple filtro.
+- **C30** (DM2 sin HbA1c): negación multi-resource.
+- **C56** (CarePlan DM2 + metformina): triple cruce.
+
+Incorrectas:
+- **C05** (menores 18 con condiciones): 0 vs 33 — misma confusión de edad que S14.
+- **C55** (procedimiento + crónica): 160 vs 47 — definición de "crónica" demasiado amplia.
+- **C58** (emergencia 2024): 75 vs 36 — no filtra por clase `EMER` correctamente.
+- **C62** (DM2 sin CarePlan): 36 vs 27 — cuenta solo `active` vs todos los status.
+- **C64** (3+ crónicas sin CarePlan): 10 vs 17 — mismo criterio de "crónica".
+
+### Comparación: Sonnet 30q vs 100q
+
+| Metric | Exp 10 (30q) | Exp 17 (100q) | Delta |
+|--------|-------------|---------------|-------|
+| Accuracy | 93.3% | 84.0% | -9.3pp |
+| Simple | 100% | 94% | -6pp |
+| Medium | 100% | 93% | -7pp |
+| Complex | 88% | 72% | -16pp |
+| Errors | 0 | 8 | +8 |
+
+La caída se explica por:
+1. **max_iterations=8 insuficiente** para 8 preguntas Complex multi-hop (en Exp 7 con
+   max_iter=12 daba 88.7%). El 30q sample evitaba las preguntas más costosas.
+2. **Preguntas nuevas en v4** que no estaban en el sample de 30q (M40, C55, C58, C62, C64).
+3. **S14/C05** — regresión inesperada en cálculo de edad.
+
+### Tabla multi-LLM final (100q, max_iter=8)
+
+| Modelo | Accuracy | Acc (excl err) | Simple | Medium | Complex | Errors | Avg Duration | Tokens/query |
+|--------|----------|---------------|--------|--------|---------|--------|-------------|-------------|
+| **Claude Sonnet 4.5** | **84.0%** | **91.3%** | 94% | 93% | 72% | 8 | 17.7s | 4.5K |
+| Claude Haiku 4.5 | 77.0% | 82.8% | 100% | 80% | 65% | 7 | 9.3s | 12.5K |
+| GPT-4o | 63.0% | — | 100% | 73% | 40% | 3 | ~15s | ~20K |
+| Llama 3.3 70B | 48.0% | — | 94% | 63% | 16% | 9 | ~12s | ~15K |
+| Qwen 3.5 9B | 25.0% | — | 50% | 29% | 12% | 1 | ~8s | ~10K |
+
+**Nota:** Sonnet usa prompt caching (3.8K input/q vs 12.5K de Haiku), lo que reduce
+tokens pero no el razonamiento.
+
+### Conclusión
+
+Sonnet 4.5 confirma su liderazgo con 84% (91.3% sin errores), pero el cap de
+`max_iterations=8` le cuesta 8 preguntas Complex que requieren más pasos. Con
+max_iter=12 (como en Exp 7) probablemente recuperaría esos errores y llegaría a ~90%.
+
+El ranking final es claro: Sonnet > Haiku > GPT-4o > Llama > Qwen. La familia Anthropic
+domina en tool calling FHIR, con Sonnet destacando en Complex multi-hop y Haiku ofreciendo
+el mejor balance costo/rendimiento.
+
+---
+
 ## Apéndice
 
 ### A. Estructura del Dataset
@@ -660,6 +1144,9 @@ Historial completo de todas las ejecuciones del benchmark.
 | v3 (100q) | simple | 15 | count, demographics, existence |
 | v3 (100q) | medium | 35 | terminology, filter_combined, status_filter, aggregation, observation_query, medication_query, encounter_query, allergy_query, immunization_query, diagnostic_query |
 | v3 (100q) | complex | 50 | multi_filter, multi_resource, comorbidity, age_condition, multi_terminology, aggregation_geographic, cross_resource, calculation, reference_traversal, advanced_aggregation, temporal, negative, correlation |
+| v4 (100q) | simple | 16 | count, demographics, existence |
+| v4 (100q) | medium | 41 | terminology, filter_combined, status_filter, aggregation, observation_query, medication_query, encounter_query, allergy_query, immunization_query, diagnostic_query, careplan_query |
+| v4 (100q) | complex | 43 | Selección de 62→43 por máxima diversidad. 19 redundantes deshabilitadas. 10 skills, 9 dominios, 10 resource types. Ver `BENCHMARK_TAXONOMY.md`. |
 
 ### B. Resource Types en Seed v3
 

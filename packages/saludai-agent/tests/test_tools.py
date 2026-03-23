@@ -16,6 +16,7 @@ from saludai_agent.tools import (
     SEARCH_FHIR_DEFINITION,
     ToolRegistry,
     _extract_extensions,
+    _merge_params,
     execute_code,
     execute_get_resource,
     execute_resolve_terminology,
@@ -86,6 +87,82 @@ class TestToolDefinitions:
         schema = EXECUTE_CODE_DEFINITION["input_schema"]
         assert "code" in schema["properties"]
         assert "code" in schema["required"]
+
+
+# ---------------------------------------------------------------------------
+# _merge_params — param tolerance for different LLMs
+# ---------------------------------------------------------------------------
+
+
+class TestMergeParams:
+    """_merge_params merges top-level keys into the params dict."""
+
+    def test_params_only(self) -> None:
+        args = {"resource_type": "Patient", "params": {"gender": "male"}}
+        assert _merge_params(args) == {"gender": "male"}
+
+    def test_top_level_only(self) -> None:
+        """GPT-4o pattern: search params at top level, no params key."""
+        args = {"resource_type": "Patient", "gender": "male"}
+        assert _merge_params(args) == {"gender": "male"}
+
+    def test_top_level_has_param(self) -> None:
+        """GPT-4o pattern: _has at top level."""
+        args = {
+            "resource_type": "Patient",
+            "_has:Condition:subject:code": "http://snomed.info/sct|44054006",
+        }
+        result = _merge_params(args)
+        assert result == {
+            "_has:Condition:subject:code": "http://snomed.info/sct|44054006",
+        }
+
+    def test_params_takes_precedence_over_top_level(self) -> None:
+        """If same key in both, params wins (setdefault semantics)."""
+        args = {
+            "resource_type": "Patient",
+            "gender": "female",
+            "params": {"gender": "male"},
+        }
+        assert _merge_params(args) == {"gender": "male"}
+
+    def test_empty_arguments(self) -> None:
+        assert _merge_params({"resource_type": "Patient"}) == {}
+
+    def test_none_params_with_top_level(self) -> None:
+        args = {"resource_type": "Patient", "params": None, "address-state": "Buenos Aires"}
+        assert _merge_params(args) == {"address-state": "Buenos Aires"}
+
+    def test_non_string_values_converted(self) -> None:
+        """Top-level numeric values get stringified."""
+        args = {"resource_type": "Patient", "_count": 100}
+        result = _merge_params(args)
+        assert result == {"_count": "100"}
+
+    def test_additional_properties_dict_unwrapped(self) -> None:
+        """Qwen schema leak: additionalProperties as a dict field."""
+        args = {
+            "resource_type": "Patient",
+            "additionalProperties": {"birthdate": "le1964-01-01"},
+        }
+        assert _merge_params(args) == {"birthdate": "le1964-01-01"}
+
+    def test_additional_properties_string_unwrapped(self) -> None:
+        """Qwen schema leak: additionalProperties as a flat string."""
+        args = {
+            "resource_type": "Patient",
+            "additionalProperties": "birthdate-le=1964-01-01",
+        }
+        assert _merge_params(args) == {"birthdate-le": "1964-01-01"}
+
+    def test_additional_properties_ignored_when_params_has_key(self) -> None:
+        """params takes precedence over additionalProperties."""
+        args = {
+            "resource_type": "Patient",
+            "params": {"birthdate": "ge2000-01-01"},
+            "additionalProperties": {"birthdate": "le1964-01-01"},
+        }
+        assert _merge_params(args) == {"birthdate": "ge2000-01-01"}
 
 
 # ---------------------------------------------------------------------------

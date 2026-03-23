@@ -298,6 +298,42 @@ class TestOpenAIResponseConversion:
         assert result.usage.input_tokens == 0
         assert result.usage.output_tokens == 0
 
+    def test_cached_tokens_from_prompt_details(self) -> None:
+        message = MagicMock()
+        message.content = "cached"
+        message.tool_calls = None
+        choice = MagicMock()
+        choice.message = message
+        choice.finish_reason = "stop"
+        details = MagicMock()
+        details.cached_tokens = 500
+        usage = MagicMock(prompt_tokens=600, completion_tokens=20)
+        usage.prompt_tokens_details = details
+        response = MagicMock()
+        response.choices = [choice]
+        response.usage = usage
+
+        result = _openai_response_to_llm_response(response)
+        assert result.usage.input_tokens == 600
+        assert result.usage.output_tokens == 20
+        assert result.usage.cache_read_input_tokens == 500
+
+    def test_no_prompt_details_defaults_cache_to_zero(self) -> None:
+        message = MagicMock()
+        message.content = "ok"
+        message.tool_calls = None
+        choice = MagicMock()
+        choice.message = message
+        choice.finish_reason = "stop"
+        usage = MagicMock(prompt_tokens=10, completion_tokens=5)
+        usage.prompt_tokens_details = None
+        response = MagicMock()
+        response.choices = [choice]
+        response.usage = usage
+
+        result = _openai_response_to_llm_response(response)
+        assert result.usage.cache_read_input_tokens == 0
+
 
 # ---------------------------------------------------------------------------
 # Factory function
@@ -625,6 +661,232 @@ class TestOpenAILLMClient:
         client._client.close = AsyncMock()
         await client.close()
         client._client.close.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# Factory — unsupported provider
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Retry logic
+# ---------------------------------------------------------------------------
+
+
+def _make_anthropic_success_response() -> MagicMock:
+    """Create a mock Anthropic success response."""
+    resp = MagicMock()
+    resp.content = [MagicMock(type="text", text="ok")]
+    resp.stop_reason = "end_turn"
+    resp.usage = MagicMock(
+        input_tokens=10,
+        output_tokens=5,
+        cache_creation_input_tokens=0,
+        cache_read_input_tokens=0,
+    )
+    return resp
+
+
+def _make_openai_success_response() -> MagicMock:
+    """Create a mock OpenAI success response."""
+    message = MagicMock()
+    message.content = "ok"
+    message.tool_calls = None
+    choice = MagicMock()
+    choice.message = message
+    choice.finish_reason = "stop"
+    resp = MagicMock()
+    resp.choices = [choice]
+    resp.usage = MagicMock(prompt_tokens=10, completion_tokens=5)
+    return resp
+
+
+class TestAnthropicRetry:
+    """Anthropic client retries on transient status codes."""
+
+    @pytest.mark.asyncio
+    async def test_retries_on_429_then_succeeds(self) -> None:
+        import anthropic
+
+        client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
+
+        error_429 = anthropic.APIStatusError(
+            message="rate limit",
+            response=MagicMock(status_code=429, headers={}),
+            body=None,
+        )
+        client._client.messages.create = AsyncMock(
+            side_effect=[error_429, _make_anthropic_success_response()]
+        )
+
+        with patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock) as mock_sleep:
+            result = await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert result.content == "ok"
+        mock_sleep.assert_called_once()
+        assert client._client.messages.create.call_count == 2
+
+    @pytest.mark.asyncio
+    async def test_retries_on_503_then_succeeds(self) -> None:
+        import anthropic
+
+        client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
+
+        error_503 = anthropic.APIStatusError(
+            message="service unavailable",
+            response=MagicMock(status_code=503, headers={}),
+            body=None,
+        )
+        client._client.messages.create = AsyncMock(
+            side_effect=[error_503, error_503, _make_anthropic_success_response()]
+        )
+
+        with patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock):
+            result = await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert result.content == "ok"
+        assert client._client.messages.create.call_count == 3
+
+    @pytest.mark.asyncio
+    async def test_exhausts_retries_raises(self) -> None:
+        import anthropic
+
+        client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
+
+        error_429 = anthropic.APIStatusError(
+            message="rate limit",
+            response=MagicMock(status_code=429, headers={}),
+            body=None,
+        )
+        # 5 failures = 1 initial + 4 retries, all fail
+        client._client.messages.create = AsyncMock(side_effect=[error_429] * 5)
+
+        with (
+            patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock),
+            pytest.raises(LLMError, match="Anthropic API error"),
+        ):
+            await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert client._client.messages.create.call_count == 5
+
+    @pytest.mark.asyncio
+    async def test_non_retryable_status_raises_immediately(self) -> None:
+        import anthropic
+
+        client = AnthropicLLMClient(model="claude-test", api_key="sk-test")
+
+        error_400 = anthropic.APIStatusError(
+            message="bad request",
+            response=MagicMock(status_code=400, headers={}),
+            body=None,
+        )
+        client._client.messages.create = AsyncMock(side_effect=error_400)
+
+        with pytest.raises(LLMError, match="Anthropic API error"):
+            await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert client._client.messages.create.call_count == 1
+
+
+class TestOpenAIRetry:
+    """OpenAI client retries on transient status codes."""
+
+    @pytest.mark.asyncio
+    async def test_retries_on_429_then_succeeds(self) -> None:
+        import openai
+
+        client = OpenAILLMClient(model="gpt-4o", api_key="sk-test")
+
+        error_429 = openai.APIStatusError(
+            message="rate limit",
+            response=MagicMock(status_code=429, headers={}),
+            body=None,
+        )
+        client._client.chat.completions.create = AsyncMock(
+            side_effect=[error_429, _make_openai_success_response()]
+        )
+
+        with patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock) as mock_sleep:
+            result = await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert result.content == "ok"
+        mock_sleep.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_retries_on_503_then_succeeds(self) -> None:
+        import openai
+
+        client = OpenAILLMClient(model="gpt-4o", api_key="sk-test")
+
+        error_503 = openai.APIStatusError(
+            message="service unavailable",
+            response=MagicMock(status_code=503, headers={}),
+            body=None,
+        )
+        client._client.chat.completions.create = AsyncMock(
+            side_effect=[error_503, error_503, _make_openai_success_response()]
+        )
+
+        with patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock):
+            result = await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert result.content == "ok"
+        assert client._client.chat.completions.create.call_count == 3
+
+    @pytest.mark.asyncio
+    async def test_exhausts_retries_raises(self) -> None:
+        import openai
+
+        client = OpenAILLMClient(model="gpt-4o", api_key="sk-test")
+
+        error_429 = openai.APIStatusError(
+            message="rate limit",
+            response=MagicMock(status_code=429, headers={}),
+            body=None,
+        )
+        client._client.chat.completions.create = AsyncMock(side_effect=[error_429] * 5)
+
+        with (
+            patch("saludai_agent.llm.asyncio.sleep", new_callable=AsyncMock),
+            pytest.raises(LLMError, match="OpenAI API error"),
+        ):
+            await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert client._client.chat.completions.create.call_count == 5
+
+    @pytest.mark.asyncio
+    async def test_non_retryable_status_raises_immediately(self) -> None:
+        import openai
+
+        client = OpenAILLMClient(model="gpt-4o", api_key="sk-test")
+
+        error_400 = openai.APIStatusError(
+            message="bad request",
+            response=MagicMock(status_code=400, headers={}),
+            body=None,
+        )
+        client._client.chat.completions.create = AsyncMock(side_effect=error_400)
+
+        with pytest.raises(LLMError, match="OpenAI API error"):
+            await client.generate(
+                system="sys",
+                messages=[Message(role="user", content="test")],
+            )
+        assert client._client.chat.completions.create.call_count == 1
 
 
 # ---------------------------------------------------------------------------

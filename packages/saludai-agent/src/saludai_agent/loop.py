@@ -30,7 +30,7 @@ from saludai_agent.planner import (
 from saludai_agent.prompts import SYSTEM_PROMPT
 from saludai_agent.tools import ToolRegistry
 from saludai_agent.tracing import NoOpTracer, _response_to_dict, _summarise_messages
-from saludai_agent.types import AgentResult, Message, TokenUsage, ToolCall, ToolResult
+from saludai_agent.types import AgentResult, Message, ToolCall, ToolResult
 
 if TYPE_CHECKING:
     from saludai_agent.llm import LLMClient
@@ -266,7 +266,7 @@ class AgentLoop:
             A ``QueryPlan`` with classification and strategy.
         """
         assert self._locale_pack is not None
-        query_plan = await plan_query(
+        query_plan, planner_usage = await plan_query(
             llm=self._planner_llm,
             query=query,
             locale_pack=self._locale_pack,
@@ -276,6 +276,6 @@ class AgentLoop:
             model=self._config.planner_model,
             input={"query": query},
             output=query_plan.raw_json or query_plan.reasoning,
-            usage=TokenUsage(),
+            usage=planner_usage,
         )
         return query_plan

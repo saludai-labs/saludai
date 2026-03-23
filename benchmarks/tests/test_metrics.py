@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from benchmarks.dataset import EvalQuestion
-from benchmarks.metrics import compute_coverage, compute_metrics
+from benchmarks.metrics import compute_coverage, compute_distribution, compute_metrics
 from benchmarks.results import QuestionResult
 
 
@@ -218,7 +218,51 @@ class TestComputeCoverage:
 
         questions = load_dataset()
         c = compute_coverage(questions)
-        assert c.total_questions >= 100
+        assert c.total_questions == 100
         assert c.resource_types_covered == 10
         assert c.skills_covered == 10
         assert c.domains_covered == 9
+
+
+class TestComputeDistribution:
+    """Tests for compute_distribution."""
+
+    def test_empty(self) -> None:
+        d = compute_distribution([])
+        assert d.count == 0
+        assert d.mean == 0.0
+
+    def test_single_value(self) -> None:
+        d = compute_distribution([5.0])
+        assert d.count == 1
+        assert d.mean == 5.0
+        assert d.median == 5.0
+        assert d.p75 == 5.0
+        assert d.stdev == 0.0
+
+    def test_known_distribution(self) -> None:
+        # 1..10
+        values = [float(i) for i in range(1, 11)]
+        d = compute_distribution(values)
+        assert d.count == 10
+        assert d.mean == pytest.approx(5.5)
+        assert d.median == pytest.approx(5.5)
+        assert d.min == 1.0
+        assert d.max == 10.0
+        assert d.p75 > d.median
+        assert d.p90 > d.p75
+        assert d.p95 > d.p90
+
+    def test_metrics_include_distribution(self) -> None:
+        results = [
+            _make_result(question_id="Q1", duration_seconds=2.0, iterations=1),
+            _make_result(question_id="Q2", duration_seconds=4.0, iterations=3),
+            _make_result(question_id="Q3", duration_seconds=10.0, iterations=5),
+        ]
+        m = compute_metrics(results)
+        assert m.duration_stats is not None
+        assert m.duration_stats.count == 3
+        assert m.duration_stats.median == pytest.approx(4.0)
+        assert m.iteration_stats is not None
+        assert m.iteration_stats.mean == pytest.approx(3.0)
+        assert m.tool_calls_stats is not None

@@ -36,6 +36,9 @@ class QueryPlan:
         strategy: Selected query pattern name from the catalog.
         terms_to_resolve: Medical terms that need terminology resolution.
         reasoning: Brief explanation of why this strategy was chosen.
+        suggested_query: Optional FHIR query hint for the executor (e.g.
+            ``"count_fhir('Patient', {'gender': 'male'})"``) to help models
+            that struggle with open-ended tool params.
         raw_json: The raw JSON string from the LLM (for tracing/debugging).
     """
 
@@ -43,6 +46,7 @@ class QueryPlan:
     strategy: str
     terms_to_resolve: tuple[str, ...]
     reasoning: str
+    suggested_query: str = ""
     raw_json: str = ""
 
 
@@ -80,9 +84,14 @@ Selecciona el patron mas adecuado para la pregunta:
   "question_type": "count|list|aggregation|correlation|negative|temporal",
   "strategy": "<nombre del patron del catalogo>",
   "terms_to_resolve": ["termino1", "termino2"],
+  "suggested_query": "count_fhir('Patient', {{'gender': 'male'}})",
   "reasoning": "breve explicacion"
 }}
-```\
+```
+
+IMPORTANTE: suggested_query debe ser una llamada concreta a la herramienta con los \
+params FHIR exactos. Si hay terminos a resolver, usar TERM como placeholder \
+(ej: count_fhir('Patient', {{'_has:Condition:subject:code': 'TERM'}})).\
 """
 
 
@@ -165,8 +174,9 @@ async def plan_query(
         max_tokens: Max tokens for the planning response.
 
     Returns:
-        A ``QueryPlan`` with question classification and strategy.
-        Returns a fallback plan if the LLM output is not valid JSON.
+        A tuple of ``(QueryPlan, TokenUsage)`` with the plan and actual
+        token usage from the LLM call.  Returns a fallback plan if the
+        LLM output is not valid JSON.
     """
     from saludai_agent.types import Message
 
@@ -182,7 +192,7 @@ async def plan_query(
     )
 
     raw = response.content or ""
-    return _parse_plan(raw)
+    return _parse_plan(raw), response.usage
 
 
 def _parse_plan(raw: str) -> QueryPlan:
@@ -232,6 +242,7 @@ def _parse_plan(raw: str) -> QueryPlan:
         strategy=str(data.get("strategy", "search_include")),
         terms_to_resolve=tuple(str(t) for t in terms),
         reasoning=str(data.get("reasoning", "")),
+        suggested_query=str(data.get("suggested_query", "")),
         raw_json=json_str,
     )
 
@@ -251,15 +262,21 @@ def format_plan_for_prompt(plan: QueryPlan) -> str:
         A markdown-formatted plan section.
     """
     terms_str = ", ".join(plan.terms_to_resolve) if plan.terms_to_resolve else "(ninguno)"
-    return (
-        f"## Plan de ejecucion\n\n"
-        f"- **Tipo de pregunta:** {plan.question_type}\n"
-        f"- **Estrategia:** {plan.strategy}\n"
-        f"- **Terminos a resolver:** {terms_str}\n"
-        f"- **Razonamiento:** {plan.reasoning}\n\n"
-        f"Segui este plan como guia. Si la estrategia no funciona, "
-        f"podes adaptarte y usar otras herramientas."
-    )
+    lines = [
+        "## Plan de ejecucion\n",
+        f"- **Tipo de pregunta:** {plan.question_type}",
+        f"- **Estrategia:** {plan.strategy}",
+        f"- **Terminos a resolver:** {terms_str}",
+    ]
+    if plan.suggested_query:
+        lines.append(f"- **Query sugerida:** `{plan.suggested_query}`")
+    lines.extend([
+        f"- **Razonamiento:** {plan.reasoning}",
+        "",
+        "Segui este plan como guia. Usa la query sugerida como punto de partida. "
+        "Si la estrategia no funciona, podes adaptarte y usar otras herramientas.",
+    ])
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
