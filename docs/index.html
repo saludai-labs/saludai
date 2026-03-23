@@ -339,7 +339,7 @@ h1 .accent { color: var(--accent); }
 
 .loop-svg-wrap {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -348,70 +348,14 @@ h1 .accent { color: var(--accent); }
   height: auto;
 }
 
-/* Loop node styles */
-.loop-node rect, .loop-node-pill rect {
-  transition: all 0.5s ease;
-}
-
-.loop-node.active rect {
-  filter: drop-shadow(0 0 12px var(--accent));
-}
-
-.loop-node-pill.active rect {
-  filter: drop-shadow(0 0 12px var(--accent));
-}
-
-.loop-edge {
-  stroke-dasharray: 8 4;
-  animation: dash-flow 1.5s linear infinite;
-}
-
-@keyframes dash-flow {
-  to { stroke-dashoffset: -12; }
-}
-
-.loop-pulse {
-  animation: loop-node-pulse 3s ease infinite;
-}
-
-@keyframes loop-node-pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-/* Active step indicator */
-.step-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 32px;
-  flex-wrap: wrap;
-}
-
-.step-chip {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 6px 14px;
-  border-radius: 6px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  transition: all 0.4s ease;
-  cursor: default;
-}
-
-.step-chip.active {
-  color: var(--accent);
-  border-color: var(--accent-dim);
-  background: var(--accent-glow);
-}
+/* Loop node styles — static, no animation */
 
 /* ═══ Architecture ═══ */
 #architecture { background: var(--bg-deep); }
 
 .arch-wrap {
   margin-top: 56px;
-  max-width: 880px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -439,7 +383,7 @@ h1 .accent { color: var(--accent); }
 
 .bench-chart {
   margin-top: 56px;
-  max-width: 800px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -658,16 +602,19 @@ footer {
   <div class="container">
     <a href="#" class="nav-logo">Salud<span>AI</span></a>
     <ul class="nav-links">
-      <li><a href="#agent-loop">Agent Loop</a></li>
-      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#adaptable">Adaptable</a></li>
       <li><a href="#benchmark">Benchmark</a></li>
+      <li><a href="#agent-loop">How it works</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#quickstart">Quick Start</a></li>
     </ul>
-    <a href="https://github.com/saludai-labs/saludai" class="nav-github" target="_blank" rel="noopener">
-      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      GitHub
-    </a>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <a href="#contact" style="font-family: var(--font-sans); font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 6px; background: var(--accent); color: var(--bg-base); text-decoration: none;">Contact</a>
+      <a href="https://github.com/saludai-labs/saludai" class="nav-github" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
   </div>
 </nav>
 
@@ -681,7 +628,7 @@ footer {
     </div>
     <h1>Salud<span class="accent">AI</span></h1>
     <p class="hero-tagline">
-      A benchmarked, traceable FHIR agent for Latin America — measurable precision across 5 LLMs, 100 clinical questions, every step auditable.
+      A benchmarked, traceable FHIR agent for Latin America — measurable precision across 5 LLMs, every step auditable.
     </p>
     <div class="terminal" id="hero-terminal">
       <div class="terminal-header">
@@ -693,6 +640,113 @@ footer {
       <div class="terminal-body" id="terminal-output"></div>
     </div>
   </div>
+</section>
+
+<!-- ═══ Adaptable ═══ -->
+<section id="adaptable" style="background: var(--bg-deep);">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;"><span></span>Designed to scale</div>
+      <h2 class="section-title">Built for Argentina. Ready for Latin America.</h2>
+      <p class="section-desc" style="max-width: 720px; margin: 0 auto;">
+        SaludAI uses <strong>locale packs</strong> — pluggable bundles that contain a region's medical terminology, clinical prompts, and FHIR metadata. Switch the locale pack, and the entire agent adapts: codes, language, search strategies, even the evaluation benchmark.
+      </p>
+    </div>
+    <div class="features-grid reveal" style="margin-top: 48px;">
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F1E6;&#x1F1F7;</div>
+        <h3>Argentina (built-in)</h3>
+        <p>SNOMED CT Argentine edition, CIE-10, LOINC, ATC. openRSD-aware FHIR profiles. Spanish-first prompts. 200 synthetic patients with real Argentine demographics.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4E6;</div>
+        <h3>Fully extensible</h3>
+        <p>Add a locale pack for your country, province, or institution — national terminology, local FHIR profiles, and clinical vocabulary. No changes to the agent core.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F504;</div>
+        <h3>Any FHIR R4 server</h3>
+        <p>Not locked to a specific vendor. Connect to HAPI FHIR, Firely, Azure FHIR, Google Cloud Healthcare, or any R4-compliant server.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Benchmark ═══ -->
+<section id="benchmark">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Evaluation</div>
+      <h2 class="section-title">Multi-LLM Benchmark</h2>
+      <p class="section-desc">
+        100 clinical questions across 200 synthetic Argentine patients (3,182 FHIR resources, 10 types). Evaluated on deterministic seed data, not real clinical data. Inspired by <a href="https://arxiv.org/abs/2509.19319" style="color: var(--accent); text-decoration: none;" target="_blank">FHIR-AgentBench</a>. Hybrid judge (programmatic + LLM).
+      </p>
+    </div>
+
+    <!-- Multi-LLM comparison chart -->
+    <div class="bench-chart reveal">
+      <svg viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg" id="bench-svg">
+        <!-- Grid -->
+        <line x1="80" y1="40" x2="80" y2="260" stroke="#1e2d3d" stroke-width="0.5"/>
+        <line x1="80" y1="260" x2="740" y2="260" stroke="#1e2d3d" stroke-width="0.5"/>
+
+        <!-- Y axis labels -->
+        <text x="70" y="264" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">0%</text>
+        <line x1="78" y1="205" x2="740" y2="205" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
+        <text x="70" y="209" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">25%</text>
+        <line x1="78" y1="150" x2="740" y2="150" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
+        <text x="70" y="154" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">50%</text>
+        <line x1="78" y1="95" x2="740" y2="95" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
+        <text x="70" y="99" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">75%</text>
+        <line x1="78" y1="40" x2="740" y2="40" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
+        <text x="70" y="44" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">100%</text>
+
+        <!-- Bars: 5 LLMs -->
+        <g class="bench-bar" data-value="84" data-label="Claude Sonnet 4.5 — 84% accuracy">
+          <rect x="100" y="260" width="100" height="0" rx="4" fill="#0cd4e8" opacity="0.9" class="bar-rect" data-target-y="75" data-target-h="185"/>
+          <text x="150" y="67" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" opacity="0" class="bar-label">84%</text>
+          <text x="150" y="280" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="11" font-weight="600">Sonnet 4.5</text>
+          <text x="150" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 12.7s</text>
+        </g>
+
+        <g class="bench-bar" data-value="77" data-label="Claude Haiku 4.5 — 77% accuracy">
+          <rect x="230" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.85" class="bar-rect" data-target-y="91" data-target-h="169"/>
+          <text x="280" y="83" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">77%</text>
+          <text x="280" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Haiku 4.5</text>
+          <text x="280" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 6.6s</text>
+        </g>
+
+        <g class="bench-bar" data-value="63" data-label="GPT-4o — 63% accuracy">
+          <rect x="360" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.7" class="bar-rect" data-target-y="121" data-target-h="139"/>
+          <text x="410" y="113" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">63%</text>
+          <text x="410" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">GPT-4o</text>
+          <text x="410" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 14.4s</text>
+        </g>
+
+        <g class="bench-bar" data-value="48" data-label="Llama 3.3 70B — 48% accuracy">
+          <rect x="490" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.55" class="bar-rect" data-target-y="154" data-target-h="106"/>
+          <text x="540" y="146" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">48%</text>
+          <text x="540" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Llama 3.3</text>
+          <text x="540" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">70B &middot; P50: 6.5s</text>
+        </g>
+
+        <g class="bench-bar" data-value="25" data-label="Qwen 3.5 9B — 25% accuracy">
+          <rect x="620" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.4" class="bar-rect" data-target-y="205" data-target-h="55"/>
+          <text x="670" y="197" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">25%</text>
+          <text x="670" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Qwen 3.5</text>
+          <text x="670" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">9B &middot; P50: 11.8s</text>
+        </g>
+
+        <!-- Subtitle -->
+        <text x="410" y="330" text-anchor="middle" fill="#556677" font-family="DM Sans, sans-serif" font-size="11">Same agent loop, tools, and prompt — differences reflect reasoning ability, tool calling reliability, and schema handling</text>
+
+        <!-- Difficulty breakdown mini-legend -->
+        <text x="410" y="355" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">16 simple &middot; 41 medium &middot; 43 complex &nbsp;|&nbsp; 10 resource types &middot; 4 terminology systems</text>
+      </svg>
+
+    </div>
+
+    </div>
 </section>
 
 <!-- ═══ Agent Loop ═══ -->
@@ -707,114 +761,76 @@ footer {
     </div>
     <div class="loop-container reveal">
       <div class="loop-svg-wrap">
-        <svg viewBox="0 0 1020 370" fill="none" xmlns="http://www.w3.org/2000/svg" id="loop-svg">
+        <svg viewBox="0 0 1100 320" fill="none" xmlns="http://www.w3.org/2000/svg" id="loop-svg">
           <!-- Background grid dots -->
           <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
             <circle cx="1" cy="1" r="0.5" fill="#1e2d3d" opacity="0.5"/>
           </pattern>
-          <rect width="1020" height="370" fill="url(#grid)"/>
+          <rect width="1100" height="320" fill="url(#grid)"/>
 
-          <!-- Step 1: User Query -->
-          <g class="loop-node" data-step="0">
-            <rect x="20" y="100" width="120" height="60" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-            <text x="80" y="125" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500">USER</text>
-            <text x="80" y="142" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">Query</text>
-          </g>
-
-          <!-- Arrow 1→Planner -->
-          <line x1="140" y1="130" x2="178" y2="130" stroke="#1e2d3d" stroke-width="1.5" class="loop-edge" data-step="0"/>
-          <polygon points="178,125 188,130 178,135" fill="#1e2d3d" class="loop-edge" data-step="0"/>
-
-          <!-- Step 2: Planner -->
-          <g class="loop-node" data-step="1">
-            <rect x="188" y="88" width="170" height="84" rx="8" fill="#111922" stroke="#0aa0b0" stroke-width="1.5"/>
-            <text x="273" y="116" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">PLAN</text>
-            <text x="273" y="134" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">Query Planner</text>
-            <text x="273" y="152" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">FHIR knowledge graph</text>
-            <text x="273" y="164" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">classify &middot; strategize &middot; filter tools</text>
-          </g>
-
-          <!-- Arrow Planner → Loop box -->
-          <line x1="358" y1="130" x2="396" y2="130" stroke="#1e2d3d" stroke-width="1.5" class="loop-edge" data-step="1"/>
-          <polygon points="396,125 406,130 396,135" fill="#1e2d3d" class="loop-edge" data-step="1"/>
-
-          <!-- Iterative loop box (dashed border) -->
-          <rect x="400" y="46" width="600" height="200" rx="12" fill="none" stroke="#1e2d3d" stroke-width="1" stroke-dasharray="6 4" opacity="0.5"/>
-          <text x="700" y="38" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="2">AGENT LOOP — LLM DECIDES NEXT ACTION (1-8 ITERATIONS)</text>
-
-          <!-- LLM brain (top of loop) -->
-          <g class="loop-node" data-step="2">
-            <rect x="540" y="58" width="160" height="44" rx="22" fill="#182230" stroke="#1e2d3d" stroke-width="1"/>
-            <text x="620" y="76" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="9">LLM REASONING</text>
-            <text x="620" y="90" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">Claude &middot; GPT-4o &middot; Llama &middot; Qwen</text>
-          </g>
-
-          <!-- Tool options inside loop (3 columns) -->
-          <g class="loop-node" data-step="3">
-            <rect x="420" y="120" width="148" height="60" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-            <text x="494" y="143" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="9">resolve_terminology</text>
-            <text x="494" y="157" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">SNOMED &middot; CIE-10 &middot; LOINC &middot; ATC</text>
-          </g>
-
-          <g class="loop-node" data-step="4">
-            <rect x="580" y="120" width="148" height="60" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-            <text x="654" y="143" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="9">search_fhir / count_fhir</text>
-            <text x="654" y="157" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">auto-pagination &middot; _has &middot; _summary</text>
-          </g>
-
-          <g class="loop-node" data-step="4">
-            <rect x="740" y="120" width="148" height="60" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-            <text x="814" y="143" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="9">execute_code</text>
-            <text x="814" y="157" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">sandboxed Python &middot; set ops</text>
-          </g>
-
-          <!-- Arrows: LLM → tools -->
-          <line x1="570" y1="102" x2="494" y2="120" stroke="#1e2d3d" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>
-          <line x1="620" y1="102" x2="654" y2="120" stroke="#1e2d3d" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>
-          <line x1="670" y1="102" x2="814" y2="120" stroke="#1e2d3d" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>
-
-          <!-- Iterate arrow: tools → back to LLM (right side loop-back) -->
-          <path d="M 900 150 Q 920 150 920 130 L 920 80 Q 920 60 900 60 L 710 60" stroke="#0aa0b0" stroke-width="1.5" fill="none" stroke-dasharray="6 3" opacity="0.6" class="loop-edge" data-step="4"/>
-          <polygon points="714,56 704,60 714,64" fill="#0aa0b0" opacity="0.6" class="loop-edge" data-step="4"/>
-          <text x="940" y="110" text-anchor="middle" fill="#0aa0b0" font-family="JetBrains Mono, monospace" font-size="8" opacity="0.7" transform="rotate(-90, 940, 110)">iterate</text>
-
-          <!-- Working Memory (bottom of loop) -->
-          <g class="loop-node" data-step="4">
-            <rect x="560" y="196" width="200" height="36" rx="6" fill="#182230" stroke="#1e2d3d" stroke-width="1" opacity="0.7"/>
-            <text x="660" y="214" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">working memory (store) &middot; scratchpad</text>
-          </g>
-
-          <!-- Arrow: tools → memory -->
-          <line x1="654" y1="180" x2="654" y2="196" stroke="#1e2d3d" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.3"/>
-
-          <!-- Exit loop → Answer -->
-          <g class="loop-node" data-step="5">
-            <rect x="390" y="280" width="240" height="56" rx="8" fill="#111922" stroke="#0aa0b0" stroke-width="1.5"/>
-            <text x="510" y="304" text-anchor="middle" fill="#0cd4e8" font-family="DM Sans, sans-serif" font-size="13" font-weight="600">Traceable Answer</text>
-            <text x="510" y="320" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">Langfuse trace &middot; plan &middot; steps &middot; token usage</text>
-          </g>
-
-          <!-- Arrow loop → answer -->
-          <path d="M 620 246 L 620 268 Q 620 278 610 278 L 520 278 Q 510 278 510 280" stroke="#1e2d3d" stroke-width="1.5" fill="none" class="loop-edge" data-step="5"/>
-          <polygon points="505,278 510,288 515,278" fill="#1e2d3d" class="loop-edge" data-step="5"/>
-          <text x="640" y="262" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="8">done or max iter</text>
-
-          <!-- Langfuse (side) -->
+          <!-- 1. Question -->
           <g>
-            <rect x="760" y="280" width="160" height="48" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1" opacity="0.7"/>
-            <text x="840" y="300" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="9">Langfuse</text>
-            <text x="840" y="314" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">traces every iteration</text>
+            <rect x="20" y="85" width="170" height="120" rx="12" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
+            <text x="105" y="130" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="20" font-weight="700">Question</text>
+            <text x="105" y="158" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">Natural language</text>
+            <text x="105" y="178" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">clinical query</text>
           </g>
-          <line x1="630" y1="308" x2="760" y2="304" stroke="#1e2d3d" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.3"/>
+
+          <!-- Arrow 1→2 -->
+          <line x1="190" y1="145" x2="234" y2="145" stroke="#0aa0b0" stroke-width="2"/>
+          <polygon points="232,139 244,145 232,151" fill="#0aa0b0"/>
+
+          <!-- 2. Planner -->
+          <g>
+            <rect x="244" y="70" width="210" height="150" rx="12" fill="#111922" stroke="#0aa0b0" stroke-width="2"/>
+            <text x="349" y="115" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600">PLANNER</text>
+            <text x="349" y="143" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="16" font-weight="600">Classify &amp; Strategize</text>
+            <text x="349" y="170" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">FHIR knowledge graph</text>
+            <text x="349" y="192" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">selects tools &amp; strategy</text>
+          </g>
+
+          <!-- Arrow 2→3 -->
+          <line x1="454" y1="145" x2="498" y2="145" stroke="#0aa0b0" stroke-width="2"/>
+          <polygon points="496,139 508,145 496,151" fill="#0aa0b0"/>
+
+          <!-- 3. Agent Loop (the star — largest element) -->
+          <rect x="508" y="24" width="370" height="262" rx="16" fill="#0aa0b0" fill-opacity="0.04" stroke="#0aa0b0" stroke-width="2" stroke-dasharray="8 4"/>
+          <text x="693" y="14" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="15" font-weight="700" letter-spacing="3">AGENT LOOP</text>
+
+          <!-- LLM inside loop -->
+          <g>
+            <rect x="548" y="48" width="290" height="76" rx="38" fill="#182230" stroke="#0aa0b0" stroke-width="1.5"/>
+            <text x="693" y="82" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="18" font-weight="700">LLM Reasoning</text>
+            <text x="693" y="107" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">Claude &middot; GPT-4o &middot; Llama &middot; Qwen</text>
+          </g>
+
+          <!-- Arrow LLM ↔ Tools -->
+          <line x1="693" y1="124" x2="693" y2="156" stroke="#0aa0b0" stroke-width="1.5"/>
+          <polygon points="688,154 693,164 698,154" fill="#0aa0b0"/>
+
+          <!-- Tools inside loop -->
+          <g>
+            <rect x="528" y="166" width="330" height="80" rx="12" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
+            <text x="693" y="198" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="17" font-weight="600">5 FHIR Tools</text>
+            <text x="693" y="224" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">terminology &middot; search &middot; count &middot; get &middot; compute</text>
+          </g>
+
+          <!-- Iterate label (inside loop, bottom) -->
+          <text x="693" y="268" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" opacity="0.7">iterates n times</text>
+
+          <!-- Arrow 3→4 -->
+          <line x1="878" y1="145" x2="912" y2="145" stroke="#0aa0b0" stroke-width="2"/>
+          <polygon points="910,139 922,145 910,151" fill="#0aa0b0"/>
+
+          <!-- 4. Answer -->
+          <g>
+            <rect x="922" y="70" width="160" height="150" rx="12" fill="#111922" stroke="#0aa0b0" stroke-width="2"/>
+            <text x="1002" y="122" text-anchor="middle" fill="#0cd4e8" font-family="DM Sans, sans-serif" font-size="20" font-weight="700">Answer</text>
+            <text x="1002" y="150" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">Traceable &amp; sourced</text>
+            <text x="1002" y="172" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="12">every step in</text>
+            <text x="1002" y="194" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600">Langfuse</text>
+          </g>
         </svg>
-      </div>
-      <div class="step-indicators" id="step-indicators">
-        <span class="step-chip active" data-step="0">1. Query</span>
-        <span class="step-chip" data-step="1">2. Plan</span>
-        <span class="step-chip" data-step="2">3. LLM Reasons</span>
-        <span class="step-chip" data-step="3">4. Resolve Terms</span>
-        <span class="step-chip" data-step="4">5. Search / Compute</span>
-        <span class="step-chip" data-step="5">6. Answer</span>
       </div>
     </div>
   </div>
@@ -842,20 +858,17 @@ footer {
 
         <g class="arch-box">
           <rect x="20" y="50" width="130" height="52" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-          <text x="85" y="72" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">MCP Server</text>
-          <text x="85" y="88" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">saludai-mcp</text>
+          <text x="85" y="81" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">MCP Server</text>
         </g>
 
         <g class="arch-box">
           <rect x="20" y="118" width="130" height="52" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-          <text x="85" y="140" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">REST API</text>
-          <text x="85" y="156" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">saludai-api</text>
+          <text x="85" y="149" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">REST API</text>
         </g>
 
         <g class="arch-box">
           <rect x="20" y="186" width="130" height="52" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-          <text x="85" y="208" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">CLI</text>
-          <text x="85" y="224" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">saludai cli</text>
+          <text x="85" y="217" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">CLI</text>
         </g>
 
         <!-- Arrows: entry → agent -->
@@ -867,9 +880,9 @@ footer {
         <g class="arch-box">
           <rect x="290" y="110" width="240" height="100" rx="12" fill="#111922" stroke="#0aa0b0" stroke-width="2"/>
           <rect x="290" y="110" width="240" height="100" rx="12" fill="url(#agent-glow)" opacity="0.15"/>
-          <text x="410" y="145" text-anchor="middle" fill="#0cd4e8" font-family="DM Sans, sans-serif" font-size="15" font-weight="700">Agent Core</text>
-          <text x="410" y="166" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="10">saludai-agent</text>
-          <text x="410" y="184" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">planner &middot; LLM loop &middot; 5 tools &middot; working memory</text>
+          <text x="410" y="145" text-anchor="middle" fill="#0cd4e8" font-family="DM Sans, sans-serif" font-size="15" font-weight="700">Agent</text>
+          <text x="410" y="166" text-anchor="middle" fill="#8899aa" font-family="JetBrains Mono, monospace" font-size="10">planner &middot; LLM loop &middot; tools</text>
+          <text x="410" y="184" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">working memory &middot; observability</text>
         </g>
 
         <defs>
@@ -881,9 +894,10 @@ footer {
 
         <!-- saludai-core (below agent) -->
         <g class="arch-box">
-          <rect x="280" y="240" width="260" height="56" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-          <text x="410" y="263" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">saludai-core</text>
-          <text x="410" y="280" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">FHIR client &middot; terminology (SNOMED &middot; CIE-10 &middot; LOINC &middot; ATC) &middot; query builder</text>
+          <rect x="280" y="240" width="260" height="68" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
+          <text x="410" y="261" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="12" font-weight="600">Core</text>
+          <text x="410" y="278" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">FHIR client &middot; query builder</text>
+          <text x="410" y="294" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">terminology: SNOMED &middot; CIE-10 &middot; LOINC &middot; ATC</text>
         </g>
 
         <line x1="410" y1="210" x2="410" y2="240" stroke="#1e2d3d" stroke-width="1.2" class="arch-connection"/>
@@ -892,9 +906,8 @@ footer {
         <text x="720" y="100" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2" font-weight="500">SERVICES</text>
 
         <g class="arch-box">
-          <rect x="610" y="116" width="220" height="72" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
-          <text x="720" y="146" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="13" font-weight="600">HAPI FHIR R4</text>
-          <text x="720" y="168" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">200 patients &middot; 3,182 resources &middot; 10 types</text>
+          <rect x="610" y="124" width="220" height="52" rx="8" fill="#111922" stroke="#1e2d3d" stroke-width="1.5"/>
+          <text x="720" y="156" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="13" font-weight="600">HAPI FHIR R4</text>
         </g>
 
         <!-- Langfuse (right bottom) -->
@@ -932,106 +945,6 @@ footer {
   </div>
 </section>
 
-<!-- ═══ Benchmark ═══ -->
-<section id="benchmark">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-label">Evaluation</div>
-      <h2 class="section-title">Multi-LLM Benchmark</h2>
-      <p class="section-desc">
-        100 clinical questions across 200 synthetic Argentine patients (3,182 FHIR resources, 10 types). Evaluated on deterministic seed data, not real clinical data. Inspired by <a href="https://arxiv.org/abs/2509.19319" style="color: var(--accent); text-decoration: none;" target="_blank">FHIR-AgentBench</a>. Hybrid judge (programmatic + LLM).
-      </p>
-    </div>
-
-    <!-- Multi-LLM comparison chart -->
-    <div class="bench-chart reveal">
-      <svg viewBox="0 0 780 380" fill="none" xmlns="http://www.w3.org/2000/svg" id="bench-svg">
-        <!-- Grid -->
-        <line x1="80" y1="40" x2="80" y2="260" stroke="#1e2d3d" stroke-width="0.5"/>
-        <line x1="80" y1="260" x2="740" y2="260" stroke="#1e2d3d" stroke-width="0.5"/>
-
-        <!-- Y axis labels -->
-        <text x="70" y="264" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">0%</text>
-        <line x1="78" y1="205" x2="740" y2="205" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
-        <text x="70" y="209" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">25%</text>
-        <line x1="78" y1="150" x2="740" y2="150" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
-        <text x="70" y="154" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">50%</text>
-        <line x1="78" y1="95" x2="740" y2="95" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
-        <text x="70" y="99" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">75%</text>
-        <line x1="78" y1="40" x2="740" y2="40" stroke="#1e2d3d" stroke-width="0.3" stroke-dasharray="4 4"/>
-        <text x="70" y="44" text-anchor="end" fill="#556677" font-family="JetBrains Mono, monospace" font-size="10">100%</text>
-
-        <!-- Bars: 5 LLMs -->
-        <!-- Sonnet 84% — h=184.8 → y=75.2 -->
-        <g class="bench-bar" data-value="84" data-label="Claude Sonnet 4.5 — 84% accuracy">
-          <rect x="100" y="260" width="100" height="0" rx="4" fill="#0cd4e8" opacity="0.9" class="bar-rect" data-target-y="75" data-target-h="185"/>
-          <text x="150" y="67" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" opacity="0" class="bar-label">84%</text>
-          <text x="150" y="280" text-anchor="middle" fill="#e1e8f0" font-family="DM Sans, sans-serif" font-size="11" font-weight="600">Sonnet 4.5</text>
-          <text x="150" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 12.7s</text>
-        </g>
-
-        <!-- Haiku 77% — h=169.4 → y=90.6 -->
-        <g class="bench-bar" data-value="77" data-label="Claude Haiku 4.5 — 77% accuracy">
-          <rect x="230" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.85" class="bar-rect" data-target-y="91" data-target-h="169"/>
-          <text x="280" y="83" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">77%</text>
-          <text x="280" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Haiku 4.5</text>
-          <text x="280" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 6.6s</text>
-        </g>
-
-        <!-- GPT-4o 63% — h=138.6 → y=121.4 -->
-        <g class="bench-bar" data-value="63" data-label="GPT-4o — 63% accuracy">
-          <rect x="360" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.7" class="bar-rect" data-target-y="121" data-target-h="139"/>
-          <text x="410" y="113" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">63%</text>
-          <text x="410" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">GPT-4o</text>
-          <text x="410" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">P50: 14.4s</text>
-        </g>
-
-        <!-- Llama 48% — h=105.6 → y=154.4 -->
-        <g class="bench-bar" data-value="48" data-label="Llama 3.3 70B — 48% accuracy">
-          <rect x="490" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.55" class="bar-rect" data-target-y="154" data-target-h="106"/>
-          <text x="540" y="146" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">48%</text>
-          <text x="540" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Llama 3.3</text>
-          <text x="540" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">70B &middot; P50: 6.5s</text>
-        </g>
-
-        <!-- Qwen 25% — h=55 → y=205 -->
-        <g class="bench-bar" data-value="25" data-label="Qwen 3.5 9B — 25% accuracy">
-          <rect x="620" y="260" width="100" height="0" rx="4" fill="#0aa0b0" opacity="0.4" class="bar-rect" data-target-y="205" data-target-h="55"/>
-          <text x="670" y="197" text-anchor="middle" fill="#0cd4e8" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" opacity="0" class="bar-label">25%</text>
-          <text x="670" y="280" text-anchor="middle" fill="#8899aa" font-family="DM Sans, sans-serif" font-size="11" font-weight="500">Qwen 3.5</text>
-          <text x="670" y="296" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="8">9B &middot; P50: 11.8s</text>
-        </g>
-
-        <!-- Subtitle -->
-        <text x="410" y="330" text-anchor="middle" fill="#556677" font-family="DM Sans, sans-serif" font-size="11">Same agent loop, tools, and prompt — differences reflect reasoning ability, tool calling reliability, and schema handling</text>
-
-        <!-- Difficulty breakdown mini-legend -->
-        <text x="410" y="355" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">16 simple &middot; 41 medium &middot; 43 complex &nbsp;|&nbsp; 10 resource types &middot; 4 terminology systems</text>
-        <text x="410" y="372" text-anchor="middle" fill="#556677" font-family="JetBrains Mono, monospace" font-size="9">696 tests &middot; 95% coverage &middot; 17 experiments &middot; 10 ADRs &middot; evaluated on synthetic data</text>
-      </svg>
-
-      <div class="bench-annotations">
-        <div class="bench-ann">
-          <span class="bench-ann-num">60%</span>
-          <span>Honest baseline — 50 questions, 5 resource types, reactive loop</span>
-        </div>
-        <div class="bench-ann">
-          <span class="bench-ann-num">+22</span>
-          <span>Auto-pagination eliminated truncated FHIR results</span>
-        </div>
-        <div class="bench-ann">
-          <span class="bench-ann-num">+12</span>
-          <span>Sandboxed Python execution for computation and set operations</span>
-        </div>
-        <div class="bench-ann">
-          <span class="bench-ann-num">+10</span>
-          <span>Hybrid Query Planner with FHIR knowledge graph and action space reduction</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ Features ═══ -->
 <section id="features">
   <div class="container">
@@ -1057,13 +970,8 @@ footer {
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#x1F4CA;</div>
-        <h3>100-Question Benchmark</h3>
-        <p>5 LLMs compared on 100 clinical questions across 10 FHIR resource types. Hybrid judge (programmatic + LLM). 17 experiments documented with per-question analysis.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">&#x1F30E;</div>
-        <h3>Locale Packs</h3>
-        <p>Country-specific bundles — terminology, prompts, FHIR metadata, search params. Argentina built-in (openRSD-aware). Designed to extend to other countries via entry_points.</p>
+        <h3>Benchmarked</h3>
+        <p>100 questions across 10 FHIR resource types — simple, medium, and complex — following the <a href="https://arxiv.org/abs/2509.19319" style="color: var(--accent);">FHIR-AgentBench</a> taxonomy. Hybrid judge (programmatic + LLM). 5 models compared.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#x1F916;</div>
@@ -1105,10 +1013,27 @@ footer {
   </div>
 </section>
 
+<!-- ═══ Contact ═══ -->
+<section id="contact" style="background: var(--bg-deep);">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label" style="justify-content: center;"><span></span>Get in touch</div>
+      <h2 class="section-title">Interested in clinical AI for your organization?</h2>
+      <p class="section-desc" style="max-width: 600px; margin: 0 auto 36px;">
+        Whether you're exploring FHIR agents for your health system, hospital network, or research team — let's talk.
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="mailto:saludai.labs@protonmail.com" style="display: inline-block; padding: 12px 28px; background: var(--accent); color: var(--bg-base); font-family: var(--font-sans); font-weight: 600; font-size: 15px; border-radius: 8px; text-decoration: none;">Contact us</a>
+        <a href="https://github.com/saludai-labs/saludai" target="_blank" style="display: inline-block; padding: 12px 28px; background: var(--bg-surface); color: var(--text-primary); font-family: var(--font-sans); font-weight: 600; font-size: 15px; border-radius: 8px; text-decoration: none; border: 1px solid var(--border);">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ Footer ═══ -->
 <footer>
   <div class="container footer-inner">
-    <span class="footer-brand">Salud<span>AI</span></span>
+    <span class="footer-brand">Salud<span>AI</span> <span style="font-weight: 400; opacity: 0.6; font-size: 12px;">by SaludAI Labs</span></span>
     <ul class="footer-links">
       <li><a href="https://github.com/saludai-labs/saludai" target="_blank">GitHub</a></li>
       <li><a href="https://github.com/saludai-labs/saludai/tree/main/docs" target="_blank">Docs</a></li>
@@ -1205,65 +1130,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   setTimeout(renderLine, 800);
 })();
 
-// ═══ Agent loop step animation ═══
-(function() {
-  const steps = 6;
-  let current = 0;
-  const chips = document.querySelectorAll('.step-chip');
-  const nodes = document.querySelectorAll('.loop-node');
-  const edges = document.querySelectorAll('.loop-edge');
-
-  function highlightStep(idx) {
-    chips.forEach((c, i) => c.classList.toggle('active', i === idx));
-
-    nodes.forEach(n => {
-      const s = parseInt(n.dataset.step);
-      const rect = n.querySelector('rect');
-      if (s === idx) {
-        n.classList.add('active');
-        rect.setAttribute('stroke', '#0cd4e8');
-        rect.setAttribute('stroke-width', '2');
-      } else if (s < idx) {
-        n.classList.remove('active');
-        rect.setAttribute('stroke', '#0aa0b0');
-        rect.setAttribute('stroke-width', '1.5');
-      } else {
-        n.classList.remove('active');
-        rect.setAttribute('stroke', '#1e2d3d');
-        rect.setAttribute('stroke-width', '1.5');
-      }
-    });
-
-    edges.forEach(e => {
-      const s = parseInt(e.dataset.step);
-      if (s < idx) {
-        e.setAttribute('stroke', '#0aa0b0');
-        if (e.tagName === 'polygon') e.setAttribute('fill', '#0aa0b0');
-      } else if (s === idx - 1 || (idx === 5 && s === 4)) {
-        e.setAttribute('stroke', '#0cd4e8');
-        if (e.tagName === 'polygon') e.setAttribute('fill', '#0cd4e8');
-      } else {
-        e.setAttribute('stroke', '#1e2d3d');
-        if (e.tagName === 'polygon') e.setAttribute('fill', '#1e2d3d');
-      }
-    });
-  }
-
-  function cycle() {
-    highlightStep(current);
-    current = (current + 1) % steps;
-    setTimeout(cycle, 1800);
-  }
-
-  // Start when section is visible
-  const loopObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      cycle();
-      loopObserver.disconnect();
-    }
-  }, { threshold: 0.3 });
-  loopObserver.observe(document.getElementById('loop-svg'));
-})();
+// (Agent loop animation removed — static diagram)
 
 // ═══ Benchmark bar animation ═══
 (function() {
