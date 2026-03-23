@@ -1,0 +1,38 @@
+code,display,display_en,aliases
+2345-7,Glucosa en sangre,Blood glucose,glucemia|glucosa|azúcar en sangre|glicemia
+4548-4,Hemoglobina glicosilada,Hemoglobin A1c,HbA1c|A1c|hemoglobina glucosilada|glicosilada
+2093-3,Colesterol total,Total cholesterol,colesterol|colesterolemia
+2571-8,Triglicéridos,Triglycerides,TG|triglicéridos en sangre
+2085-9,Colesterol HDL,HDL cholesterol,HDL|colesterol bueno|lipoproteínas alta densidad
+2089-1,Colesterol LDL,LDL cholesterol,LDL|colesterol malo|lipoproteínas baja densidad
+718-7,Hemoglobina,Hemoglobin,Hb|hemoglobina en sangre
+4544-3,Hematocrito,Hematocrit,Hto|hematócrito
+6690-2,Leucocitos,White blood cell count,WBC|glóbulos blancos|recuento leucocitario
+777-3,Plaquetas,Platelet count,recuento de plaquetas|trombocitos|plaquetario
+2160-0,Creatinina,Creatinine,creatinina sérica|creatinina en sangre
+3094-0,Urea,Blood urea nitrogen,BUN|urea en sangre|uremia|nitrógeno ureico
+2823-3,Potasio,Potassium,K+|potasio sérico|kalemia
+2951-2,Sodio,Sodium,Na+|sodio sérico|natremia
+17861-6,Calcio,Calcium,Ca|calcio sérico|calcemia
+1742-6,ALT,Alanine aminotransferase,GPT|transaminasa glutámico pirúvica|TGP|alanina aminotransferasa
+1920-8,AST,Aspartate aminotransferase,GOT|transaminasa glutámico oxalacética|TGO|aspartato aminotransferasa
+1975-2,Bilirrubina total,Total bilirubin,bilirrubina|BT|bilirrubinemia
+6598-7,Troponina T,Troponin T,troponina|TnT|marcador cardíaco
+30313-1,Hemoglobina en orina,Urine hemoglobin,sangre en orina|hematuria
+5811-5,Gravedad específica de orina,Urine specific gravity,densidad urinaria|gravedad específica
+2339-0,Glucosa en orina,Urine glucose,glucosuria|azúcar en orina
+5902-2,Tiempo de protrombina,Prothrombin time,TP|PT|tiempo de coagulación|protrombina
+6301-6,INR,International normalized ratio,RIN|ratio normalizado internacional|INR coagulación
+30341-2,Velocidad de sedimentación,Erythrocyte sedimentation rate,VSG|VES|eritrosedimentación|velocidad de eritrosedimentación
+1988-5,Proteína C reactiva,C-reactive protein,PCR|CRP|proteína C|reactante de fase aguda
+3016-3,TSH,Thyroid stimulating hormone,tirotropina|hormona estimulante de tiroides|TSH sérica
+3024-7,T4 libre,Free thyroxine,T4L|tiroxina libre|FT4
+14682-9,Creatinina en orina,Urine creatinine,creatinina urinaria|creatininuria
+2514-8,Ácido úrico,Uric acid,uricemia|ácido úrico sérico|urato
+8480-6,Presión arterial sistólica,Systolic blood pressure,PA sistólica|presión sistólica|tensión arterial sistólica|TAS
+8462-4,Presión arterial diastólica,Diastolic blood pressure,PA diastólica|presión diastólica|tensión arterial diastólica|TAD
+58410-2,Hemograma completo,Complete blood count,CBC|hemograma|recuento sanguíneo completo
+24331-1,Panel lipídico,Lipid panel,perfil lipídico|lípidos|colesterol y triglicéridos
+24325-3,Hepatograma,Hepatic function panel,función hepática|perfil hepático|enzimas hepáticas
+24323-8,Panel metabólico completo,Comprehensive metabolic panel,panel metabólico|metabolismo|química sanguínea
+30954-2,Perfil tiroideo,Thyroid function panel,tiroides|función tiroidea|panel de tiroides
