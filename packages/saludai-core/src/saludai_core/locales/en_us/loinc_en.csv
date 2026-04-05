@@ -1,0 +1,38 @@
+code,display,display_en,aliases
+2345-7,Blood glucose,Blood glucose,glucose|blood sugar|fasting glucose|glycemia
+4548-4,Hemoglobin A1c,Hemoglobin A1c,HbA1c|A1c|glycated hemoglobin|glycosylated hemoglobin
+2093-3,Total cholesterol,Total cholesterol,cholesterol|serum cholesterol
+2571-8,Triglycerides,Triglycerides,TG|serum triglycerides|fasting triglycerides
+2085-9,HDL cholesterol,HDL cholesterol,HDL|good cholesterol|high-density lipoprotein
+2089-1,LDL cholesterol,LDL cholesterol,LDL|bad cholesterol|low-density lipoprotein
+718-7,Hemoglobin,Hemoglobin,Hgb|Hb|blood hemoglobin
+4544-3,Hematocrit,Hematocrit,Hct|packed cell volume|PCV
+6690-2,White blood cell count,White blood cell count,WBC|leukocytes|leukocyte count
+777-3,Platelet count,Platelet count,platelets|thrombocytes|PLT
+2160-0,Creatinine,Creatinine,serum creatinine|blood creatinine|SCr
+3094-0,Blood urea nitrogen,Blood urea nitrogen,BUN|urea|serum urea
+2823-3,Potassium,Potassium,K+|serum potassium|kalemia
+2951-2,Sodium,Sodium,Na+|serum sodium|natremia
+17861-6,Calcium,Calcium,Ca|serum calcium|calcemia
+1742-6,Alanine aminotransferase,Alanine aminotransferase,ALT|GPT|SGPT|liver enzyme ALT
+1920-8,Aspartate aminotransferase,Aspartate aminotransferase,AST|GOT|SGOT|liver enzyme AST
+1975-2,Total bilirubin,Total bilirubin,bilirubin|TB|bilirubinemia
+6598-7,Troponin T,Troponin T,troponin|TnT|cardiac marker|cardiac troponin
+30313-1,Urine hemoglobin,Urine hemoglobin,blood in urine|hematuria
+5811-5,Urine specific gravity,Urine specific gravity,urinary density|specific gravity
+2339-0,Urine glucose,Urine glucose,glucosuria|sugar in urine
+5902-2,Prothrombin time,Prothrombin time,PT|clotting time|prothrombin
+6301-6,International normalized ratio,International normalized ratio,INR|coagulation INR
+30341-2,Erythrocyte sedimentation rate,Erythrocyte sedimentation rate,ESR|sed rate|sedimentation rate
+1988-5,C-reactive protein,C-reactive protein,CRP|acute phase reactant
+3016-3,Thyroid stimulating hormone,Thyroid stimulating hormone,TSH|thyrotropin|serum TSH
+3024-7,Free thyroxine,Free thyroxine,FT4|free T4|thyroxine
+14682-9,Urine creatinine,Urine creatinine,urinary creatinine|creatininuria
+2514-8,Uric acid,Uric acid,serum uric acid|urate|uricemia
+8480-6,Systolic blood pressure,Systolic blood pressure,SBP|systolic BP|systolic pressure
+8462-4,Diastolic blood pressure,Diastolic blood pressure,DBP|diastolic BP|diastolic pressure
+58410-2,Complete blood count,Complete blood count,CBC|full blood count|blood count
+24331-1,Lipid panel,Lipid panel,lipid profile|lipids|cholesterol panel
+24325-3,Hepatic function panel,Hepatic function panel,liver function test|LFTs|hepatic panel
+24323-8,Comprehensive metabolic panel,Comprehensive metabolic panel,CMP|metabolic panel|blood chemistry
+30954-2,Thyroid function panel,Thyroid function panel,thyroid panel|thyroid function tests|TFTs

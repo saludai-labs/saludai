@@ -1,0 +1,46 @@
+code,display,display_en,aliases
+E11,Type 2 diabetes mellitus,Type 2 diabetes mellitus,type 2 diabetes|T2DM|non-insulin-dependent diabetes
+E10,Type 1 diabetes mellitus,Type 1 diabetes mellitus,type 1 diabetes|T1DM|insulin-dependent diabetes
+I10,Essential hypertension,Essential hypertension,hypertension|HTN|high blood pressure
+I25,Chronic ischemic heart disease,Chronic ischemic heart disease,coronary artery disease|chronic ischemia|CAD
+I21,Acute myocardial infarction,Acute myocardial infarction,MI|heart attack|AMI
+I50,Heart failure,Heart failure,HF|CHF|congestive heart failure
+I48,Atrial fibrillation and flutter,Atrial fibrillation and flutter,AFib|atrial fibrillation|arrhythmia
+I64,Stroke,Stroke,CVA|cerebrovascular accident|brain attack
+J45,Asthma,Asthma,bronchial asthma|asthma attack
+J44,Chronic obstructive pulmonary disease,COPD,COPD|chronic bronchitis|emphysema
+J18,Pneumonia,Pneumonia,lung infection|pulmonary infection
+B57,Chagas disease,Chagas disease,chagas|American trypanosomiasis
+A90,Dengue,Dengue,dengue fever|classic dengue
+A15,Respiratory tuberculosis,Respiratory tuberculosis,TB|pulmonary tuberculosis|pulmonary TB
+B20,HIV disease,HIV disease,HIV|AIDS|HIV infection
+D50,Iron deficiency anemia,Iron deficiency anemia,IDA|iron deficiency
+E03,Hypothyroidism,Hypothyroidism,underactive thyroid|primary hypothyroidism
+E66,Obesity,Obesity,morbid obesity|high BMI
+E78,Hyperlipidemia,Hyperlipidemia,high cholesterol|dyslipidemia|hypercholesterolemia
+K74,Hepatic cirrhosis,Hepatic cirrhosis,cirrhosis|liver cirrhosis
+K76.0,Hepatic steatosis,Hepatic steatosis,fatty liver|NAFLD|nonalcoholic fatty liver
+N18,Chronic kidney disease,Chronic kidney disease,CKD|chronic renal failure|CRF
+N17,Acute kidney injury,Acute kidney injury,AKI|acute renal failure
+M80,Osteoporosis with fracture,Osteoporosis with fracture,osteoporosis|osteoporotic fracture
+M15,Polyosteoarthritis,Polyosteoarthritis,osteoarthritis|OA|degenerative joint disease
+M05,Rheumatoid arthritis,Rheumatoid arthritis,RA|autoimmune arthritis
+F32,Depressive episode,Depressive episode,depression|major depression|depressive disorder
+F41,Anxiety disorder,Anxiety disorder,anxiety|GAD|generalized anxiety
+G20,Parkinson disease,Parkinson disease,Parkinson's|parkinsonism
+G30,Alzheimer disease,Alzheimer disease,Alzheimer's|Alzheimer dementia
+G35,Multiple sclerosis,Multiple sclerosis,MS|demyelinating disease
+U07.1,COVID-19,COVID-19,coronavirus|SARS-CoV-2|covid
+O14,Preeclampsia,Preeclampsia,toxemia of pregnancy|gestational hypertension
+O24.4,Gestational diabetes,Gestational diabetes,pregnancy diabetes|GDM
+C50,Breast cancer,Breast cancer,breast neoplasm|breast tumor
+C34,Lung cancer,Lung cancer,pulmonary neoplasm|lung tumor
+C18,Colon cancer,Colon cancer,colorectal cancer|colon neoplasm
+M10,Gout,Gout,gouty arthritis|hyperuricemia
+K80,Cholelithiasis,Cholelithiasis,gallstones|gallbladder stones
+N39.0,Urinary tract infection,Urinary tract infection,UTI|cystitis|bladder infection
+B15,Hepatitis A,Hepatitis A,viral hepatitis A
+B16,Hepatitis B,Hepatitis B,viral hepatitis B
+B17.1,Hepatitis C,Hepatitis C,viral hepatitis C|HCV
+R51,Headache,Headache,cephalalgia|head pain
+G43,Migraine,Migraine,migraine with aura|migraine without aura

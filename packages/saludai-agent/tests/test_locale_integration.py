@@ -91,6 +91,22 @@ class TestAgentLoopWithLocalePack:
         assert loop._system_prompt == SYSTEM_PROMPT
 
 
+class TestAgentLoopWithENUSPack:
+    """AgentLoop works with EN_US locale pack."""
+
+    def test_uses_en_us_prompt(self) -> None:
+        llm = MagicMock()
+        fhir_client = MagicMock()
+        pack = load_locale_pack("en_us")
+        loop = AgentLoop(
+            llm=llm,
+            fhir_client=fhir_client,
+            locale_pack=pack,
+        )
+        assert loop._system_prompt == pack.system_prompt
+        assert "United States" in loop._system_prompt
+
+
 class TestPromptsBackwardCompat:
     """prompts.py SYSTEM_PROMPT is backward compatible with AR pack."""
 

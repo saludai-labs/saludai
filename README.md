@@ -131,7 +131,7 @@ uv run python -m benchmarks.run_eval
 ### CLI
 
 ```bash
-saludai query "Medicaciones más frecuentes en pacientes mayores de 70"
+saludai query "How many patients with type 2 diabetes are older than 60?"
 ```
 
 ### REST API

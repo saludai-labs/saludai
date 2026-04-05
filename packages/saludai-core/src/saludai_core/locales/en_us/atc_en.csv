@@ -1,0 +1,14 @@
+code,display,display_en,aliases
+A10BA02,Metformin,Metformin,metformin 850mg|metformin 500mg|metformin 1000mg|glucophage
+C09AA02,Enalapril,Enalapril,enalapril 10mg|enalapril 20mg|enalapril 5mg|ACE inhibitor
+C09CA01,Losartan,Losartan,losartan 50mg|losartan 100mg|cozaar|ARB
+C07AB03,Atenolol,Atenolol,atenolol 50mg|atenolol 25mg|atenolol 100mg|beta blocker
+B01AC06,Aspirin,Aspirin,aspirin 81mg|aspirin 325mg|acetylsalicylic acid|ASA|baby aspirin
+A02BC01,Omeprazole,Omeprazole,omeprazole 20mg|omeprazole 40mg|PPI|proton pump inhibitor|prilosec
+A10AC01,Insulin NPH,Insulin NPH,insulin|human insulin|basal insulin|intermediate insulin
+R03AC02,Salbutamol,Salbutamol,albuterol|salbutamol inhaler|ventolin|bronchodilator|ProAir
+H03AA01,Levothyroxine,Levothyroxine,levothyroxine 50mcg|levothyroxine 75mcg|levothyroxine 100mcg|T4|synthroid
+C08CA01,Amlodipine,Amlodipine,amlodipine 5mg|amlodipine 10mg|norvasc|calcium channel blocker
+N06AB06,Sertraline,Sertraline,sertraline 50mg|sertraline 100mg|zoloft|SSRI
+C10AA05,Atorvastatin,Atorvastatin,atorvastatin 20mg|atorvastatin 40mg|lipitor|statin
+B01AC04,Clopidogrel,Clopidogrel,clopidogrel 75mg|plavix|antiplatelet

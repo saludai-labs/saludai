@@ -56,6 +56,7 @@ class TerminologySystem(enum.StrEnum):
 
     SNOMED_CT = "http://snomed.info/sct"
     CIE_10 = "http://hl7.org/fhir/sid/icd-10"
+    ICD_10_CM = "http://hl7.org/fhir/sid/icd-10-cm"
     LOINC = "http://loinc.org"
     ATC = "http://www.whocc.no/atc"
 

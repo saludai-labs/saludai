@@ -41,7 +41,7 @@ _ENTRY_POINT_GROUP = "saludai.locales"
 # Built-in locale registry (lazy — imported on first access)
 # ---------------------------------------------------------------------------
 
-_BUILTIN_LOCALES: frozenset[str] = frozenset({"ar"})
+_BUILTIN_LOCALES: frozenset[str] = frozenset({"ar", "en_us"})
 
 
 def _discover_entry_point(code: str) -> LocalePack | None:
@@ -93,6 +93,11 @@ def load_locale_pack(code: str = "ar") -> LocalePack:
         from saludai_core.locales.ar import AR_LOCALE_PACK
 
         return AR_LOCALE_PACK
+
+    if code == "en_us":
+        from saludai_core.locales.en_us import EN_US_LOCALE_PACK
+
+        return EN_US_LOCALE_PACK
 
     # 2. Entry-point discovery
     pack = _discover_entry_point(code)
